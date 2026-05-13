@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPRAM — Base GTM Institutionnels</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+–color: #1a3a5c;
+–accent: #c8a84b;
+–bg: #f5f2ec;
+–text: #1a1a1a;
+–muted: #888;
+–border: #ddd;
+–white: #fff;
+}
+
+body {
+font-family: ‘Source Serif 4’, Georgia, serif;
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+font-size: 15px;
+line-height: 1.6;
+}
+
+/* ── LOADING ── */
+#loading {
+position: fixed; inset: 0;
+background: var(–bg);
+display: flex; align-items: center; justify-content: center;
+flex-direction: column; gap: 16px;
+z-index: 999;
+transition: opacity 0.4s;
+}
+#loading.hidden { opacity: 0; pointer-events: none; }
+.loader-logo { font-family: ‘Playfair Display’, serif; font-size: 28px; color: var(–color); letter-spacing: 2px; }
+.loader-bar { width: 200px; height: 2px; background: #ddd; position: relative; overflow: hidden; }
+.loader-bar::after {
+content: ‘’;
+position: absolute; left: -50%; top: 0; height: 100%; width: 50%;
+background: var(–accent);
+animation: load 1.2s ease-in-out infinite;
+}
+@keyframes load { to { left: 150%; } }
+
+/* ── HEADER ── */
+#header {
+background: var(–color);
+color: #fff;
+padding: 24px 32px 0;
+border-bottom: 3px solid var(–accent);
+transition: background 0.3s, border-color 0.3s;
+}
+#header-top {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 20px;
+flex-wrap: wrap;
+gap: 12px;
+}
+#header-brand { font-family: ‘IBM Plex Mono’, monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; margin-bottom: 6px; }
+#header-title { font-family: ‘Playfair Display’, serif; font-size: 24px; font-weight: 400; letter-spacing: 0.5px; }
+#segment-btns { display: flex; gap: 8px; align-self: center; flex-wrap: wrap; }
+.seg-btn {
+padding: 7px 18px;
+border: 2px solid rgba(255,255,255,0.3);
+background: transparent;
+color: #fff;
+cursor: pointer;
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 12px;
+letter-spacing: 1px;
+transition: all 0.2s;
+border-radius: 2px;
+}
+.seg-btn.active {
+font-weight: 500;
+}
+#tabs {
+display: flex;
+gap: 0;
+overflow-x: auto;
+scrollbar-width: none;
+}
+#tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+padding: 10px 14px;
+border: none;
+background: transparent;
+color: rgba(255,255,255,0.65);
+cursor: pointer;
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.5px;
+border-top: 3px solid transparent;
+border-radius: 3px 3px 0 0;
+white-space: nowrap;
+transition: all 0.15s;
+}
+.tab-btn.active {
+background: var(–bg);
+color: var(–color);
+font-weight: 500;
+border-top-color: var(–accent);
+}
+
+/* ── HINT ── */
+#hint {
+background: #fffbf0;
+border-bottom: 1px solid var(–accent);
+padding: 8px 32px;
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 11px;
+color: #8a7040;
+}
+.hint-term { font-weight: 500; border-bottom: 2px dotted var(–accent); color: var(–accent); }
+
+/* ── CONTENT ── */
+#content { padding: 28px 32px; max-width: 1080px; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+display: flex; align-items: center; gap: 10px;
+margin-bottom: 16px;
+}
+.section-title-bar { width: 3px; height: 18px; background: var(–accent); flex-shrink: 0; }
+.section-title-text {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 11px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–color);
+}
+
+/* ── STAT GRID ── */
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+.stat-card {
+background: var(–white);
+border: 1px solid var(–border);
+border-top: 3px solid var(–accent);
+padding: 14px 16px;
+}
+.stat-label { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; letter-spacing: 2px; color: var(–muted); margin-bottom: 5px; text-transform: uppercase; }
+.stat-value { font-size: 13px; line-height: 1.5; color: var(–text); }
+
+/* ── TENSIONS ── */
+.tension-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tension-card {
+background: #fff9f7;
+border: 1px solid #f0ccc0;
+border-left: 3px solid var(–accent);
+padding: 11px 14px;
+font-size: 13px;
+line-height: 1.6;
+color: #444;
+}
+
+/* ── ACTEURS ── */
+.acteur-list { display: flex; flex-direction: column; gap: 8px; }
+.acteur-card {
+background: var(–white);
+border: 1px solid var(–border);
+border-left: 4px solid var(–accent);
+padding: 12px 18px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 12px;
+}
+.acteur-nom { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+.acteur-note { font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; color: var(–muted); }
+.acteur-right { text-align: right; flex-shrink: 0; }
+.tag { background: var(–color); color: #fff; font-family: ‘IBM Plex Mono’, monospace; font-size: 10px; padding: 2px 7px; }
+.acteur-ca { font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; color: var(–accent); font-weight: 500; margin-top: 3px; }
+
+/* ── ALLOCATION ── */
+.alloc-box { background: var(–white); border: 1px solid var(–border); padding: 20px; }
+.alloc-row { margin-bottom: 12px; }
+.alloc-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.alloc-name { font-family: ‘IBM Plex Mono’, monospace; font-size: 12px; }
+.alloc-pct { font-family: ‘IBM Plex Mono’, monospace; font-size: 12px; font-weight: 500; color: var(–color); }
+.alloc-track { background: #f0ede8; border-radius: 1px; height: 8px; }
+.alloc-bar { height: 100%; border-radius: 1px; transition: width 0.6s ease; }
+.alloc-detail { font-size: 11px; color: var(–muted); margin-top: 2px; font-style: italic; }
+.alloc-note { font-family: ‘IBM Plex Mono’, monospace; font-size: 10px; color: #bbb; border-top: 1px solid #eee; padding-top: 8px; margin-top: 6px; }
+
+/* ── STRUCTURE ── */
+.struct-list { display: flex; flex-direction: column; gap: 12px; }
+.struct-card {
+background: var(–white);
+border: 1px solid var(–border);
+border-left: 4px solid var(–color);
+padding: 14px 18px;
+}
+.struct-key { font-family: ‘IBM Plex Mono’, monospace; font-size: 10px; text-transform: uppercase; color: var(–accent); letter-spacing: 1px; margin-bottom: 5px; }
+.struct-text { font-size: 13px; line-height: 1.7; color: #2a2a2a; }
+
+/* ── REGLEMENTATION ── */
+.reg-list { display: flex; flex-direction: column; gap: 12px; }
+.reg-card { background: var(–white); border: 1px solid var(–border); padding: 14px 18px; }
+.reg-titre { display: inline-block; background: var(–color); color: #fff; font-family: ‘IBM Plex Mono’, monospace; font-size: 10px; padding: 3px 9px; letter-spacing: 1px; margin-bottom: 7px; }
+.reg-detail { font-size: 13px; line-height: 1.7; color: #444; }
+
+/* ── INTERLOCUTEURS ── */
+.interlo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.interlo-card { background: var(–white); border: 1px solid var(–border); padding: 14px 18px; }
+.interlo-poste { color: var(–accent); font-weight: 600; font-size: 13px; margin-bottom: 5px; }
+.interlo-role { font-size: 12px; color: #555; line-height: 1.6; }
+.interlo-tip { margin-top: 16px; background: var(–color); color: #fff; padding: 14px 18px; font-size: 13px; line-height: 1.7; }
+
+/* ── PROBLEMATIQUES ── */
+.prob-hint { font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; color: var(–muted); margin-bottom: 16px; border-left: 3px solid var(–accent); padding-left: 10px; }
+.prob-list { display: flex; flex-direction: column; gap: 14px; }
+.prob-card { background: var(–white); border: 1px solid var(–border); overflow: hidden; transition: border-left-color 0.2s; }
+.prob-header {
+padding: 14px 18px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+cursor: pointer;
+user-select: none;
+transition: background 0.15s;
+}
+.prob-header:hover { background: #fafaf8; }
+.prob-left { display: flex; align-items: center; gap: 10px; }
+.prob-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.prob-titre { font-weight: 600; font-size: 13px; }
+.prob-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.urgence-badge { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; padding: 2px 7px; border: 1px solid; }
+.prob-toggle { font-size: 18px; line-height: 1; width: 20px; text-align: center; }
+.prob-body { border-top: 1px solid #eee; display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.prob-col { padding: 14px 18px; }
+.prob-col + .prob-col { border-left: 1px solid #eee; }
+.prob-col-label { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; color: var(–muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 7px; }
+.prob-col-text { font-size: 12px; line-height: 1.7; color: #444; }
+.prob-col.enjeu { background: #fafaf8; }
+.prob-col.enjeu .prob-col-text { font-style: italic; color: #333; }
+.prob-col.reponse .prob-col-text { color: #e8e8e8; }
+
+/* ── STRATEGIES MATCHING ── */
+.strategies-section { margin-top: 14px; border-top: 1px solid #eee; padding: 12px 18px; background: #f9f9f7; }
+.strategies-label { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; color: var(–muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.strategies-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.strat-tag {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 10px;
+padding: 3px 9px;
+background: var(–white);
+border: 1px solid var(–accent);
+color: var(–color);
+cursor: pointer;
+transition: all 0.15s;
+}
+.strat-tag:hover { background: var(–accent); color: #fff; }
+
+/* ── COMMERCIAL ── */
+.angles-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.angle-card {
+background: var(–white);
+border: 1px solid var(–border);
+border-left: 4px solid var(–accent);
+padding: 12px 18px;
+display: flex;
+gap: 12px;
+align-items: flex-start;
+}
+.angle-arrow { color: var(–accent); font-size: 16px; line-height: 1.3; flex-shrink: 0; }
+.angle-text { font-size: 13px; line-height: 1.6; }
+.questions-box { background: #1a1a1a; color: #f5f2ec; padding: 18px 22px; font-size: 13px; line-height: 2; }
+.questions-title { font-family: ‘IBM Plex Mono’, monospace; font-size: 10px; letter-spacing: 2px; margin-bottom: 8px; }
+
+/* ── STRATEGIES TAB ── */
+.strat-famille { margin-bottom: 28px; }
+.strat-famille-header {
+display: flex; align-items: center; gap: 12px;
+margin-bottom: 14px;
+padding-bottom: 8px;
+border-bottom: 2px solid var(–accent);
+}
+.strat-famille-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.strat-famille-label { font-family: ‘Playfair Display’, serif; font-size: 18px; color: var(–color); }
+.strat-famille-desc { font-size: 12px; color: var(–muted); font-style: italic; margin-top: 2px; }
+.strat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.strat-card {
+background: var(–white);
+border: 1px solid var(–border);
+padding: 16px;
+cursor: pointer;
+transition: box-shadow 0.15s, border-color 0.15s;
+}
+.strat-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-color: var(–accent); }
+.strat-card-nom { font-weight: 600; font-size: 13px; margin-bottom: 6px; }
+.strat-card-classe { font-family: ‘IBM Plex Mono’, monospace; font-size: 10px; color: var(–muted); margin-bottom: 8px; }
+.strat-card-desc { font-size: 12px; line-height: 1.6; color: #555; margin-bottom: 10px; }
+.strat-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.strat-meta-item { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; padding: 2px 7px; background: #f5f2ec; border: 1px solid #ddd; color: #666; }
+.strat-meta-item.sfdr-8 { border-color: #4a7fb5; color: #4a7fb5; background: #eef4fb; }
+.strat-meta-item.sfdr-9 { border-color: #3d8c4f; color: #3d8c4f; background: #eef6f0; }
+
+/* ── STRATEGIE DETAIL ── */
+#strat-detail {
+position: fixed; top: 0; right: 0; bottom: 0; width: 460px;
+background: var(–white);
+box-shadow: -4px 0 32px rgba(0,0,0,0.15);
+z-index: 100;
+display: flex; flex-direction: column;
+transform: translateX(100%);
+transition: transform 0.25s ease;
+overflow-y: auto;
+}
+#strat-detail.open { transform: translateX(0); }
+#strat-overlay {
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.25);
+z-index: 99;
+display: none;
+}
+#strat-overlay.open { display: block; }
+#strat-detail-header { padding: 18px 22px 14px; border-bottom: 3px solid var(–accent); position: sticky; top: 0; background: var(–color); z-index: 1; }
+#strat-detail-label { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; letter-spacing: 2px; opacity: 0.7; color: #fff; margin-bottom: 4px; }
+#strat-detail-nom { font-family: ‘Playfair Display’, serif; font-size: 17px; color: #fff; margin-bottom: 10px; line-height: 1.3; }
+#strat-detail-close { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 5px 12px; font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; cursor: pointer; }
+#strat-detail-body { padding: 18px 22px; flex: 1; }
+.detail-section { margin-bottom: 18px; }
+.detail-section-label { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(–muted); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.detail-section-label::before { content: ‘’; display: block; width: 3px; height: 11px; background: var(–accent); }
+.detail-section-text { font-size: 13px; line-height: 1.7; color: #444; }
+.detail-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.detail-meta-card { background: #f5f2ec; border: 1px solid #eee; padding: 8px 12px; }
+.detail-meta-k { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; color: var(–muted); margin-bottom: 3px; }
+.detail-meta-v { font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; font-weight: 500; color: var(–color); }
+.detail-prob-list { display: flex; flex-direction: column; gap: 5px; }
+.detail-prob-item { font-size: 12px; line-height: 1.5; color: #444; padding: 6px 10px; background: #f9f9f7; border-left: 3px solid var(–accent); }
+.detail-atout { background: var(–color); color: #fff; padding: 12px 14px; font-size: 13px; line-height: 1.7; }
+
+/* ── GLOSSAIRE PANEL ── */
+#glossaire-overlay {
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.25);
+z-index: 200;
+display: none;
+}
+#glossaire-overlay.open { display: block; }
+#glossaire-panel {
+position: fixed; top: 0; right: 0; bottom: 0; width: 420px;
+background: var(–white);
+box-shadow: -4px 0 32px rgba(0,0,0,0.18);
+z-index: 201;
+display: flex; flex-direction: column;
+overflow-y: auto;
+transform: translateX(100%);
+transition: transform 0.25s ease;
+}
+#glossaire-panel.open { transform: translateX(0); }
+#glos-header { padding: 18px 22px 14px; border-bottom: 3px solid var(–accent); position: sticky; top: 0; z-index: 1; }
+#glos-mini { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; letter-spacing: 2px; opacity: 0.7; color: #fff; margin-bottom: 3px; }
+#glos-titre { font-family: ‘Playfair Display’, serif; font-size: 16px; color: #fff; margin-bottom: 10px; line-height: 1.35; }
+#glos-close { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 4px 12px; font-family: ‘IBM Plex Mono’, monospace; font-size: 11px; cursor: pointer; }
+#glos-body { padding: 18px 22px; flex: 1; }
+.glos-section { margin-bottom: 20px; }
+.glos-section-label { font-family: ‘IBM Plex Mono’, monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(–muted); margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+.glos-section-label::before { content: ‘’; display: block; width: 3px; height: 11px; background: var(–accent); }
+.glos-analogie { background: #fffbf0; border: 1px solid var(–accent); border-left: 4px solid var(–accent); padding: 12px 14px; font-size: 13px; line-height: 1.8; color: #555; font-style: italic; }
+.glos-def { font-size: 13px; line-height: 1.9; color: #333; }
+.glos-exemple { background: #f8f8f8; border: 1px solid #eee; padding: 12px 14px; font-size: 13px; line-height: 1.8; color: #555; }
+.glos-cpram { padding: 12px 14px; font-size: 13px; line-height: 1.8; color: #fff; }
+
+/* ── TERM LINK ── */
+.term-link {
+background: none; border: none;
+border-bottom: 2px dotted;
+font-weight: 600; font-size: inherit;
+font-family: inherit; line-height: inherit;
+padding: 0; cursor: pointer;
+transition: opacity 0.15s;
+}
+.term-link:hover { opacity: 0.75; }
+
+/* ── FOOTER ── */
+#footer {
+border-top: 2px solid var(–accent);
+padding: 10px 32px;
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 10px;
+display: flex;
+justify-content: space-between;
+color: rgba(255,255,255,0.45);
+flex-wrap: wrap;
+gap: 6px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+#header { padding: 16px 16px 0; }
+#content { padding: 16px; }
+.stat-grid, .tension-grid, .interlo-grid, .strat-cards, .prob-body { grid-template-columns: 1fr; }
+.prob-col + .prob-col { border-left: none; border-top: 1px solid #eee; }
+#glossaire-panel, #strat-detail { width: 100%; }
+#footer { padding: 10px 16px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- LOADING -->
+
+<div id="loading">
+  <div class="loader-logo">CPRAM</div>
+  <div class="loader-bar"></div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#aaa;letter-spacing:1px">Chargement des données…</div>
+</div>
+
+<!-- GLOSSAIRE -->
+
+<div id="glossaire-overlay" onclick="closeGlossaire()"></div>
+<div id="glossaire-panel">
+  <div id="glos-header">
+    <div id="glos-mini">MINI-COURS</div>
+    <div id="glos-titre"></div>
+    <button id="glos-close" onclick="closeGlossaire()">✕ Fermer</button>
+  </div>
+  <div id="glos-body"></div>
+</div>
+
+<!-- STRATEGIE DETAIL -->
+
+<div id="strat-overlay" onclick="closeStratDetail()"></div>
+<div id="strat-detail">
+  <div id="strat-detail-header">
+    <div id="strat-detail-label">STRATÉGIE CPRAM</div>
+    <div id="strat-detail-nom"></div>
+    <button id="strat-detail-close" onclick="closeStratDetail()">✕ Fermer</button>
+  </div>
+  <div id="strat-detail-body"></div>
+</div>
+
+<!-- HEADER -->
+
+<div id="header">
+  <div id="header-top">
+    <div style="color:#fff">
+      <div id="header-brand">CPRAM — Base de Connaissances GTM</div>
+      <div id="header-title"></div>
+    </div>
+    <div id="segment-btns"></div>
+  </div>
+  <div id="tabs"></div>
+</div>
+
+<!-- HINT -->
+
+<div id="hint">
+  💡 Les termes <span class="hint-term">soulignés en pointillés</span> sont cliquables — mini-cours instantané.
+  Les tags <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;border:1px solid var(--accent);padding:1px 6px;color:var(--accent)">stratégie</span> ouvrent la fiche CPRAM.
+</div>
+
+<!-- CONTENT -->
+
+<div id="content"></div>
+
+<!-- FOOTER -->
+
+<div id="footer">
+  <span>CPRAM — Sales Institutionnel — GTM v2.0</span>
+  <span id="footer-source">Sources : Banque de France, ACPR, France Assureurs 2024-2025</span>
+</div>
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────────────────────
+const REPO = 'allanichub/cpram-gtm';
+const BRANCH = 'main';
+const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let SEGMENTS = null;
+let STRATEGIES = null;
+let currentSegment = 'vie';
+let currentTab = 'overview';
+let openProbs = {};
+
+const ALLOC_COLORS = ['#1a3a5c','#c8a84b','#4a7fb5','#8cb4d8','#3d8c4f','#e85d3a'];
+
+// ─── LOAD DATA ────────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const [segRes, stratRes] = await Promise.all([
+      fetch(`${RAW}/segments.json?t=${Date.now()}`),
+      fetch(`${RAW}/strategies.json?t=${Date.now()}`)
+    ]);
+    SEGMENTS = await segRes.json();
+    STRATEGIES = await stratRes.json();
+    init();
+  } catch(e) {
+    // Fallback : données embarquées si GitHub inaccessible (intranet)
+    document.getElementById('loading').innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;color:#c0392b;font-size:12px;text-align:center;padding:20px">
+        ⚠ Impossible de charger les données depuis GitHub.<br>
+        <span style="color:#888;font-size:11px">Vérifiez votre connexion ou contactez l'administrateur.</span>
+      </div>`;
+  }
+}
+
+function init() {
+  document.getElementById('loading').classList.add('hidden');
+  setTimeout(() => document.getElementById('loading').remove(), 500);
+  render();
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function seg() { return SEGMENTS.segments[currentSegment]; }
+function d() { return seg(); }
+
+function setVars() {
+  const s = seg();
+  document.documentElement.style.setProperty('--color', s.color);
+  document.documentElement.style.setProperty('--accent', s.accent);
+}
+
+function richText(text) {
+  if (!text) return '';
+  const terms = Object.keys(SEGMENTS.glossaire);
+  const esc = terms.map(k => k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+  const rx = new RegExp(`\\[(${esc.join('|')})\\]`,'g');
+  return text.replace(rx, (_,t) =>
+    `<button class="term-link" style="color:var(--accent);border-bottom-color:var(--accent)"
+      onclick="openGlossaire('${t.replace(/'/g,"\\'")}');event.stopPropagation()">${t}</button>`
+  );
+}
+
+function stratTags(ids) {
+  if (!ids || !ids.length) return '';
+  const found = [];
+  STRATEGIES.familles.forEach(f => {
+    f.strategies.forEach(s => {
+      if (ids.includes(s.id)) found.push(s);
+    });
+  });
+  return found.map(s =>
+    `<span class="strat-tag" onclick="openStratDetail('${s.id}');event.stopPropagation()">${s.nom}</span>`
+  ).join('');
+}
+
+function findStrat(id) {
+  for (const f of STRATEGIES.familles) {
+    for (const s of f.strategies) {
+      if (s.id === id) return { strat: s, famille: f };
+    }
+  }
+  return null;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+const TABS = [
+  { id:'overview', label:'Vue d\'ensemble' },
+  { id:'acteurs', label:'Acteurs clés' },
+  { id:'allocation', label:'Allocation' },
+  { id:'structure', label:'Structure financière' },
+  { id:'reglementation', label:'Réglementation' },
+  { id:'interlocuteurs', label:'Interlocuteurs' },
+  { id:'problematiques', label:'Problématiques & réponses' },
+  { id:'strategies', label:'Stratégies CPRAM' },
+  { id:'commercial', label:'Angles commerciaux' },
+];
+
+function render() {
+  setVars();
+  renderHeader();
+  renderContent();
+}
+
+function renderHeader() {
+  const s = seg();
+  const hdr = document.getElementById('header');
+  hdr.style.background = s.color;
+  hdr.style.borderBottomColor = s.accent;
+  document.getElementById('footer').style.background = s.color;
+  document.getElementById('footer').style.borderTopColor = s.accent;
+  document.getElementById('hint').style.borderBottomColor = s.accent;
+  document.getElementById('header-title').textContent = s.icon + ' ' + s.label;
+
+  // Segments
+  const sb = document.getElementById('segment-btns');
+  sb.innerHTML = '';
+  Object.entries(SEGMENTS.segments).forEach(([k,v]) => {
+    const btn = document.createElement('button');
+    btn.className = 'seg-btn' + (k===currentSegment?' active':'');
+    btn.textContent = v.label;
+    btn.style.borderColor = k===currentSegment ? v.accent : 'rgba(255,255,255,0.3)';
+    btn.style.background = k===currentSegment ? v.accent : 'transparent';
+    btn.style.color = k===currentSegment ? '#1a1a1a' : '#fff';
+    btn.onclick = () => { currentSegment=k; openProbs={}; render(); };
+    sb.appendChild(btn);
+  });
+
+  // Tabs
+  const tb = document.getElementById('tabs');
+  tb.innerHTML = '';
+  TABS.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (t.id===currentTab?' active':'');
+    btn.textContent = t.label;
+    if (t.id===currentTab) { btn.style.color=s.color; btn.style.borderTopColor=s.accent; }
+    btn.onclick = () => { currentTab=t.id; render(); };
+    tb.appendChild(btn);
+  });
+}
+
+function sT(text) {
+  return `<div class="section-title"><div class="section-title-bar"></div><div class="section-title-text">${text}</div></div>`;
+}
+
+function renderContent() {
+  const s = seg();
+  const el = document.getElementById('content');
+  let h = '';
+
+  if (currentTab==='overview') {
+    h += sT('Panorama du marché');
+    h += '<div class="stat-grid">';
+    Object.entries(s.overview).forEach(([k,v]) => {
+      h += `<div class="stat-card"><div class="stat-label">${k}</div><div class="stat-value">${v}</div></div>`;
+    });
+    h += '</div>';
+    h += sT('Tensions du marché');
+    h += '<div class="tension-grid">';
+    s.tensions.forEach(t => { h += `<div class="tension-card">⚡ ${t}</div>`; });
+    h += '</div>';
+  }
+
+  else if (currentTab==='acteurs') {
+    h += sT('Principaux acteurs');
+    h += '<div class="acteur-list">';
+    s.acteurs.forEach(a => {
+      h += `<div class="acteur-card">
+        <div><div class="acteur-nom">${a.nom}</div><div class="acteur-note">${a.note}</div></div>
+        <div class="acteur-right">
+          <span class="tag">${a.type}</span>
+          ${a.ca ? `<div class="acteur-ca">${a.ca}</div>` : ''}
+        </div>
+      </div>`;
+    });
+    h += '</div>';
+  }
+
+  else if (currentTab==='allocation') {
+    h += sT("Allocation d'actifs typique");
+    h += '<div class="alloc-box">';
+    s.allocation.forEach((a,i) => {
+      const w = Math.min(a.pct*1.5,100);
+      h += `<div class="alloc-row">
+        <div class="alloc-header"><span class="alloc-name">${a.classe}</span><span class="alloc-pct">${a.pct}%</span></div>
+        <div class="alloc-track"><div class="alloc-bar" style="width:${w}%;background:${ALLOC_COLORS[i%ALLOC_COLORS.length]}"></div></div>
+        <div class="alloc-detail">${a.detail}</div>
+      </div>`;
+    });
+    h += '<div class="alloc-note">⚠ Les % sont indicatifs. Sources : Banque de France, ACPR 2024-2025.</div></div>';
+  }
+
+  else if (currentTab==='structure') {
+    h += sT("Structure financière & logique d'investissement");
+    h += '<div class="struct-list">';
+    s.structure.forEach(st => {
+      h += `<div class="struct-card">
+        <div class="struct-key">${st.key}</div>
+        <div class="struct-text">${richText(st.texte)}</div>
+      </div>`;
+    });
+    h += '</div>';
+  }
+
+  else if (currentTab==='reglementation') {
+    h += sT('Cadre réglementaire');
+    h += '<div class="reg-list">';
+    s.reglementation.forEach(r => {
+      h += `<div class="reg-card">
+        <div class="reg-titre">${r.titre}</div>
+        <div class="reg-detail">${richText(r.detail)}</div>
+      </div>`;
+    });
+    h += '</div>';
+  }
+
+  else if (currentTab==='interlocuteurs') {
+    h += sT('Interlocuteurs & rôles');
+    h += '<div class="interlo-grid">';
+    s.interlocuteurs.forEach(p => {
+      h += `<div class="interlo-card">
+        <div class="interlo-poste">${p.poste}</div>
+        <div class="interlo-role">${p.role}</div>
+      </div>`;
+    });
+    h += '</div>';
+    h += `<div class="interlo-tip">
+      <span style="color:var(--accent);font-weight:600">💡 Conseil CPRAM :</span>
+      Chez les assureurs vie, le CIO est l'interlocuteur de référence. Chez les IARD, le CFO prend souvent ce rôle.
+      Sur LinkedIn : "investissements", "gestion actifs", "ALM", "asset allocation" + nom de la compagnie.
+    </div>`;
+  }
+
+  else if (currentTab==='problematiques') {
+    h += sT("Problématiques d'investissement & réponses CPRAM");
+    h += `<div class="prob-hint">Ce sont les enjeux réels que vit le CIO / CFO. Clique pour détailler. Les termes soulignés ouvrent le mini-cours. Les tags ouvrent la fiche stratégie CPRAM.</div>`;
+    h += '<div class="prob-list">';
+    s.problematiques.forEach(p => {
+      const open = !!openProbs[p.id];
+      const uc = p.urgence==='haute' ? '#c0392b' : '#e67e22';
+      const ul = p.urgence==='haute' ? 'Urgence haute' : 'Urgence moyenne';
+      const bLeft = open ? s.accent : s.color;
+      h += `<div class="prob-card" style="border-left:4px solid ${bLeft}">
+        <div class="prob-header" onclick="toggleProb('${p.id}')">
+          <div class="prob-left">
+            <div class="prob-dot" style="background:${uc}"></div>
+            <div class="prob-titre">${p.titre}</div>
+          </div>
+          <div class="prob-right">
+            <span class="urgence-badge" style="color:${uc};border-color:${uc}">${ul}</span>
+            <span class="prob-toggle" style="color:${s.color}">${open?'−':'+'}</span>
+          </div>
+        </div>`;
+      if (open) {
+        h += `<div class="prob-body">
+          <div class="prob-col">
+            <div class="prob-col-label">Contexte</div>
+            <div class="prob-col-text">${richText(p.contexte)}</div>
+          </div>
+          <div class="prob-col enjeu">
+            <div class="prob-col-label">Enjeu CIO / CFO</div>
+            <div class="prob-col-text">${richText(p.enjeu)}</div>
+          </div>
+          <div class="prob-col reponse" style="background:${s.color}">
+            <div class="prob-col-label" style="color:${s.accent}">Réponse CPRAM</div>
+            <div class="prob-col-text">${richText(p.reponse_cpram)}</div>
+          </div>
+        </div>`;
+        if (p.strategies_cpram && p.strategies_cpram.length) {
+          h += `<div class="strategies-section">
+            <div class="strategies-label">Stratégies CPRAM associées — cliquez pour le détail</div>
+            <div class="strategies-tags">${stratTags(p.strategies_cpram)}</div>
+          </div>`;
+        }
+      }
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  else if (currentTab==='strategies') {
+    h += sT('Stratégies CPRAM — Solutions pour ce segment');
+    STRATEGIES.familles.forEach(f => {
+      // Filtrer les stratégies pertinentes pour ce segment
+      const relevant = f.strategies.filter(s2 =>
+        s2.profil_client && s2.profil_client.some(c =>
+          c.toLowerCase().includes(currentSegment==='vie'?'vie':'iard') ||
+          c.toLowerCase().includes('institutionnel') ||
+          c.toLowerCase().includes('tous')
+        )
+      );
+      if (!relevant.length) return;
+      h += `<div class="strat-famille">
+        <div class="strat-famille-header">
+          <div class="strat-famille-dot" style="background:${f.color}"></div>
+          <div>
+            <div class="strat-famille-label">${f.label}</div>
+            <div class="strat-famille-desc">${f.description}</div>
+          </div>
+        </div>
+        <div class="strat-cards">`;
+      relevant.forEach(s2 => {
+        const sfdrClass = s2.sfdr==='Article 9' ? 'sfdr-9' : s2.sfdr==='Article 8' ? 'sfdr-8' : '';
+        h += `<div class="strat-card" onclick="openStratDetail('${s2.id}')">
+          <div class="strat-card-nom">${s2.nom}</div>
+          <div class="strat-card-classe">${s2.classe_actif}</div>
+          <div class="strat-card-desc">${s2.description.slice(0,120)}…</div>
+          <div class="strat-meta">
+            ${s2.sfdr ? `<span class="strat-meta-item ${sfdrClass}">${s2.sfdr}</span>` : ''}
+            ${s2.liquidite ? `<span class="strat-meta-item">${s2.liquidite}</span>` : ''}
+            ${s2.scr_credit ? `<span class="strat-meta-item">SCR: ${s2.scr_credit}</span>` : ''}
+          </div>
+        </div>`;
+      });
+      h += '</div></div>';
+    });
+  }
+
+  else if (currentTab==='commercial') {
+    h += sT('Angles commerciaux pour CPRAM');
+    h += '<div class="angles-list">';
+    s.angles_commerciaux.forEach(a => {
+      h += `<div class="angle-card"><div class="angle-arrow">→</div><div class="angle-text">${a}</div></div>`;
+    });
+    h += '</div>';
+    h += `<div class="questions-box">
+      <div class="questions-title" style="color:var(--accent)">QUESTIONS D'OUVERTURE RECOMMANDÉES</div>`;
+    s.questions_ouverture.forEach(q => { h += `<div>· « ${q} »</div>`; });
+    h += '</div>';
+  }
+
+  el.innerHTML = h;
+}
+
+// ─── INTERACTIONS ─────────────────────────────────────────────────────────────
+function toggleProb(id) {
+  openProbs[id] = !openProbs[id];
+  renderContent();
+}
+
+function openGlossaire(term) {
+  const g = SEGMENTS.glossaire[term];
+  if (!g) return;
+  const s = seg();
+  const panel = document.getElementById('glossaire-panel');
+  const overlay = document.getElementById('glossaire-overlay');
+  document.getElementById('glos-header').style.background = s.color;
+  document.getElementById('glos-header').style.borderBottomColor = s.accent;
+  document.getElementById('glos-titre').textContent = g.titre;
+  document.getElementById('glos-body').innerHTML = `
+    <div class="glos-section">
+      <div class="glos-section-label">🎯 L'analogie</div>
+      <div class="glos-analogie">${g.analogie}</div>
+    </div>
+    <div class="glos-section">
+      <div class="glos-section-label">📖 Définition</div>
+      <div class="glos-def">${g.definition}</div>
+    </div>
+    <div class="glos-section">
+      <div class="glos-section-label">🔢 Exemple chiffré</div>
+      <div class="glos-exemple">${g.exemple}</div>
+    </div>
+    <div class="glos-section">
+      <div class="glos-section-label">💼 Pourquoi c'est important pour CPRAM</div>
+      <div class="glos-cpram" style="background:${s.color}">${g.cpram}</div>
+    </div>`;
+  panel.classList.add('open');
+  overlay.classList.add('open');
+}
+
+function closeGlossaire() {
+  document.getElementById('glossaire-panel').classList.remove('open');
+  document.getElementById('glossaire-overlay').classList.remove('open');
+}
+
+function openStratDetail(id) {
+  const found = findStrat(id);
+  if (!found) return;
+  const { strat, famille } = found;
+  const s = seg();
+  document.getElementById('strat-detail-header').style.background = famille.color;
+  document.getElementById('strat-detail-header').style.borderBottomColor = s.accent;
+  document.getElementById('strat-detail-nom').textContent = strat.nom;
+  const sfdrClass = strat.sfdr==='Article 9' ? 'sfdr-9' : strat.sfdr==='Article 8' ? 'sfdr-8' : '';
+  document.getElementById('strat-detail-body').innerHTML = `
+    <div class="detail-section">
+      <div class="detail-section-label">Description</div>
+      <div class="detail-section-text">${strat.description}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-label">Caractéristiques clés</div>
+      <div class="detail-meta-grid">
+        <div class="detail-meta-card"><div class="detail-meta-k">Classe d'actif</div><div class="detail-meta-v">${strat.classe_actif}</div></div>
+        <div class="detail-meta-card"><div class="detail-meta-k">Duration</div><div class="detail-meta-v">${strat.duration||'—'}</div></div>
+        <div class="detail-meta-card"><div class="detail-meta-k">SFDR</div><div class="detail-meta-v" style="color:${strat.sfdr==='Article 9'?'#3d8c4f':'#4a7fb5'}">${strat.sfdr||'—'}</div></div>
+        <div class="detail-meta-card"><div class="detail-meta-k">Liquidité</div><div class="detail-meta-v">${strat.liquidite||'—'}</div></div>
+        ${strat.scr_credit ? `<div class="detail-meta-card"><div class="detail-meta-k">SCR crédit</div><div class="detail-meta-v">${strat.scr_credit}</div></div>` : ''}
+        ${strat.scr_marche ? `<div class="detail-meta-card"><div class="detail-meta-k">SCR marché</div><div class="detail-meta-v">${strat.scr_marche}</div></div>` : ''}
+      </div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-label">Problématiques adressées</div>
+      <div class="detail-prob-list">
+        ${(strat.problematiques_cibles||[]).map(p=>`<div class="detail-prob-item">→ ${p}</div>`).join('')}
+      </div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-label">Atout CPRAM</div>
+      <div class="detail-atout" style="background:${famille.color}">${strat.atouts_cpram}</div>
+    </div>`;
+  document.getElementById('strat-detail').classList.add('open');
+  document.getElementById('strat-overlay').classList.add('open');
+}
+
+function closeStratDetail() {
+  document.getElementById('strat-detail').classList.remove('open');
+  document.getElementById('strat-overlay').classList.remove('open');
+}
+
+// ─── START ────────────────────────────────────────────────────────────────────
+loadData();
+</script>
+
+</body>
+</html>
