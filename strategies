@@ -1,0 +1,337 @@
+{
+  "meta": {
+    "source": "cpram.com",
+    "updated": "2025-05",
+    "version": "1.0"
+  },
+  "familles": [
+    {
+      "id": "obligataire",
+      "label": "Obligataire",
+      "color": "#1a3a5c",
+      "description": "Couverture globale de l'univers obligataire — taux, crédit, inflation, fonds datés. Expertise de plus de 35 ans.",
+      "strategies": [
+        {
+          "id": "oblig-etat",
+          "nom": "Fonds Obligations d'État",
+          "classe_actif": "Obligations souveraines",
+          "description": "Gestion combinant vues macroéconomiques long terme et gestion tactique court terme. Profite des principales opportunités de marchés dans différents cycles économiques.",
+          "duration": "variable — pilotée activement",
+          "scr_credit": "0% (souverain UE)",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs IARD", "Assureurs Vie"],
+          "problematiques_cibles": [
+            "Optimisation SCR — coût zéro en capital crédit",
+            "ALM — duration pilotée sur mesure",
+            "Portefeuilles de réserves court terme (IARD)"
+          ],
+          "atouts_cpram": "Double expertise taux + analyse macro Amundi. Pilotage actif de la duration. Solution SCR-efficient par excellence."
+        },
+        {
+          "id": "oblig-credit-ig",
+          "nom": "Fonds Crédit Investment Grade",
+          "classe_actif": "Obligations corporate IG",
+          "description": "Stratégie soutenue par une équipe d'analyse crédit stable et expérimentée couvrant marchés développés et émergents. Pick-up de spread vs souverain.",
+          "duration": "3 à 10 ans selon mandat",
+          "scr_credit": "~8-15% selon duration et rating",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie", "Assureurs IARD", "Mutuelles", "IP", "Caisses de retraite"],
+          "problematiques_cibles": [
+            "Pick-up de spread vs souverain",
+            "Réinvestissement actif général fonds euros",
+            "Rendement des réserves techniques IARD",
+            "ALM matching duration passif"
+          ],
+          "atouts_cpram": "Analyse crédit propriétaire (double dispositif Amundi + pôle stratégie crédit dédié). Couverture émetteurs OCDE + émergents. Processus buy-and-watch éprouvé."
+        },
+        {
+          "id": "oblig-inflation",
+          "nom": "Fonds Inflation",
+          "classe_actif": "Obligations indexées inflation",
+          "description": "Gestion active d'exposition longue aux taux réels internationaux. Protection contre la résurgence inflationniste.",
+          "duration": "Longue (7-12 ans)",
+          "scr_credit": "Faible (souverain indexé)",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Caisses de retraite", "IP", "Assureurs Vie"],
+          "problematiques_cibles": [
+            "Protection du pouvoir d'achat des rentes (retraite)",
+            "ALM retraite — indexation des passifs",
+            "Diversification obligataire vs taux nominaux"
+          ],
+          "atouts_cpram": "Expertise taux réels internationaux. Complément naturel aux obligations nominales pour une ALM complète."
+        },
+        {
+          "id": "oblig-echeance",
+          "nom": "Fonds à Échéance (Buy and Watch)",
+          "classe_actif": "Obligations corporate IG / HY — portefeuille daté",
+          "description": "L'investisseur connaît dès la souscription l'objectif de performance net de frais. Stratégie de portage jusqu'à l'échéance. Principalement obligations d'entreprises européennes / OCDE. Liquidité quotidienne maintenue.",
+          "duration": "Calée sur la date d'échéance du fonds (généralement 3-7 ans)",
+          "scr_credit": "Variable selon composition IG/HY",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne (malgré stratégie portage)",
+          "profil_client": ["Assureurs Vie", "Assureurs IARD", "Mutuelles", "IP"],
+          "problematiques_cibles": [
+            "Réinvestissement dans un cycle de baisse des taux — locker les taux actuels",
+            "Rendement prévisible pour l'actif général fonds euros",
+            "PPB — portage régulier et prévisible",
+            "Compétitivité taux fonds euros"
+          ],
+          "atouts_cpram": "Objectif de performance connu à la souscription. Liquidité quotidienne = pas de contrainte de liquidité pour l'assureur. Possibilité d'arbitrer les titres dégradés. Stratégie idéale pour capter les taux 2024-2025."
+        }
+      ]
+    },
+    {
+      "id": "monetaire",
+      "label": "Monétaire & Trésorerie longue",
+      "color": "#2d6a4f",
+      "description": "Solutions de gestion de trésorerie et de trésorerie longue pour optimiser le rendement des liquidités.",
+      "strategies": [
+        {
+          "id": "monetaire-classique",
+          "nom": "Fonds Monétaire",
+          "classe_actif": "Monétaire / Court terme",
+          "description": "Gestion de trésorerie classique. Objectif de rendement proche de l'ESTR avec protection du capital. Liquidité immédiate.",
+          "duration": "< 1 an",
+          "scr_credit": "Minimal",
+          "sfdr": "Article 8",
+          "liquidite": "J+0 / J+1",
+          "profil_client": ["Assureurs IARD", "Mutuelles", "IP", "Tous institutionnels"],
+          "problematiques_cibles": [
+            "Gestion des liquidités IARD (sinistres à payer)",
+            "Trésorerie courante de tous les institutionnels",
+            "Alternative au compte courant"
+          ],
+          "atouts_cpram": "Sécurité maximale. Liquidité immédiate. Adossement Amundi pour la profondeur des contreparties."
+        },
+        {
+          "id": "tresorerie-longue",
+          "nom": "Trésorerie Longue",
+          "classe_actif": "Obligataire court/moyen terme",
+          "description": "Solution entre le monétaire pur et l'obligataire. Duration 1-3 ans. Vise un meilleur rendement que le pur monétaire avec un risque maîtrisé. Pick-up de spread vs monétaire.",
+          "duration": "1-3 ans",
+          "scr_credit": "Faible (~5-8%)",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs IARD", "Mutuelles", "IP"],
+          "problematiques_cibles": [
+            "Rendement des réserves techniques IARD",
+            "Alternative au monétaire avec pick-up de spread",
+            "Gestion des provisions courtes (sinistres 1-3 ans)"
+          ],
+          "atouts_cpram": "Meilleur rendement que le monétaire (+50-100 bps) avec liquidité quasi-identique. SCR minimal. Solution idéale pour les réserves IARD à horizon 1-3 ans."
+        }
+      ]
+    },
+    {
+      "id": "thematique",
+      "label": "Investissement Thématique",
+      "color": "#c8a84b",
+      "description": "Pioneer de l'investissement thématique depuis 15 ans. Plus de 22 Mds€ d'encours. 13 thèmes d'investissement. 18 gérants et analystes dédiés.",
+      "strategies": [
+        {
+          "id": "transition-climatique",
+          "nom": "CPR Invest — Transition Climatique",
+          "classe_actif": "Actions mondiales thématiques",
+          "description": "Investissement dans les entreprises acteurs de la transition climatique (énergies renouvelables, efficacité énergétique, mobilité propre). Aligné Paris Agreement.",
+          "duration": "Long terme (actions)",
+          "scr_credit": "N/A (actions)",
+          "scr_marche": "22% (LTEI éligible) ou 39% standard",
+          "sfdr": "Article 9",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie (UC)", "Mutuelles", "Caisses de retraite", "IP"],
+          "problematiques_cibles": [
+            "Collecte UC — offre différenciante article 9",
+            "Trajectoire ESG / SFDR article 9",
+            "Risques climatiques — réponse CSRD",
+            "Diversification actions avec label ESG fort"
+          ],
+          "atouts_cpram": "Article 9 SFDR — le plus haut niveau de labellisation ESG. Aligné objectifs Paris 1,5°C. Répond directement aux exigences EIOPA sur risques climatiques. Encours >22 Mds€ sur la gamme thématique."
+        },
+        {
+          "id": "biodiversite",
+          "nom": "CPR Invest — Biodiversité",
+          "classe_actif": "Actions mondiales thématiques",
+          "description": "Thématique émergente. Sélection d'entreprises avec bonnes pratiques en matière de biodiversité. Répond aux nouvelles exigences EIOPA sur la biodiversité.",
+          "duration": "Long terme (actions)",
+          "scr_marche": "22% (LTEI éligible) ou 39% standard",
+          "sfdr": "Article 9",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie (UC)", "Assureurs IARD", "Caisses de retraite"],
+          "problematiques_cibles": [
+            "Risques biodiversité (nouvelles exigences EIOPA 2025-2026)",
+            "Collecte UC — thématique en forte émergence",
+            "Différenciation ESG au-delà du carbone"
+          ],
+          "atouts_cpram": "Thématique pionnière — CPRAM parmi les premiers gérants avec une stratégie dédiée. Article 9. Répond exactement aux nouvelles exigences réglementaires biodiversité."
+        },
+        {
+          "id": "intelligence-artificielle",
+          "nom": "CPR Invest — Intelligence Artificielle",
+          "classe_actif": "Actions mondiales thématiques",
+          "description": "Stratégie construite autour des acteurs réels du marché de l'IA. Entreprises qui développent, déploient ou bénéficient de l'IA.",
+          "duration": "Long terme (actions)",
+          "scr_marche": "22% (LTEI éligible) ou 39% standard",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie (UC)", "Mutuelles", "Caisses de retraite"],
+          "problematiques_cibles": [
+            "Collecte UC — thématique très demandée par les assurés",
+            "Diversification actions — mégatendance",
+            "Performance long terme — moteur de croissance structurel"
+          ],
+          "atouts_cpram": "Thématique en forte demande. Article 8. Expertise spécifique sur la sélection des vrais acteurs de l'IA (pas juste les GAFAM)."
+        },
+        {
+          "id": "defense-europeenne",
+          "nom": "CPR Invest — Défense Européenne",
+          "classe_actif": "Actions européennes thématiques",
+          "description": "Financement du renforcement et de la modernisation des capacités de défense européenne. Thématique émergente post-2022.",
+          "duration": "Long terme (actions)",
+          "scr_marche": "22% (LTEI éligible) ou 39% standard",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie (UC)", "Caisses de retraite", "IP"],
+          "problematiques_cibles": [
+            "Collecte UC — thématique d'actualité forte",
+            "Diversification actions européennes",
+            "Souveraineté économique européenne"
+          ],
+          "atouts_cpram": "Thématique très porteuse en 2025-2026 (réarmement européen). Exposition pure aux industriels de défense européens."
+        },
+        {
+          "id": "vieillissement",
+          "nom": "CPR Invest — Vieillissement de la Population",
+          "classe_actif": "Actions mondiales thématiques",
+          "description": "Thématique permanente et non cyclique. Silver économie : santé, services aux seniors, épargne retraite.",
+          "duration": "Long terme (actions)",
+          "scr_marche": "22% (LTEI éligible) ou 39% standard",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie (UC)", "Caisses de retraite", "IP", "Mutuelles"],
+          "problematiques_cibles": [
+            "Collecte UC — thématique en phase avec les préoccupations des assurés",
+            "Diversification actions — décorrélation cyclique",
+            "Pertinence naturelle pour les caisses de retraite et IP"
+          ],
+          "atouts_cpram": "Thématique défensive et pérenne. Non cyclique = moins de volatilité que les actions pures. Résonnance naturelle avec les métiers des IP et caisses de retraite."
+        },
+        {
+          "id": "souverainete-europeenne",
+          "nom": "CPR Invest — Souveraineté Européenne",
+          "classe_actif": "Actions européennes thématiques",
+          "description": "Accompagne l'Europe dans le renforcement de son autonomie stratégique. Bénéficie des plans de soutien européens (NextGenEU, etc.).",
+          "duration": "Long terme (actions)",
+          "scr_marche": "22% (LTEI éligible) ou 39% standard",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie (UC)", "Caisses de retraite"],
+          "problematiques_cibles": [
+            "Collecte UC — thématique géopolitique très actuelle",
+            "Diversification actions avec biais européen",
+            "Réponse à la demande d'investissement dans l'économie réelle"
+          ],
+          "atouts_cpram": "Capte les flux des plans de relance européens. Thématique en forte croissance post-2024."
+        }
+      ]
+    },
+    {
+      "id": "actions",
+      "label": "Actions",
+      "color": "#4a7fb5",
+      "description": "Gestion actions quantitative et systématique. Approche rigoureuse alliant modélisation et analyse fondamentale.",
+      "strategies": [
+        {
+          "id": "actions-quant",
+          "nom": "Actions Quantitatives / Systématiques",
+          "classe_actif": "Actions (Europe, monde)",
+          "description": "Gestion quantitative rigoureuse. Modèles de sélection multi-factoriels. Maîtrise du risque et de la volatilité.",
+          "duration": "Long terme (actions)",
+          "scr_marche": "22% (LTEI éligible) ou 39% standard",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie (UC)", "Caisses de retraite", "IP"],
+          "problematiques_cibles": [
+            "Collecte UC — performance régulière avec maîtrise du risque",
+            "Diversification portefeuille avec approche systématique",
+            "SCR actions : LTEI éligible à 22% si détenu durablement"
+          ],
+          "atouts_cpram": "Approche quantitative = discipline et rigueur. Moins de biais comportementaux. Intégration ESG systématique dans les modèles."
+        }
+      ]
+    },
+    {
+      "id": "diversifie",
+      "label": "Gestion Diversifiée",
+      "color": "#7b4a8a",
+      "description": "Solutions multi-actifs pour une allocation optimisée entre classes d'actifs. Flexibilité et gestion du risque.",
+      "strategies": [
+        {
+          "id": "multi-actifs",
+          "nom": "Gestion Multi-Actifs / Diversifiée",
+          "classe_actif": "Multi-actifs (actions + obligations + alternatives)",
+          "description": "Allocation dynamique entre classes d'actifs en fonction des opportunités de marché. Gestion du risque global du portefeuille.",
+          "duration": "Variable selon allocation",
+          "scr_credit": "Variable",
+          "sfdr": "Article 8",
+          "liquidite": "Quotidienne",
+          "profil_client": ["Assureurs Vie (UC)", "Mutuelles", "IP", "Caisses de retraite"],
+          "problematiques_cibles": [
+            "Collecte UC — fonds diversifiés très recherchés",
+            "Revenus réguliers pour alimenter la PPB",
+            "Diversification pour les institutionnels en phase de désaccumulation",
+            "Solution clé en main pour les petites mutuelles / IP"
+          ],
+          "atouts_cpram": "Gestion active de l'allocation = capture des opportunités. Solution tout-en-un adaptée aux institutionnels sans équipe de gestion dédiée."
+        }
+      ]
+    }
+  ],
+  "matrice_matching": {
+    "description": "Correspondance entre problématiques clients et familles de stratégies CPRAM prioritaires",
+    "mappings": [
+      {
+        "problematique_id": "reinvestissement-taux-baissiers",
+        "strategies_prioritaires": ["oblig-echeance", "oblig-credit-ig", "tresorerie-longue"],
+        "argument_cle": "Les fonds datés permettent de locker les taux actuels (3-4%) avec une liquidité quotidienne. Le pick-up de spread corporate vs souverain compense la baisse des taux souverains."
+      },
+      {
+        "problematique_id": "arbitrage-scr-rendement",
+        "strategies_prioritaires": ["oblig-credit-ig", "oblig-etat", "transition-climatique", "actions-quant"],
+        "argument_cle": "CPRAM présente systématiquement la charge SCR de chaque solution. Actions thématiques éligibles LTEI à 22%. Oblig IG : meilleur ratio rendement/SCR du marché."
+      },
+      {
+        "problematique_id": "alm-duration",
+        "strategies_prioritaires": ["oblig-credit-ig", "oblig-etat", "oblig-inflation"],
+        "argument_cle": "Mandats obligataires sur mesure avec duration cible calée sur le passif. Arbitrage OAT vs corporate à duration égale pour optimiser le rendement."
+      },
+      {
+        "problematique_id": "collecte-uc",
+        "strategies_prioritaires": ["transition-climatique", "intelligence-artificielle", "defense-europeenne", "vieillissement", "multi-actifs", "biodiversite"],
+        "argument_cle": "22 Mds€ d'encours thématiques — gamme la plus large du marché. Articles 8 et 9. Thématiques très demandées par les assurés : IA, défense, climat."
+      },
+      {
+        "problematique_id": "esg-sfdr",
+        "strategies_prioritaires": ["transition-climatique", "biodiversite", "oblig-credit-ig", "oblig-echeance"],
+        "argument_cle": "CPRAM leader de l'investissement responsable. Articles 8 ET 9 disponibles. Reporting SFDR standardisé. Expertise biodiversité pionnière."
+      },
+      {
+        "problematique_id": "rendement-reserves-iard",
+        "strategies_prioritaires": ["tresorerie-longue", "monetaire-classique", "oblig-credit-ig", "oblig-echeance"],
+        "argument_cle": "Solutions 1-5 ans avec pick-up vs monétaire. Liquidité quotidienne maintenue. Charge SCR documentée et minimale."
+      },
+      {
+        "problematique_id": "ppb-taux-fonds-euros",
+        "strategies_prioritaires": ["oblig-echeance", "oblig-credit-ig", "multi-actifs"],
+        "argument_cle": "Stratégies de portage générant des revenus réguliers et prévisibles. Arbitrage du stock obligataire vieillissant (0-1%) contre des titres 3-4%."
+      },
+      {
+        "problematique_id": "risques-climatiques-iard",
+        "strategies_prioritaires": ["transition-climatique", "biodiversite", "oblig-credit-ig"],
+        "argument_cle": "Obligations vertes et durables dans les fonds CPRAM. Reporting CSRD intégré. Biodiversité — thématique pionnière alignée avec les nouvelles exigences EIOPA."
+      }
+    ]
+  }
+}
