@@ -468,7 +468,7 @@ gap: 6px;
 <!-- FOOTER -->
 
 <div id="footer">
-  <span>CPRAM — Sales Institutionnel — GTM v2.0</span>
+  <span>CPRAM — Sales Institutionnel — GTM v3.0</span>
   <span id="footer-source">Sources : Banque de France, ACPR, France Assureurs 2024-2025</span>
 </div>
 
@@ -557,17 +557,21 @@ function findStrat(id) {
 }
 
 // ─── RENDER ───────────────────────────────────────────────────────────────────
-const TABS = [
-  { id:'overview', label:'Vue d\'ensemble' },
-  { id:'acteurs', label:'Acteurs clés' },
-  { id:'allocation', label:'Allocation' },
-  { id:'structure', label:'Structure financière' },
-  { id:'reglementation', label:'Réglementation' },
-  { id:'interlocuteurs', label:'Interlocuteurs' },
-  { id:'problematiques', label:'Problématiques & réponses' },
-  { id:'strategies', label:'Stratégies CPRAM' },
-  { id:'commercial', label:'Angles commerciaux' },
-];
+function getTabs() {
+  const base = [
+    { id:'overview', label:'Vue d\'ensemble' },
+    { id:'acteurs', label:'Acteurs clés' },
+    { id:'allocation', label:'Allocation' },
+    { id:'structure', label:'Structure financière' },
+    { id:'reglementation', label:'Réglementation' },
+    { id:'interlocuteurs', label:'Interlocuteurs' },
+    { id:'problematiques', label:'Problématiques & réponses' },
+    { id:'strategies', label:'Stratégies CPRAM' },
+    { id:'commercial', label:'Angles commerciaux' },
+  ];
+  if (seg().types) base.splice(1, 0, { id:'types', label:'Types & profils' });
+  return base;
+}
 
 function render() {
   setVars();
@@ -602,7 +606,7 @@ function renderHeader() {
   // Tabs
   const tb = document.getElementById('tabs');
   tb.innerHTML = '';
-  TABS.forEach(t => {
+  getTabs().forEach(t => {
     const btn = document.createElement('button');
     btn.className = 'tab-btn' + (t.id===currentTab?' active':'');
     btn.textContent = t.label;
@@ -632,6 +636,43 @@ function renderContent() {
     h += '<div class="tension-grid">';
     s.tensions.forEach(t => { h += `<div class="tension-card">⚡ ${t}</div>`; });
     h += '</div>';
+  }
+
+  else if (currentTab==='types' && s.types) {
+    const t = s.types;
+    h += sT('Comprendre les types de mutuelles');
+    h += `<div style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--accent);padding:16px 20px;margin-bottom:20px;font-size:14px;line-height:1.7;color:#333">${t.introduction}</div>`;
+
+    // Livre II
+    h += `<div style="background:#fff;border:1px solid var(--border);padding:18px 20px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="background:var(--color);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 10px;letter-spacing:1px">LIVRE II</div>
+        <div style="font-weight:600;font-size:14px;color:var(--color)">${t.livre2.label}</div>
+      </div>
+      <div style="font-size:13px;line-height:1.7;color:#444;margin-bottom:8px">${t.livre2.description}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent)">Exemples : ${t.livre2.exemples}</div>
+    </div>`;
+
+    // Livre III
+    h += `<div style="background:#f9f9f7;border:1px solid var(--border);padding:18px 20px;margin-bottom:12px;opacity:0.8">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="background:#888;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 10px;letter-spacing:1px">LIVRE III</div>
+        <div style="font-weight:600;font-size:14px;color:#666">${t.livre3.label}</div>
+      </div>
+      <div style="font-size:13px;line-height:1.7;color:#666;margin-bottom:8px">${t.livre3.description}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#999">Exemples : ${t.livre3.exemples}</div>
+    </div>`;
+
+    // Mutuelles 45
+    h += sT('Les mutuelles 45 — vos cibles prioritaires');
+    h += `<div style="background:var(--color);padding:20px;margin-bottom:16px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px;margin-bottom:8px">MUTUELLES DE FONCTIONNAIRES — ORDONNANCE DU 19 OCTOBRE 1945</div>
+      <div style="font-size:13px;line-height:1.8;color:#e8e8e8;margin-bottom:14px">${t.mutuelles45.description}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:14px">Principales mutuelles 45 : ${t.mutuelles45.exemples}</div>
+      <div style="background:rgba(255,255,255,0.1);padding:12px 14px;font-size:13px;color:#fff;line-height:1.7">
+        <span style="color:var(--accent);font-weight:600">💼 Pourquoi cibler en priorité :</span> ${t.mutuelles45.note_cpram}
+      </div>
+    </div>`;
   }
 
   else if (currentTab==='acteurs') {
