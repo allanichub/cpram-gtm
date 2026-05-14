@@ -1,101 +1,123 @@
 {
   "meta": {
-    "version": "1.0",
+    "version": "2.0",
     "updated": "2025-05",
-    "segments": ["vie", "iard"]
+    "segments": ["vie", "iard", "mutuelles"],
+    "sources": [
+      "France Assureurs — Marché santé et prévoyance 2024",
+      "France Assureurs — Placements des assureurs 2024",
+      "DREES — Rapport annuel organismes complémentaires 2025 (chiffres 2024)",
+      "ACPR — Situation des assureurs Solvabilité II en France fin 2024",
+      "Banque de France — Bulletin 260/2 Placements assureurs 2024",
+      "L'Argus de l'Assurance — Top 30 mutuelles 2025 (chiffres 2024)",
+      "MACSF — Résultats annuels 2024 (communiqué mai 2025)",
+      "MGEN — Résultats 2024 (communiqué avril 2025)",
+      "Tribune Assurance / Option Finance — Classement 20 premiers groupes 2025",
+      "Code de la Mutualité (Légifrance)"
+    ]
   },
+
   "glossaire": {
     "ALM": {
       "titre": "ALM — Asset & Liability Management",
       "analogie": "Imagine que tu dois rembourser un prêt dans 15 ans. Tu places ton argent dans des placements qui arriveront à maturité exactement dans 15 ans. Si tu places sur 3 ans, tu devras réinvestir 5 fois d'ici là — et peut-être à des taux moins bons. L'ALM, c'est l'art d'éviter ce problème.",
       "definition": "L'ALM (gestion actif-passif) consiste à aligner la structure des placements (actif) avec celle des engagements envers les assurés (passif). L'enjeu central est la duration : si le passif a une duration de 12 ans, l'actif doit avoir une duration similaire pour éviter le risque de taux.",
-      "exemple": "Un assureur vie avec 100 Mds€ d'épargne à restituer dans ~12 ans en moyenne va chercher des obligations de maturité 10-15 ans. S'il achète des obligations courtes (2-3 ans), il devra réinvestir fréquemment, en subissant les niveaux de taux futurs — risque majeur si les taux baissent.",
-      "cpram": "CPRAM peut proposer des mandats obligataires avec une duration cible calée sur les contraintes ALM du client. C'est un argument commercial central pour les assureurs vie. Le responsable ALM est un interlocuteur clé à identifier et à cibler."
+      "exemple": "Un assureur vie avec 100 Mds€ d'épargne à restituer dans ~12 ans en moyenne va chercher des obligations de maturité 10-15 ans. S'il achète des obligations courtes (2-3 ans), il devra réinvestir fréquemment, en subissant les niveaux de taux futurs.",
+      "cpram": "CPRAM peut proposer des mandats obligataires avec une duration cible calée sur les contraintes ALM du client. Le responsable ALM est un interlocuteur clé à identifier et à cibler."
     },
     "Duration": {
       "titre": "Duration — La sensibilité d'une obligation aux taux",
-      "analogie": "Pense à la duration comme au poids d'un balancier. Plus le balancier est long (duration élevée), plus la pendule oscille fort quand on la pousse. Une obligation à duration 10, c'est un balancier très long : même un petit mouvement de taux la fait beaucoup bouger en valeur.",
-      "definition": "La duration mesure la sensibilité du prix d'une obligation aux variations de taux d'intérêt. Une obligation à duration 10 perd ~10% de valeur si les taux montent de 1%. Plus la duration est longue, plus l'obligation est sensible aux mouvements de taux.",
-      "exemple": "Une OAT 10 ans à 3% a une duration d'environ 8,5 ans. Si les taux montent de 1%, sa valeur baisse de ~8,5%. Pour un assureur avec 500 Mds€ de portefeuille, ça représente une perte latente de ~42 Mds€.",
-      "cpram": "Quand CPRAM présente un fonds obligataire, la duration est l'un des premiers chiffres à communiquer au CIO ou au responsable ALM. Toujours présenter : duration du fonds, duration cible du client, et l'écart ('duration gap')."
+      "analogie": "Pense à la duration comme au poids d'un balancier. Plus le balancier est long (duration élevée), plus la pendule oscille fort quand on la pousse.",
+      "definition": "La duration mesure la sensibilité du prix d'une obligation aux variations de taux d'intérêt. Une obligation à duration 10 perd ~10% de valeur si les taux montent de 1%.",
+      "exemple": "Une OAT 10 ans à 3% a une duration d'environ 8,5 ans. Si les taux montent de 1%, sa valeur baisse de ~8,5%. Pour 500 Mds€ de portefeuille, ça représente ~42 Mds€ de perte latente.",
+      "cpram": "Toujours présenter au CIO : duration du fonds CPRAM, duration cible du client, et l'écart ('duration gap')."
     },
     "SCR": {
       "titre": "SCR — Solvency Capital Requirement",
-      "analogie": "C'est comme le permis de conduire d'un assureur : pour conduire (investir), il faut avoir suffisamment de capital en réserve pour absorber un choc extrême. Plus l'actif est risqué, plus le 'permis' coûte cher en capital immobilisé.",
-      "definition": "Le SCR est le montant de fonds propres qu'un assureur doit immobiliser pour couvrir ses risques selon Solvabilité 2. Obligations souveraines UE : 0%. Obligations IG : ~8-15%. Actions standard : 39%. Actions LTEI : 22%.",
-      "exemple": "Pour 100M€ investis en actions standard, l'assureur doit immobiliser ~39M€ de fonds propres. Pour 100M€ en obligations IG, seulement ~8-10M€. Un CIO raisonne donc en 'rendement par unité de SCR consommé'.",
-      "cpram": "Présenter systématiquement le 'coût SCR' de chaque solution CPRAM est un différenciateur fort. Exemple : 'Ce fonds obligataire IG offre 3,8% avec une charge SCR de ~10%, soit un rendement ajusté de 38% sur fonds propres.'"
+      "analogie": "C'est comme le permis de conduire d'un assureur : pour investir, il faut avoir suffisamment de capital en réserve. Plus l'actif est risqué, plus le permis coûte cher en capital.",
+      "definition": "Le SCR est le montant de fonds propres qu'un assureur doit immobiliser selon Solvabilité 2. Obligations souveraines UE : 0%. Obligations IG : ~8-15%. Actions standard : 39%. Actions LTEI : 22%.",
+      "exemple": "Pour 100M€ investis en actions standard : 39M€ immobilisés. Pour 100M€ en obligations IG : seulement ~8-10M€. Un CIO raisonne en 'rendement par unité de SCR consommé'.",
+      "cpram": "Présenter systématiquement le 'coût SCR' de chaque solution CPRAM est un différenciateur fort."
     },
     "Fonds euros": {
       "titre": "Fonds euros — Le coffre-fort de l'assurance vie",
-      "analogie": "Le fonds euros, c'est le compte courant de l'assurance vie. L'argent est garanti, les intérêts acquis chaque année sont définitifs (effet cliquet). L'assureur se porte garant — c'est lui qui absorbe les pertes si ses placements vont mal.",
-      "definition": "Support à capital garanti des contrats d'assurance vie. L'assureur investit les primes dans un portefeuille obligataire (actif général) et reverse au minimum 85% des bénéfices aux assurés.",
-      "exemple": "Taux moyen 2025 : 2,60%. Les meilleurs fonds (mutuelles) servent jusqu'à 3,75%. Encours total : ~1 400 Mds€ (70% de l'assurance vie).",
-      "cpram": "L'actif général qui soutient le fonds euros est la principale poche d'investissement des assureurs vie. C'est là que CPRAM peut proposer ses solutions obligataires en mandats ou fonds dédiés."
+      "analogie": "Le fonds euros, c'est le compte courant de l'assurance vie. Capital garanti, intérêts définitifs chaque année (effet cliquet). L'assureur se porte garant.",
+      "definition": "Support à capital garanti des contrats d'assurance vie. L'assureur investit les primes dans un portefeuille obligataire et reverse au minimum 85% des bénéfices aux assurés.",
+      "exemple": "Taux moyen 2025 : 2,60%. Meilleurs fonds (mutuelles) : jusqu'à 3,75%. Encours total : ~1 400 Mds€.",
+      "cpram": "L'actif général qui soutient le fonds euros est la principale poche d'investissement des assureurs vie — cible centrale pour les solutions obligataires CPRAM."
     },
     "PPB": {
       "titre": "PPB — Provision pour Participation aux Bénéfices",
-      "analogie": "La PPB, c'est la 'tirelire cachée' de l'assureur. Quand les marchés vont bien, il met de côté une partie des bénéfices. Quand les marchés vont mal, il casse la tirelire pour maintenir un bon taux servi.",
-      "definition": "Réserve que l'assureur constitue en années favorables. Il peut la reprendre dans les 8 ans suivants pour servir des taux plus attractifs en période difficile. Estimée à 3,7% des encours fin 2025.",
+      "analogie": "La PPB c'est la tirelire cachée de l'assureur. Années favorables : il met de côté. Années difficiles : il casse la tirelire pour maintenir un bon taux servi.",
+      "definition": "Réserve constituée en années favorables, reprise dans les 8 ans suivants pour servir des taux attractifs en période difficile. Estimée à 3,7% des encours fin 2025.",
       "exemple": "En 2024, plusieurs assureurs ont puisé dans leur PPB pour servir des taux de 3%+ malgré un actif général rendant 2,5%.",
       "cpram": "Quand la PPB s'épuise, la pression pour améliorer le rendement de l'actif général monte — opportunité pour CPRAM."
     },
     "Solvabilité 2": {
       "titre": "Solvabilité 2 — Le code de la route des assureurs",
-      "analogie": "Solvabilité 2, c'est le code de la route de l'investissement assurantiel. Chaque actif a ses 'règles de circulation'. Les obligations souveraines passent au vert (coût zéro). Les actions passent à l'orange (péage en capital).",
-      "definition": "Directive européenne en vigueur depuis 2016. Impose aux assureurs de détenir suffisamment de fonds propres pour absorber un choc financier à 1 an avec 99,5% de probabilité. Révisée fin 2023.",
-      "exemple": "Actions OCDE standard : 39%. Actions LTEI post-révision 2023 : 22%. Obligations souveraines UE : 0%. Obligations corporate IG : ~10-15%.",
-      "cpram": "La révision Solvabilité 2 de fin 2023 a ouvert de nouvelles opportunités : les fonds actions détenus durablement (LTEI) bénéficient d'une charge réduite à 22%."
+      "analogie": "Chaque actif a ses règles de circulation. Obligations souveraines : feu vert (coût zéro). Actions : feu orange (péage en capital). Actifs illiquides : papiers spéciaux.",
+      "definition": "Directive européenne depuis 2016. Impose suffisamment de fonds propres pour absorber un choc financier à 1 an avec 99,5% de probabilité. Révisée fin 2023 (LTEI : 22%).",
+      "exemple": "Actions OCDE standard : 39%. Actions LTEI post-révision : 22%. Souveraines UE : 0%. Corporate IG : ~10-15%.",
+      "cpram": "La révision 2023 a ouvert de nouvelles opportunités : fonds actions détenus durablement (LTEI) à 22% de charge. Argument à utiliser avec les CIO."
     },
     "UC": {
       "titre": "UC — Unités de Compte",
-      "analogie": "Si le fonds euros est le compte courant (garanti mais peu rémunéré), les UC sont les placements en bourse. Tu peux gagner plus, mais tu peux aussi perdre. L'assureur n'est pas garant.",
-      "definition": "Supports d'investissement non garantis des contrats d'assurance vie. Ce sont des fonds dont la valeur fluctue avec les marchés. L'assuré porte le risque.",
+      "analogie": "Si le fonds euros est le compte courant (garanti), les UC sont les placements en bourse. Tu peux gagner plus, mais tu peux aussi perdre. L'assureur n'est pas garant.",
+      "definition": "Supports d'investissement non garantis des contrats d'assurance vie. La valeur fluctue avec les marchés. L'assuré porte le risque.",
       "exemple": "Collecte UC 2025 : 42,5 Mds€ (record historique). Rendement moyen UC 2025 : ~3-4% net.",
-      "cpram": "Les fonds CPRAM peuvent être référencés comme UC dans les contrats des assureurs. Un référencement chez un grand assureur vie expose le fonds à des milliers de contrats."
+      "cpram": "Les fonds CPRAM peuvent être référencés comme UC. Un référencement chez un grand assureur expose le fonds à des milliers de contrats."
     },
     "SFDR": {
       "titre": "SFDR — Sustainable Finance Disclosure Regulation",
-      "analogie": "SFDR, c'est l'étiquette nutritionnelle des fonds. Article 6 = sans étiquette ESG. Article 8 = promeut des caractéristiques ESG. Article 9 = objectif durable central.",
-      "definition": "Règlement européen de 2021 qui impose aux gérants de classer leurs fonds selon leur niveau d'intégration ESG. Plus de 50% des fonds domiciliés en France sont classés Article 8 ou 9.",
-      "exemple": "Article 9 : fonds dont l'objectif central est la décarbonation ou la biodiversité. Article 8 : fonds qui promeut des critères ESG sans en faire l'objectif unique.",
-      "cpram": "Les assureurs demandent systématiquement la classification SFDR de tout fonds proposé. Avoir des fonds Article 8/9 avec reporting automatisé est un prérequis commercial."
+      "analogie": "L'étiquette nutritionnelle des fonds. Article 6 : sans étiquette ESG. Article 8 : promeut des caractéristiques ESG. Article 9 : objectif durable central.",
+      "definition": "Règlement européen de 2021. Impose la classification des fonds selon leur niveau ESG. Plus de 50% des fonds domiciliés en France sont classés Article 8 ou 9.",
+      "exemple": "Article 9 : fonds dont l'objectif central est la décarbonation ou la biodiversité. Article 8 : fonds promouvant des critères ESG.",
+      "cpram": "Classification SFDR demandée systématiquement avant tout référencement. Fonds Article 8/9 avec reporting automatisé : prérequis commercial."
     },
     "Pick-up de spread": {
       "titre": "Pick-up de spread — Le bonus de rendement du crédit",
-      "analogie": "Prêter à l'État français, c'est sûr mais mal payé. Prêter à une grande entreprise notée BBB, c'est un peu plus risqué mais mieux payé. La différence de rémunération entre les deux, c'est le 'spread'.",
-      "definition": "Le spread est l'écart de rendement entre une obligation d'entreprise et une obligation souveraine de même maturité. Le pick-up représente le surcroît de rendement obtenu en investissant en corporate plutôt qu'en souverain.",
-      "exemple": "OAT 10 ans à 3,20%. Obligation corporate IG 10 ans à 3,80%. Spread = 60 bps. Sur 500M€, ça représente 3M€ de revenus supplémentaires par an.",
-      "cpram": "L'argument 'pick-up de spread' est central dans le pitch CPRAM sur les fonds obligataires. Présenter : le spread offert, la note de crédit moyenne, et la charge SCR associée."
+      "analogie": "Prêter à l'État : sûr mais mal payé. Prêter à une entreprise BBB : un peu plus risqué mais mieux payé. La différence de rémunération, c'est le spread.",
+      "definition": "Écart de rendement entre une obligation d'entreprise et une obligation souveraine de même maturité. Le pick-up représente le surcroît de rendement en corporate vs souverain.",
+      "exemple": "OAT 10 ans : 3,20%. Corporate IG 10 ans : 3,80%. Spread = 60 bps. Sur 500M€ : 3M€ de revenus supplémentaires par an.",
+      "cpram": "Argument central dans le pitch CPRAM. Présenter : spread offert, note de crédit moyenne, charge SCR associée."
     },
     "Ratio combiné": {
       "titre": "Ratio combiné — Le thermomètre de rentabilité IARD",
-      "analogie": "C'est comme le bilan de santé d'une pizzeria : si tu dépenses 110€ de charges pour 100€ de pizzas vendues, tu perds de l'argent. En dessous de 100%, tu es rentable.",
-      "definition": "Ratio combiné = (sinistres + frais) / primes. Sous 100% : l'assureur est techniquement rentable. Au-dessus : il doit compter sur les revenus financiers pour équilibrer.",
-      "exemple": "En 2024-2025, la hausse des sinistres auto (+11,3%) a dégradé les ratios combinés. Les CIO IARD sont donc encore plus sensibles à l'efficience SCR de leurs investissements.",
-      "cpram": "Quand le ratio combiné se dégrade, c'est une porte d'entrée : 'Comment peut-on vous aider à améliorer votre résultat financier sans prendre plus de risque en capital ?'"
+      "analogie": "Comme le bilan d'une pizzeria : si tu dépenses 110€ pour 100€ de pizzas vendues, tu perds de l'argent. En dessous de 100% : rentable.",
+      "definition": "Ratio combiné = (sinistres + frais) / primes. Sous 100% : rentabilité technique. Au-dessus : dépendance aux revenus financiers. Cible : 95-97%.",
+      "exemple": "En 2024-2025, la hausse des sinistres auto (+11,3%) a dégradé les ratios combinés — les CIO IARD sont plus sensibles à l'efficience SCR.",
+      "cpram": "Porte d'entrée : 'Comment peut-on vous aider à améliorer votre résultat financier sans prendre plus de risque en capital ?'"
     },
     "Dette privée": {
       "titre": "Dette privée — Les prêts hors marché coté",
-      "analogie": "Une obligation cotée en bourse, tout le monde peut l'acheter et la vendre. La dette privée, c'est comme faire un prêt directement à une entreprise, sans passer par la bourse. Moins liquide, mais mieux rémunéré.",
-      "definition": "Prêts accordés directement à des entreprises ou projets d'infrastructure, sans cotation sur les marchés publics. Surcroît de rendement de +150 à +300 bps vs obligations cotées équivalentes.",
-      "exemple": "Un fonds de dette infrastructure prête à un opérateur d'autoroutes sur 10 ans à 4,5%. L'OAT 10 ans est à 3,2%. Prime d'illiquidité = ~1,3%.",
-      "cpram": "La dette privée est en forte croissance dans les allocations assurantielles depuis 2025. Présenter : charge SCR Solvabilité 2, profil de flux, durée et liquidité."
+      "analogie": "Une obligation cotée : tout le monde peut l'acheter/vendre. La dette privée : prêt direct à une entreprise sans passer par la bourse. Moins liquide, mieux rémunéré.",
+      "definition": "Prêts directs à des entreprises ou projets d'infrastructure, sans cotation. Surcroît de rendement de +150 à +300 bps vs obligations cotées équivalentes.",
+      "exemple": "Fonds dette infrastructure : prêt à un opérateur d'autoroutes 10 ans à 4,5%. OAT 10 ans : 3,2%. Prime d'illiquidité : ~1,3%.",
+      "cpram": "En forte croissance dans les allocations assurantielles. Présenter : charge SCR, profil de flux, durée et liquidité."
     },
     "Mandats dédiés": {
       "titre": "Mandat dédié — La gestion sur-mesure",
-      "analogie": "Acheter un fonds commun, c'est comme acheter un costume en prêt-à-porter. Un mandat dédié, c'est le tailleur qui fabrique un costume aux mesures exactes.",
-      "definition": "Contrat par lequel un assureur confie la gestion d'un portefeuille à CPRAM avec des contraintes spécifiques : classes d'actifs, duration cible, rating minimum, contraintes SCR, objectifs ESG.",
-      "exemple": "Un assureur vie confie à CPRAM un mandat de 500M€ sur les obligations corporate européennes, avec contrainte de duration 8-12 ans, minimum BBB-, exclusion fossiles, reporting SFDR Art.8 mensuel.",
-      "cpram": "Les mandats dédiés sont le Saint Graal commercial : volumes importants, relation longue durée, revenus récurrents. Ticket d'entrée typique : 100-200M€ minimum."
+      "analogie": "Fonds commun : costume en prêt-à-porter. Mandat dédié : tailleur qui fabrique aux mesures exactes (duration, rating, ESG, SCR).",
+      "definition": "Contrat par lequel un institutionnel confie la gestion d'un portefeuille à CPRAM avec des contraintes spécifiques. Le portefeuille appartient à l'institutionnel.",
+      "exemple": "Un assureur vie confie à CPRAM un mandat de 500M€ : duration 8-12 ans, BBB- minimum, exclusion fossiles, reporting SFDR Art.8 mensuel.",
+      "cpram": "Saint Graal commercial : volumes importants, relation longue durée, revenus récurrents. Ticket d'entrée : 100-200M€ minimum."
+    },
+    "PSC": {
+      "titre": "PSC — Protection Sociale Complémentaire",
+      "analogie": "Avant la réforme : chaque fonctionnaire choisit librement sa mutuelle. Après : l'employeur public (État, collectivité, hôpital) négocie un contrat collectif et prend en charge 50% — comme dans le privé depuis des décennies.",
+      "definition": "Réforme issue de la loi du 6 août 2019. Oblige les employeurs publics à contribuer à 50% à la complémentaire santé et prévoyance. FPE depuis 2024, FPT 2025-2026, FPH janvier 2026.",
+      "exemple": "MGEN devient obligatoire pour 1,2 million d'enseignants au 1er mai 2026. Cotisation : 77€/mois dont 37,70€ pris en charge. Afflux massif de nouvelles cotisations à investir.",
+      "cpram": "Opportunité : les mutuelles gagnantes des appels d'offres PSC reçoivent des flux de cotisations croissants et prévisibles — à déployer dans des solutions de qualité."
     }
   },
+
   "segments": {
     "vie": {
       "label": "Assureurs Vie",
       "color": "#1a3a5c",
       "accent": "#c8a84b",
       "icon": "◈",
+      "description": "Acteurs centraux de l'épargne longue. 2 853 Mds€ d'encours. Solutions obligataires long terme, UC thématiques et mandats dédiés.",
       "overview": {
         "Marché": "2 853 Mds€ d'encours de placements à fin 2025 (Banque de France)",
         "Collecte": "Collecte nette 2025 : 50,6 Mds€ dont 42,5 Mds€ en UC (record historique)",
@@ -120,16 +142,16 @@
         { "classe": "ISR / ESG", "pct": 11, "detail": "324 Mds€ — 51% fonds ISR, 47% obligations vertes" }
       ],
       "structure": [
-        { "key": "Actif général / Fonds euros", "texte": "Portefeuille obligataire long terme adossé aux engagements ([Fonds euros]). Contrainte [ALM] forte : [Duration] du passif à matcher. C'est la poche centrale pour les solutions CPRAM." },
-        { "key": "Unités de Compte", "texte": "Les [UC] sont des supports sans garantie capital. Record [UC] 2025 : 42,5 Mds€ de collecte. Pression commerciale forte pour pousser les UC — opportunité de référencement pour CPRAM." },
-        { "key": "PPB", "texte": "La [PPB] (Provision pour Participation aux Bénéfices) = réserve de lissage des rendements [Fonds euros]. Estimée à 3,7% des encours fin 2025. Quand elle s'épuise, la pression sur le gérant monte." },
-        { "key": "Rendement", "texte": "Taux moyen [Fonds euros] 2025 : 2,60%. Record [UC] : +4,7% net. L'assureur navigue entre compétitivité du fonds euros et développement des UC." }
+        { "key": "Actif général / Fonds euros", "texte": "Portefeuille obligataire long terme adossé aux engagements ([Fonds euros]). Contrainte [ALM] forte : [Duration] du passif à matcher. Poche centrale pour les solutions CPRAM." },
+        { "key": "Unités de Compte", "texte": "Les [UC] sont des supports sans garantie capital. Record [UC] 2025 : 42,5 Mds€ de collecte. Opportunité de référencement pour CPRAM." },
+        { "key": "PPB", "texte": "La [PPB] = réserve de lissage des rendements [Fonds euros]. Estimée à 3,7% des encours fin 2025. Quand elle s'épuise, la pression sur le gérant monte." },
+        { "key": "Rendement", "texte": "Taux moyen [Fonds euros] 2025 : 2,60%. Record [UC] : +4,7% net. L'assureur navigue entre compétitivité fonds euros et développement UC." }
       ],
       "reglementation": [
-        { "titre": "Solvabilité 2", "detail": "Cadre européen depuis 2016. Calcul du [SCR] couvrant risques marché, crédit, opérationnel. Actions OCDE : charge de 22% post révision [Solvabilité 2] 2023. Tension permanente entre rendement et consommation de fonds propres." },
-        { "titre": "IFRS 9", "detail": "Norme comptable sur les actifs financiers. Traitement des actions toujours pénalisant (volatilité P&L) malgré la révision [Solvabilité 2]. Double contrainte comptable + prudentielle sur les actions." },
-        { "titre": "SFDR", "detail": "Directive disclosure ESG. Plus de 50% des fonds domiciliés en France classés Article 8 ou 9 ([SFDR]). Prérequis pour tout référencement de fonds UC." },
-        { "titre": "Rapport SFCR", "detail": "Rapport public annuel sur solvabilité imposé par [Solvabilité 2]. Source précieuse pour analyser la stratégie d'investissement d'un assureur avant un RDV." }
+        { "titre": "Solvabilité 2", "detail": "Cadre européen depuis 2016. Calcul du [SCR] couvrant risques marché, crédit, opérationnel. Actions OCDE : 22% post révision [Solvabilité 2] 2023." },
+        { "titre": "IFRS 9", "detail": "Norme comptable sur les actifs financiers. Traitement des actions pénalisant (volatilité P&L). Double contrainte comptable + prudentielle." },
+        { "titre": "SFDR", "detail": "Plus de 50% des fonds classés Article 8 ou 9 ([SFDR]). Prérequis pour tout référencement de fonds UC." },
+        { "titre": "Rapport SFCR", "detail": "Rapport public annuel imposé par [Solvabilité 2]. Source précieuse pour analyser la stratégie d'investissement avant un RDV." }
       ],
       "interlocuteurs": [
         { "poste": "Directeur des Investissements (CIO)", "role": "Décideur principal sur l'allocation stratégique. Interlocuteur clé CPRAM." },
@@ -146,9 +168,9 @@
         "Montée des exigences ESG : compliance lourde, reportings complexes"
       ],
       "angles_commerciaux": [
-        "Optimisation SCR : proposer des solutions à charge en capital limitée (ex. dette investment grade, fonds article 8/9)",
-        "Rendement actif général : alternatives obligataires pour booster le fonds euros dans un contexte de taux en légère baisse",
-        "Poussée UC : fonds diversifiés, multigestion, produits structurés pour alimenter la collecte record UC",
+        "Optimisation SCR : solutions à charge en capital limitée (dette IG, fonds article 8/9)",
+        "Rendement actif général : alternatives obligataires pour booster le fonds euros",
+        "Poussée UC : fonds diversifiés et thématiques pour alimenter la collecte record",
         "ISR / Article 8-9 : portefeuilles ESG intégrés, reportings SFDR clé en main",
         "ALM / matching : solutions obligataires long duration pour aligner actif/passif",
         "PPB : stratégies de portage pour alimenter la provision de participation aux bénéfices"
@@ -161,75 +183,63 @@
       ],
       "problematiques": [
         {
-          "id": "p1",
-          "titre": "Réinvestissement dans un cycle de baisse des taux",
-          "urgence": "haute",
-          "contexte": "Après le pic de 2023 (4,5% BCE), les taux baissent depuis 2025. Les obligations achetées entre 2015-2021 à 0-1% arrivent à maturité et doivent être réinvesties. Risque de tassement du rendement de l'actif général à horizon 2026-2028.",
+          "id": "p1", "titre": "Réinvestissement dans un cycle de baisse des taux", "urgence": "haute",
+          "contexte": "Après le pic de 2023 (4,5% BCE), les taux baissent depuis 2025. Les obligations achetées entre 2015-2021 à 0-1% arrivent à maturité. Risque de tassement du rendement de l'actif général à horizon 2026-2028.",
           "enjeu": "Maintenir un rendement compétitif sur le [Fonds euros] (2,60% en 2025) tout en gérant le réinvestissement d'un stock obligataire vieillissant.",
-          "reponse_cpram": "[Mandats dédiés] obligataires avec stratégie de portage optimisée. Obligations corporate IG offrant un [Pick-up de spread] vs souverain. Fonds datés à échéance pour 'locker' les taux actuels.",
+          "reponse_cpram": "[Mandats dédiés] obligataires avec stratégie de portage optimisée. Obligations corporate IG offrant un [Pick-up de spread]. Fonds datés à échéance pour locker les taux actuels.",
           "strategies_cpram": ["oblig-echeance", "oblig-credit-ig"]
         },
         {
-          "id": "p2",
-          "titre": "Arbitrage SCR / rendement post-révision Solvabilité 2",
-          "urgence": "haute",
-          "contexte": "La révision [Solvabilité 2] (fin 2023) a modifié le traitement des actions long terme (LTEI) : charge [SCR] réduite à 22%. Le souverain reste à coût zéro en [SCR] crédit.",
+          "id": "p2", "titre": "Arbitrage SCR / rendement post-révision Solvabilité 2", "urgence": "haute",
+          "contexte": "La révision [Solvabilité 2] (fin 2023) a réduit la charge [SCR] des actions LTEI à 22%. Le souverain reste à coût zéro en [SCR] crédit. Tension permanente entre rendement et capital immobilisé.",
           "enjeu": "Optimiser le couple rendement/[SCR] de chaque nouvelle position. Chaque Md€ investi doit être justifié en termes de capital immobilisé.",
-          "reponse_cpram": "Analyse [SCR] intégrée dans la présentation des solutions. Fonds obligations IG (faible charge [SCR]). Pour les actions : solutions via fonds LTEI éligibles à la charge réduite 22%. Fonds [SFDR] article 8/9.",
+          "reponse_cpram": "Analyse [SCR] intégrée dans la présentation. Fonds obligations IG (faible charge). Pour les actions : solutions LTEI éligibles à 22%. Fonds [SFDR] article 8/9.",
           "strategies_cpram": ["oblig-credit-ig", "oblig-etat", "transition-climatique", "actions-quant"]
         },
         {
-          "id": "p3",
-          "titre": "Gestion ALM et allongement de la duration",
-          "urgence": "haute",
-          "contexte": "La gestion [ALM] est la contrainte centrale : [Duration] du passif à matcher avec la [Duration] de l'actif. Post-remontée des taux, la courbe s'est pentifiée — attractif d'allonger la [Duration] en zone euro.",
+          "id": "p3", "titre": "Gestion ALM et allongement de la duration", "urgence": "haute",
+          "contexte": "La gestion [ALM] est la contrainte centrale : [Duration] du passif à matcher avec la [Duration] de l'actif. Post-remontée des taux, il est attractif d'allonger la [Duration] en zone euro.",
           "enjeu": "Reconfigurer les portefeuilles vers plus de [Duration] longue sans exposer le bilan à une remontée inattendue des taux.",
-          "reponse_cpram": "Solutions obligataires long terme (7-15 ans) avec pilotage de la sensibilité. [Mandats dédiés] sur mesure avec contraintes [ALM] intégrées.",
+          "reponse_cpram": "Solutions obligataires long terme (7-15 ans). [Mandats dédiés] sur mesure avec contraintes [ALM] intégrées.",
           "strategies_cpram": ["oblig-credit-ig", "oblig-etat", "oblig-inflation"]
         },
         {
-          "id": "p4",
-          "titre": "Collecte UC record — enrichissement de l'offre",
-          "urgence": "moyenne",
-          "contexte": "La collecte [UC] a atteint 42,5 Mds€ en 2025, un record historique. Les assureurs doivent alimenter leurs 'étagères' de supports [UC] avec des fonds attractifs et différenciants.",
-          "enjeu": "Sélectionner et référencer des fonds [UC] compétitifs sur la performance, la gestion du risque et la labellisation [SFDR].",
-          "reponse_cpram": "Référencement des fonds CPRAM comme [UC]. 22 Mds€ d'encours thématiques — gamme la plus large. Thématiques très demandées : IA, défense, transition climatique.",
+          "id": "p4", "titre": "Collecte UC record — enrichissement de l'offre", "urgence": "moyenne",
+          "contexte": "La collecte [UC] a atteint 42,5 Mds€ en 2025, un record historique. Les assureurs doivent enrichir leurs étagères de supports [UC] avec des fonds différenciants.",
+          "enjeu": "Référencer des fonds [UC] compétitifs sur la performance, la gestion du risque et la labellisation [SFDR].",
+          "reponse_cpram": "Référencement des fonds CPRAM comme [UC]. 22 Mds€ d'encours thématiques. Thématiques phares : IA, défense, transition climatique.",
           "strategies_cpram": ["transition-climatique", "intelligence-artificielle", "defense-europeenne", "vieillissement", "multi-actifs", "biodiversite"]
         },
         {
-          "id": "p5",
-          "titre": "Diversification vers les actifs non cotés",
-          "urgence": "moyenne",
-          "contexte": "Après une pause de 2 ans, les assureurs relancent leurs allocations en actifs non cotés ([Dette privée], infrastructure). La dette infrastructure est très attractive (rendement régulier, faible [SCR]).",
-          "enjeu": "Trouver des solutions non cotées compatibles avec les contraintes [ALM] et [Solvabilité 2]. Éviter les structures en 'J'.",
+          "id": "p5", "titre": "Diversification vers les actifs non cotés", "urgence": "moyenne",
+          "contexte": "Les assureurs relancent leurs allocations en actifs non cotés ([Dette privée], infrastructure). La dette infrastructure est très attractive (rendement régulier, faible [SCR]).",
+          "enjeu": "Trouver des solutions non cotées compatibles avec les contraintes [ALM] et [Solvabilité 2]. Éviter les structures en J.",
           "reponse_cpram": "[Dette privée] infrastructure senior : flux réguliers, charge [SCR] documentée. [Mandats dédiés] pour les plus gros acteurs.",
           "strategies_cpram": ["oblig-credit-ig", "multi-actifs"]
         },
         {
-          "id": "p6",
-          "titre": "Trajectoire ESG / durabilité & reporting SFDR",
-          "urgence": "haute",
-          "contexte": "Plus de 50% des fonds domiciliés en France sont classés Article 8 ou 9 ([SFDR]). L'EIOPA impose l'intégration des risques physiques et de transition. Les risques de biodiversité émergent.",
+          "id": "p6", "titre": "Trajectoire ESG / durabilité & reporting SFDR", "urgence": "haute",
+          "contexte": "Plus de 50% des fonds domiciliés en France classés Article 8 ou 9 ([SFDR]). L'EIOPA impose l'intégration des risques physiques et de transition. Les risques de biodiversité émergent.",
           "enjeu": "Construire des portefeuilles conformes [SFDR], avec reporting automatisé, sans sacrifier la performance.",
-          "reponse_cpram": "Fonds Article 8 et 9 [SFDR] avec reporting clé en main. Obligations vertes. Biodiversité — thématique pionnière CPRAM alignée avec les nouvelles exigences EIOPA.",
+          "reponse_cpram": "Fonds Article 8 et 9 [SFDR] avec reporting clé en main. Obligations vertes. Biodiversité — thématique pionnière CPRAM.",
           "strategies_cpram": ["transition-climatique", "biodiversite", "oblig-credit-ig"]
         },
         {
-          "id": "p7",
-          "titre": "Compétitivité du taux fonds euros et PPB",
-          "urgence": "moyenne",
-          "contexte": "La [PPB] est estimée à 3,7% des encours fin 2025. Les meilleurs taux [Fonds euros] dépassent 3,50% (mutuelles). La concurrence inter-assureurs s'intensifie.",
+          "id": "p7", "titre": "Compétitivité du taux fonds euros et PPB", "urgence": "moyenne",
+          "contexte": "La [PPB] est estimée à 3,7% des encours fin 2025. Les meilleurs taux [Fonds euros] dépassent 3,50%. La concurrence inter-assureurs s'intensifie.",
           "enjeu": "Soutenir le taux servi aux assurés sans épuiser la [PPB] trop vite.",
-          "reponse_cpram": "Stratégies de portage optimisées pour alimenter la [PPB]. Arbitrage des obligations 0-1% contre des titres 3-4% : [Pick-up de spread] immédiat.",
+          "reponse_cpram": "Stratégies de portage pour alimenter la [PPB]. Arbitrage des obligations 0-1% contre des titres 3-4% : [Pick-up de spread] immédiat.",
           "strategies_cpram": ["oblig-echeance", "oblig-credit-ig", "multi-actifs"]
         }
       ]
     },
+
     "iard": {
       "label": "Assureurs IARD",
       "color": "#2d1b4e",
       "accent": "#e85d3a",
       "icon": "◇",
+      "description": "Assureurs de biens et responsabilité. CA >75 Mds€. Portefeuilles courts, contrainte de liquidité forte. Solutions obligataires court terme et ESG.",
       "overview": {
         "Marché": "CA total assurance biens & responsabilité : >75 Mds€ en 2024",
         "Sinistralité": "Inflation des coûts de réparation auto +11,3% en 2025. Catastrophes naturelles en hausse.",
@@ -253,98 +263,222 @@
         { "classe": "Alternatif / Cat bonds", "pct": 5, "detail": "ILS : classe en croissance pour couvrir risques extrêmes" }
       ],
       "structure": [
-        { "key": "Pas de fonds euros", "texte": "Contrairement à l'assurance vie, il n'y a pas de [Fonds euros] en IARD. Les placements couvrent les réserves techniques (provisions pour sinistres). Horizon court : 1-5 ans." },
-        { "key": "Provisions techniques", "texte": "Les provisions couvrent les sinistres déclarés non réglés + IBNR. Sous contrainte [ALM] de court terme — la [Duration] cible est basse (1-4 ans)." },
+        { "key": "Pas de fonds euros", "texte": "Contrairement à l'assurance vie, pas de [Fonds euros] en IARD. Les placements couvrent les réserves techniques (provisions pour sinistres). Horizon court : 1-5 ans." },
+        { "key": "Provisions techniques", "texte": "Provisions pour sinistres déclarés non réglés + IBNR. Sous contrainte [ALM] de court terme — [Duration] cible basse (1-4 ans)." },
         { "key": "Ratio combiné", "texte": "Objectif : [Ratio combiné] < 100%. Le résultat financier vient compenser quand le résultat technique se dégrade." },
-        { "key": "Liquidité", "texte": "Sinistres imprévisibles → portefeuilles plus liquides. La [Duration] cible est courte (1-4 ans). Moins de place pour la prime d'illiquidité ([Dette privée])." }
+        { "key": "Liquidité", "texte": "Sinistres imprévisibles → portefeuilles plus liquides. [Duration] courte (1-4 ans). Moins de place pour la prime d'illiquidité ([Dette privée])." }
       ],
       "reglementation": [
-        { "titre": "Solvabilité 2 (IARD)", "detail": "Même cadre [Solvabilité 2] que la Vie mais calibration différente. Risques de souscription dominent. [SCR] fortement impacté par les risques naturels et climatiques." },
-        { "titre": "ORSA", "detail": "Own Risk Solvency Assessment : auto-évaluation interne des besoins en solvabilité. Document stratégique clé pour comprendre le profil de risque avant un RDV." },
-        { "titre": "Catastrophes naturelles", "detail": "Régime CatNat français. Pression réglementaire croissante. Impact direct sur les réserves investissables." },
-        { "titre": "CSRD / Risques climatiques", "detail": "Obligation d'intégrer les risques physiques et de transition dans la politique d'investissement. Lié à [SFDR] pour les fonds." }
+        { "titre": "Solvabilité 2 (IARD)", "detail": "Même cadre [Solvabilité 2] que la Vie mais calibration différente. Risques de souscription dominent. [SCR] impacté par les risques naturels et climatiques." },
+        { "titre": "ORSA", "detail": "Own Risk Solvency Assessment : auto-évaluation interne des besoins en solvabilité. Document stratégique clé à obtenir avant un RDV." },
+        { "titre": "Catastrophes naturelles", "detail": "Régime CatNat français. Pression croissante. Impact direct sur les réserves investissables." },
+        { "titre": "CSRD / Risques climatiques", "detail": "Obligation d'intégrer les risques physiques et de transition. Lié à [SFDR] pour les fonds OPC." }
       ],
       "interlocuteurs": [
-        { "poste": "Directeur Financier (CFO)", "role": "En IARD, souvent le principal décideur sur la politique d'investissement (moins de CIO dédiés qu'en vie)." },
-        { "poste": "Directeur des Investissements / Trésorier", "role": "Gestion du portefeuille de placements. Sensible aux solutions liquides et peu consommatrices de SCR." },
-        { "poste": "Directeur Technique / Actuaire en chef", "role": "Pilote les provisions et l'ALM de court terme. Interlocuteur clé sur la duration." },
-        { "poste": "Responsable Réassurance", "role": "Gestion du risk transfer. Peut influencer les choix d'investissement alternatif (ILS, cat bonds)." },
+        { "poste": "Directeur Financier (CFO)", "role": "Principal décideur sur la politique d'investissement en IARD (moins de CIO dédiés qu'en vie)." },
+        { "poste": "Directeur des Investissements / Trésorier", "role": "Gestion du portefeuille. Sensible aux solutions liquides et peu consommatrices de SCR." },
+        { "poste": "Directeur Technique / Actuaire en chef", "role": "Pilote les provisions et l'ALM court terme. Interlocuteur clé sur la duration." },
+        { "poste": "Responsable Réassurance", "role": "Peut influencer les choix d'investissement alternatif (ILS, cat bonds)." },
         { "poste": "Responsable ESG", "role": "Intégration des risques climatiques dans le portefeuille. Obligations vertes, fonds ISR." }
       ],
       "tensions": [
-        "Ratio combiné sous pression : inflation sinistres auto +11,3% en 2025 → moins de marge pour le risque financier",
+        "Ratio combiné sous pression : sinistres auto +11,3% en 2025 → moins de marge pour le risque financier",
         "Risques climatiques : provisions CatNat en hausse, impact sur les réserves investissables",
-        "Liquidité : sinistres imprévisibles imposent des portefeuilles courts → moins de place pour l'illiquidité prime",
+        "Liquidité : sinistres imprévisibles → portefeuilles courts → moins de place pour l'illiquidité",
         "Concentration : Covéa, AXA et Groupama = 60%+ du marché IARD"
       ],
       "angles_commerciaux": [
-        "Solutions obligataires court terme : adapter la duration aux provisions (1-5 ans), bon rendement avec liquidité",
-        "Rendement sur la trésorerie : alternatives au monétaire avec pick-up de spread limité en risque",
+        "Solutions obligataires court terme : adapter la duration aux provisions (1-5 ans), rendement avec liquidité",
+        "Rendement sur la trésorerie : alternatives au monétaire avec pick-up de spread limité",
         "Obligations vertes / durables : réponse aux exigences CSRD et EIOPA sur risques climatiques",
         "SCR efficient : fonds obligations investment grade, faible charge en capital",
-        "Diversification alternatif : dette infrastructure senior — rendement régulier sans volatilité mark-to-market",
+        "Diversification alternatif : dette infrastructure senior — rendement régulier sans volatilité",
         "Reporting ESG / SFDR : différenciateur sur la qualité des données fournies"
       ],
       "questions_ouverture": [
         "Quel est l'objectif de rendement de votre portefeuille de réserves pour 2025-2026 ?",
         "Comment gérez-vous la pression sur votre ratio combiné du côté des investissements ?",
-        "Quelles sont vos contraintes de liquidité — quel pourcentage du portefeuille doit être disponible sous 1 mois ?",
+        "Quelles sont vos contraintes de liquidité — quel % du portefeuille disponible sous 1 mois ?",
         "Où en êtes-vous sur votre feuille de route CSRD et les risques climatiques du portefeuille ?"
       ],
       "problematiques": [
         {
-          "id": "p1",
-          "titre": "Rendement des réserves techniques dans un contexte de taux baissiers",
-          "urgence": "haute",
-          "contexte": "Le portefeuille IARD est adossé aux provisions pour sinistres (court terme, 1-5 ans). La baisse des taux BCE depuis 2025 comprime le rendement. Le [Ratio combiné] reste sous pression (sinistres auto +11,3% en 2025).",
+          "id": "p1", "titre": "Rendement des réserves techniques dans un contexte de taux baissiers", "urgence": "haute",
+          "contexte": "Le portefeuille IARD est adossé aux provisions pour sinistres (1-5 ans). La baisse des taux BCE depuis 2025 comprime le rendement. Le [Ratio combiné] reste sous pression (sinistres auto +11,3% en 2025).",
           "enjeu": "Maximiser le rendement du portefeuille de réserves sans allonger excessivement la [Duration] ni prendre un risque de liquidité.",
           "reponse_cpram": "Solutions obligataires 1-5 ans avec [Pick-up de spread] vs souverain pur. Fonds court terme à rendement amélioré. Alternatives monétaires avec meilleur portage.",
           "strategies_cpram": ["tresorerie-longue", "monetaire-classique", "oblig-credit-ig"]
         },
         {
-          "id": "p2",
-          "titre": "Pression des risques climatiques sur les provisions",
-          "urgence": "haute",
-          "contexte": "Les catastrophes naturelles ont fait exploser les provisions CatNat. L'EIOPA impose l'intégration des risques physiques et de transition. La CSRD renforce les obligations de reporting. Lié à [SFDR] pour les OPC.",
-          "enjeu": "Réduire l'exposition aux actifs 'brun' tout en maintenant le rendement. Documenter et reporter les risques climatiques du portefeuille.",
-          "reponse_cpram": "Obligations vertes et durables pour couvrir la poche obligataire. Portefeuilles à faible empreinte carbone avec reporting CSRD intégré. Fonds Article 8/9 [SFDR].",
+          "id": "p2", "titre": "Pression des risques climatiques sur les provisions", "urgence": "haute",
+          "contexte": "Les catastrophes naturelles font exploser les provisions CatNat. L'EIOPA impose l'intégration des risques physiques et de transition. La CSRD renforce les obligations de reporting. Lié à [SFDR] pour les OPC.",
+          "enjeu": "Réduire l'exposition aux actifs brun tout en maintenant le rendement. Documenter et reporter les risques climatiques.",
+          "reponse_cpram": "Obligations vertes et durables. Portefeuilles à faible empreinte carbone avec reporting CSRD intégré. Fonds Article 8/9 [SFDR].",
           "strategies_cpram": ["transition-climatique", "biodiversite", "oblig-credit-ig"]
         },
         {
-          "id": "p3",
-          "titre": "Gestion de la liquidité et contrainte ALM court terme",
-          "urgence": "haute",
-          "contexte": "Contrairement à l'assurance vie ([Duration] passif 10-15 ans), les IARD ont des passifs courts et imprévisibles. La gestion [ALM] vise à disposer en permanence de liquidités pour faire face aux sinistres.",
+          "id": "p3", "titre": "Gestion de la liquidité et contrainte ALM court terme", "urgence": "haute",
+          "contexte": "Contrairement à l'assurance vie ([Duration] passif 10-15 ans), les IARD ont des passifs courts et imprévisibles. La gestion [ALM] vise à disposer de liquidités permanentes pour les sinistres.",
           "enjeu": "Optimiser le rendement sans immobiliser de capital sur des actifs illiquides. La prime d'illiquidité ([Dette privée]) est souvent sacrifiée.",
-          "reponse_cpram": "Fonds obligataires court terme à liquidité quotidienne. Solutions monétaires dynamiques. Pour les acteurs importants : [Dette privée] infrastructure senior (3-5 ans, remboursements réguliers) si bien structurée.",
+          "reponse_cpram": "Fonds obligataires court terme à liquidité quotidienne. Solutions monétaires dynamiques. Pour les gros acteurs : [Dette privée] infrastructure senior bien structurée.",
           "strategies_cpram": ["monetaire-classique", "tresorerie-longue", "oblig-credit-ig"]
         },
         {
-          "id": "p4",
-          "titre": "Optimisation du SCR sur le portefeuille",
-          "urgence": "moyenne",
-          "contexte": "Le [SCR] IARD est dominé par les risques de souscription mais la pression sur les fonds propres pousse à minimiser la charge [SCR] des investissements. Le souverain reste à coût zéro.",
+          "id": "p4", "titre": "Optimisation du SCR sur le portefeuille", "urgence": "moyenne",
+          "contexte": "La pression sur les fonds propres pousse à minimiser la charge [SCR] des investissements. Le souverain reste à coût zéro en [SCR] crédit.",
           "enjeu": "Construire un portefeuille efficient en [SCR] : [Pick-up de spread] maximal pour une charge en capital donnée.",
-          "reponse_cpram": "Cartographie [SCR] des solutions proposées. Obligations souveraines (coût zéro) pour la poche core. Corporate IG pour la poche de diversification avec [Pick-up de spread] documenté.",
+          "reponse_cpram": "Cartographie [SCR] systématique. Obligations souveraines pour la poche core. Corporate IG pour la diversification avec [Pick-up de spread] documenté.",
           "strategies_cpram": ["oblig-etat", "oblig-credit-ig", "tresorerie-longue"]
         },
         {
-          "id": "p5",
-          "titre": "Diversification prudente vers le non coté",
-          "urgence": "moyenne",
-          "contexte": "Après deux ans de pause, les IARD importants (Covéa, AXA, Groupama) reviennent prudemment sur les actifs non cotés. La [Dette privée] infrastructure est identifiée comme la classe la plus compatible.",
-          "enjeu": "Identifier des actifs non cotés dont le profil de flux est compatible avec les contraintes de liquidité IARD. Traitement [Solvabilité 2] à documenter.",
-          "reponse_cpram": "[Dette privée] infrastructure senior : ticket via fonds, reporting [SCR] fourni, flux trimestriels. [Mandats dédiés] pour les plus gros acteurs.",
+          "id": "p5", "titre": "Diversification prudente vers le non coté", "urgence": "moyenne",
+          "contexte": "Les IARD importants (Covéa, AXA, Groupama) reviennent prudemment sur les actifs non cotés. La [Dette privée] infrastructure est identifiée comme la classe la plus compatible.",
+          "enjeu": "Identifier des actifs non cotés dont le profil de flux est compatible avec la liquidité IARD. Traitement [Solvabilité 2] à documenter.",
+          "reponse_cpram": "[Dette privée] infrastructure senior : flux trimestriels, reporting [SCR] fourni. [Mandats dédiés] pour les plus gros acteurs.",
           "strategies_cpram": ["oblig-credit-ig", "multi-actifs"]
         },
         {
-          "id": "p6",
-          "titre": "Reporting ESG et conformité SFDR / CSRD",
-          "urgence": "moyenne",
-          "contexte": "Les assureurs IARD sont soumis aux mêmes obligations ESG que les assureurs vie ([SFDR] pour les OPC, CSRD pour le reporting corporate). Les risques de biodiversité commencent à être intégrés.",
-          "enjeu": "Disposer de reportings ESG automatisés et détaillés. La compliance ESG est un critère de sélection des gérants externes.",
-          "reponse_cpram": "Fonds Article 8/9 [SFDR] avec reporting standardisé. Reporting carbone et température portefeuille. Accompagnement sur les indicateurs PAI.",
+          "id": "p6", "titre": "Reporting ESG et conformité SFDR / CSRD", "urgence": "moyenne",
+          "contexte": "Les IARD sont soumis aux mêmes obligations ESG ([SFDR] pour les OPC, CSRD pour le reporting corporate). Les risques de biodiversité s'intègrent progressivement.",
+          "enjeu": "Reportings ESG automatisés et détaillés. La compliance ESG est un critère de sélection des gérants.",
+          "reponse_cpram": "Fonds Article 8/9 [SFDR] avec reporting standardisé. Reporting carbone. Accompagnement sur les indicateurs PAI.",
           "strategies_cpram": ["transition-climatique", "biodiversite", "oblig-credit-ig"]
+        }
+      ]
+    },
+
+    "mutuelles": {
+      "label": "Mutuelles",
+      "color": "#1a5c3a",
+      "accent": "#f0a500",
+      "icon": "◉",
+      "description": "Organismes à but non lucratif régis par le Code de la Mutualité. 26% du marché santé-prévoyance. Cibles pour les solutions obligataires, ESG avancé et UC thématiques.",
+      "types": {
+        "introduction": "Le terme 'mutuelle' recouvre des réalités très différentes. La distinction essentielle pour CPRAM : celles qui ont une politique d'investissement (vos cibles) et celles qui n'en ont pas.",
+        "livre2": {
+          "label": "Livre II — Mutuelles d'assurance (vos cibles)",
+          "description": "Pratiquent des opérations d'assurance, de réassurance et de capitalisation. Soumises à Solvabilité 2. Ont des réserves techniques et des fonds propres à investir.",
+          "exemples": "MGEN, Harmonie Mutuelle, MACSF, MNH, MNT, Aésio, Intériale"
+        },
+        "livre3": {
+          "label": "Livre III — Mutuelles de soins (hors cible)",
+          "description": "Gèrent des établissements de soins (cliniques mutualistes, centres dentaires, EHPAD). Pas d'activité d'assurance. Pas de portefeuille financier à proprement parler.",
+          "exemples": "Mutuelles gérant des centres de santé, des EHPAD, des cliniques mutualistes"
+        },
+        "mutuelles45": {
+          "label": "Les 'mutuelles 45' — mutuelles de fonctionnaires",
+          "description": "Terme désignant les mutuelles issues de l'ordonnance du 19 octobre 1945. Base socioprofessionnelle liée à la fonction publique. Adhésion captive, cotisations stables et prévisibles, horizon d'investissement plus long, gouvernance mutualiste pure sans actionnaires.",
+          "exemples": "MGEN (éducation nationale, 4M protégées), MNH (hospitaliers, 700K), MNT (territoriaux, 1,1M), MGEFI (Bercy, 260K), Unéo (militaires, 300K), MACSF (professionnels de santé, 1,2M sociétaires)",
+          "note_cpram": "Cibles prioritaires : encours significatifs, solvabilité très confortable (>200%), politiques ESG avancées, horizon d'investissement plus long que les autres mutuelles."
+        }
+      },
+      "overview": {
+        "Marché santé+prévoyance": "86,3 Mds€ total 2024 (+5,8%). Mutuelles : 26% du marché. Source : France Assureurs 2024.",
+        "Cotisations santé 2024": "46,5 Mds€ collectés par les OC en santé (+8,2%). Source : DREES 2025.",
+        "Nombre de mutuelles": "249 mutuelles actives en santé en 2024 — divisé par plus de 6 depuis 2001. Source : DREES 2025.",
+        "Concentration": "51 groupes présents en 2024, ayant collecté 85% des cotisations santé. Source : DREES 2025."
+      },
+      "acteurs": [
+        { "nom": "Groupe VYV (Harmonie + MGEN + MNT + Mutex)", "type": "Union mutualiste de groupe", "ca": ">8,4 Mds€ de cotisations", "note": "Leader absolu. Mutex est la structure d'investissement du groupe. Source : Tribune Assurance 2025." },
+        { "nom": "MACSF", "type": "Mutuelle 45 — Prof. de santé", "ca": "3,04 Mds€ CA — 41,6 Mds€ actif total", "note": "Résultat net record 300,2 M€ (+27%). Ratio solvabilité 319%. Source : MACSF mai 2025." },
+        { "nom": "Aéma Groupe (Aésio + Macif)", "type": "Groupe mutualiste", "ca": "Top 3 mutuelles 2025", "note": "Double profil santé (Aésio) + IARD (Macif). Deux interlocuteurs distincts." },
+        { "nom": "AG.Mut (AG2R La Mondiale)", "type": "Groupe de protection sociale", "ca": "Viasanté, Mutuelle Bleue, MGC", "note": "Décisions d'investissement centralisées au niveau d'AG2R La Mondiale." },
+        { "nom": "Enio (Apicil, Intégrance, Tutélaire)", "type": "Groupe mutualiste", "ca": "Top 5-8 mutuelles", "note": "Apicil Mutuelle +67,5% en 2024. Source : L'Argus de l'Assurance 2025." },
+        { "nom": "Malakoff Humanis Mutuelle", "type": "Filiale mutualiste", "ca": "7e place Top 30 2025", "note": "Issu de la fusion Malakoff Médéric + Humanis. Décisions au niveau du groupe." },
+        { "nom": "MGEN (Groupe VYV)", "type": "Mutuelle 45 — Éducation nationale", "ca": "3,085 Mds€ — ratio solv. 250,5%", "note": "4M personnes protégées. 96M€ résultat net 2024. 500M€ en obligations durables. Source : MGEN avril 2025." },
+        { "nom": "MNH (Mutuelle Nationale des Hospitaliers)", "type": "Mutuelle 45 — Hospitaliers", "ca": "~700 000 adhérents", "note": "Réforme PSC hospitalière au 1er jan. 2026. Partenariat MGEN + Groupama en cours." }
+      ],
+      "allocation": [
+        { "classe": "Obligations court/moyen terme", "pct": 50, "detail": "Poche réserves techniques — horizon remboursements soins (< 3 mois à 3 ans)" },
+        { "classe": "Obligations long terme / Fonds propres", "pct": 20, "detail": "Horizon plus long — les grandes mutuelles (MACSF, MGEN) ont une poche plus longue" },
+        { "classe": "Actions / OPC thématiques", "pct": 15, "detail": "Diversification — SCR confortable (>200%) permet plus de latitude" },
+        { "classe": "Monétaire / Liquidités", "pct": 10, "detail": "Trésorerie courante — remboursements de soins très fréquents" },
+        { "classe": "Actifs réels / Non cotés", "pct": 5, "detail": "En développement : dette infrastructure santé/sociale, immobilier — MACSF pionnier" }
+      ],
+      "structure": [
+        { "key": "Pas de fonds euros ni d'UC", "texte": "Contrairement aux assureurs vie, les mutuelles n'ont pas de [Fonds euros] ni d'[UC]. Logique proche des assureurs [IARD] : réserves techniques courtes + fonds propres longs." },
+        { "key": "Deux poches distinctes", "texte": "Réserves techniques (< 3 ans — remboursements très fréquents) et fonds propres / réserves libres (> 5 ans — plus de latitude pour diversifier). La poche fonds propres est la plus intéressante pour CPRAM." },
+        { "key": "Solvabilité très confortable", "texte": "Ratios [SCR] très élevés : MGEN 250,5%, MACSF 319%. Marge pour diversifier vers des actifs plus risqués ou moins liquides — plus confortables que les assureurs vie." },
+        { "key": "Résultat financier critique", "texte": "Le résultat technique est structurellement sous pression (hausse des soins, 100% Santé). Le résultat financier doit compenser — comme pour un assureur [IARD]." },
+        { "key": "Réforme PSC — afflux de cotisations", "texte": "La réforme [PSC] génère des afflux massifs pour les mutuelles gagnantes. MGEN : 1,2 million d'enseignants obligatoires au 1er mai 2026. Ces flux doivent être investis rapidement et conformément aux exigences [SFDR]." }
+      ],
+      "reglementation": [
+        { "titre": "Solvabilité 2", "detail": "Les mutuelles Livre II sont soumises à [Solvabilité 2]. [SCR] sur les risques de souscription santé et de marché. Ratios très confortables (>200%) — contrainte moins tendue que chez les assureurs vie." },
+        { "titre": "Code de la Mutualité", "detail": "Cadre juridique spécifique (Livre II). Gouvernance démocratique (un adhérent = une voix). Pas d'actionnaires. Les excédents reviennent aux adhérents." },
+        { "titre": "Réforme PSC (2022-2026)", "detail": "Oblige l'État employeur à contribuer à 50% à la complémentaire santé de leurs agents. [PSC] : FPE depuis 2024, FPT 2025-2026, FPH janvier 2026. Bouleverse les modèles économiques des mutuelles de fonctionnaires." },
+        { "titre": "SFDR", "detail": "[SFDR] s'applique aux OPC détenus. MGEN pionnière : 500 M€ en obligations durables, politique biodiversité avancée (réduction 28% émissions carbone depuis 2022). Source : MGEN avril 2025." }
+      ],
+      "interlocuteurs": [
+        { "poste": "Directeur des Investissements (CIO)", "role": "Présent dans les grandes mutuelles. Ex : Roger Caniard chez MACSF (Dauphine/Sciences-Po/ESCP, en poste depuis 2014)." },
+        { "poste": "Directeur Financier (CFO)", "role": "Principal décideur pour les mutuelles de taille moyenne. Raisonne en rentabilité globale du bilan." },
+        { "poste": "Responsable ALM / Actuaire", "role": "Gestion des provisions techniques et adossement actif-passif. Interlocuteur sur la duration et la liquidité." },
+        { "poste": "Responsable ESG / Développement durable", "role": "Très avancé chez les mutuelles de fonctionnaires (MGEN, MACSF). Incontournable sur biodiversité et SFDR." },
+        { "poste": "Directeur Général", "role": "Dans les petites et moyennes mutuelles, souvent impliqué dans les décisions faute d'équipe dédiée." },
+        { "poste": "Trésorier", "role": "Gestion de la trésorerie courante. Interlocuteur pour les solutions court terme." }
+      ],
+      "tensions": [
+        "Résultat technique sous pression : hausse des soins, 100% Santé, vieillissement — résultat financier doit compenser",
+        "Concentration accélérée : décisions remontent au niveau des groupes (VYV/Mutex, AG2R) — identifier le bon interlocuteur",
+        "Réforme PSC : bouleversement des modèles économiques — certaines gagnent massivement (MGEN), d'autres perdent leur base",
+        "Frais de gestion les plus élevés des trois familles d'opérateurs (DREES 2025) — pression sur la rentabilité globale",
+        "Exigences ESG : MGEN et MACSF en avance — les autres doivent rattraper leur retard"
+      ],
+      "angles_commerciaux": [
+        "Réforme PSC : 'Vous avez des flux importants à investir en 2025-2026 — comment les déployer efficacement et conformément à votre politique ESG ?'",
+        "Résultat financier : 'Comment améliorer votre rendement pour compenser la pression technique sans prendre de risque excessif ?'",
+        "Biodiversité : 'CPRAM est l'un des premiers gérants avec un fonds Article 9 dédié à la biodiversité — aligné avec vos axes ESG'",
+        "Fonds datés : 'Les fonds à échéance permettent de locker les taux actuels (3-4%) avec liquidité quotidienne maintenue'",
+        "Actifs réels en santé : 'Solutions en dette privée sur des actifs de santé et sociaux — cohérents avec votre mission mutualiste'",
+        "SCR efficient : 'Vos ratios de solvabilité >200% vous donnent de la marge pour diversifier — optimisons ensemble le rendement ajusté du SCR'"
+      ],
+      "questions_ouverture": [
+        "Comment la réforme PSC transforme-t-elle vos besoins d'investissement pour 2025-2026 ?",
+        "Quelle est votre politique ESG — avez-vous des axes spécifiques (biodiversité, santé, territoires) ?",
+        "Quel est l'horizon de vos réserves techniques — comment gérez-vous la tension entre liquidité et rendement ?",
+        "Êtes-vous en appel d'offres sur des mandats de gestion ou cherchez-vous plutôt des fonds référencés ?"
+      ],
+      "problematiques": [
+        {
+          "id": "p1", "titre": "Résultat financier comme compensateur du résultat technique", "urgence": "haute",
+          "contexte": "Le résultat technique des mutuelles santé est structurellement sous pression. En 2023, il est devenu négatif pour la première fois depuis 2011. Les frais d'administration sont les plus élevés des trois familles (DREES 2025). Le résultat financier doit compenser.",
+          "enjeu": "Améliorer le rendement du portefeuille sans prendre de risque excessif. Le [SCR] très favorable (>200%) donne de la marge pour diversifier.",
+          "reponse_cpram": "Obligations avec [Pick-up de spread]. Fonds à échéance pour locker des taux 3-4% sur 3-7 ans. Trésorerie longue pour la poche courte. Multi-actifs pour les fonds propres longs.",
+          "strategies_cpram": ["oblig-echeance", "oblig-credit-ig", "tresorerie-longue", "multi-actifs"]
+        },
+        {
+          "id": "p2", "titre": "Afflux de cotisations PSC à investir", "urgence": "haute",
+          "contexte": "La réforme [PSC] génère des afflux massifs pour les mutuelles gagnantes. MGEN devient obligatoire pour 1,2 million d'enseignants en mai 2026 (cotisation : 77€/mois dont 50% pris en charge). Ces flux doivent être investis rapidement, conformément aux exigences [SFDR] avancées de ces mutuelles.",
+          "enjeu": "Déployer des volumes importants dans des solutions performantes, liquides et conformes [SFDR]. La qualité du gérant est un critère de sélection.",
+          "reponse_cpram": "Monétaire et trésorerie courte pour la liquidité immédiate. Fonds obligataires court/moyen terme pour le déploiement progressif. [Mandats dédiés] pour les volumes significatifs (MGEN, MACSF, Mutex/VYV).",
+          "strategies_cpram": ["monetaire-classique", "tresorerie-longue", "oblig-credit-ig", "oblig-echeance"]
+        },
+        {
+          "id": "p3", "titre": "Exigences ESG avancées — biodiversité et climat", "urgence": "haute",
+          "contexte": "Les mutuelles de fonctionnaires sont en avance sur l'ESG. MGEN a réduit de 28% les émissions carbone de son portefeuille depuis 2022 et investi >500 M€ en obligations durables (Source : MGEN 2025). Politique ESG : 4 axes Santé, Climat, Biodiversité, Territoires. La biodiversité est déjà opérationnelle.",
+          "enjeu": "Solutions Article 8/9 [SFDR] avec reporting ESG granulaire (carbone, biodiversité, PAI). La qualité du reporting ESG est un critère différenciant dans la sélection des gérants.",
+          "reponse_cpram": "Fonds Article 9 Biodiversité — CPRAM pionnier, aligné avec les 4 axes MGEN. Fonds Transition Climatique Article 9. Obligations vertes. Reporting [SFDR] standardisé avec indicateurs biodiversité.",
+          "strategies_cpram": ["biodiversite", "transition-climatique", "oblig-credit-ig"]
+        },
+        {
+          "id": "p4", "titre": "Diversification vers les actifs non cotés cohérents avec la mission", "urgence": "moyenne",
+          "contexte": "Les grandes mutuelles développent les actifs non cotés. MACSF a lancé le fonds Andera [Dette privée] en octobre 2024 (exclusif sociétaires) et investi >2 Mds€ dans la santé (Emeis/Orpéa, Vivalto Santé, Cerballiance) (Source : MACSF 2025). Solvabilités >200% donnent de la marge.",
+          "enjeu": "Actifs non cotés cohérents avec la mission des mutuelles (santé, social, territoires). Mutuelles sensibles aux actifs ayant un sens pour leurs adhérents.",
+          "reponse_cpram": "[Dette privée] infrastructure santé et sociale (cliniques, EHPAD, centres de santé) — cohérence avec la mission. Présenter la charge [SCR] et le profil de liquidité.",
+          "strategies_cpram": ["oblig-echeance", "multi-actifs"]
+        },
+        {
+          "id": "p5", "titre": "Gestion de la liquidité des réserves techniques", "urgence": "moyenne",
+          "contexte": "Les remboursements de soins sont très fréquents (< 3 mois). La poche réserves techniques doit rester très liquide. Cela contraint l'allocation à des solutions monétaires ou courtes, souvent peu rémunératrices dans le contexte de baisse des taux.",
+          "enjeu": "Optimiser le rendement de la poche réserves techniques sans altérer la liquidité nécessaire. Trouver le bon équilibre rendement / liquidité.",
+          "reponse_cpram": "Monétaire dynamique. Trésorerie longue 1-3 ans pour un [Pick-up de spread] sans risque de liquidité. Présenter explicitement la liquidité quotidienne et la duration très courte.",
+          "strategies_cpram": ["monetaire-classique", "tresorerie-longue"]
+        },
+        {
+          "id": "p6", "titre": "Navigation dans la concentration — trouver le bon interlocuteur", "urgence": "moyenne",
+          "contexte": "Les décisions d'investissement remontent aux groupes : VYV via Mutex, AG2R La Mondiale pour AG.Mut, Aéma pour Aésio. Les mutuelles individuelles perdent leur autonomie. Approcher la mauvaise entité fait perdre du temps.",
+          "enjeu": "Identifier rapidement si la mutuelle ciblée a encore une autonomie d'investissement ou si les décisions se prennent au niveau du groupe.",
+          "reponse_cpram": "VYV : approcher Mutex directement. AG2R : direction financière AG2R La Mondiale. Aéma : direction des investissements groupe. MACSF et MGEN : approche directe — elles restent indépendantes.",
+          "strategies_cpram": ["oblig-credit-ig", "multi-actifs", "oblig-echeance"]
         }
       ]
     }
