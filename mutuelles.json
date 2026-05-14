@@ -1,0 +1,318 @@
+{
+  "meta": {
+    "segment": "mutuelles",
+    "version": "1.0",
+    "updated": "2025-05",
+    "sources": [
+      "France Assureurs — Marché santé et prévoyance 2024",
+      "DREES — Rapport annuel organismes complémentaires 2025 (chiffres 2024)",
+      "L'Argus de l'Assurance — Top 30 mutuelles 2025 (chiffres 2024)",
+      "MACSF — Résultats annuels 2024 (communiqué de presse mai 2025)",
+      "MGEN — Résultats 2024 (communiqué de presse avril 2025)",
+      "Code de la Mutualité (Légifrance)",
+      "Tribune Assurance / Option Finance — Classement 20 premiers groupes 2025"
+    ]
+  },
+
+  "explication_types": {
+    "titre": "Les différents types de mutuelles — ce qu'il faut comprendre",
+    "introduction": "Le terme 'mutuelle' recouvre des réalités très différentes. Pour un sales institutionnel CPRAM, la distinction essentielle est entre celles qui ont une politique d'investissement (tes cibles) et celles qui n'en ont pas.",
+    "livres": [
+      {
+        "id": "livre2",
+        "label": "Livre II — Mutuelles d'assurance",
+        "cible_cpram": true,
+        "description": "Mutuelles pratiquant des opérations d'assurance, de réassurance et de capitalisation. Soumises à Solvabilité 2. Ont des réserves techniques et des fonds propres à investir. C'est là que se trouve la politique d'investissement.",
+        "exemples": ["MGEN", "Harmonie Mutuelle", "MACSF", "MNH", "MNT", "Aésio"],
+        "note_cpram": "Tes cibles prioritaires. Elles ont un CIO ou un directeur financier gérant des portefeuilles de placements significatifs."
+      },
+      {
+        "id": "livre3",
+        "label": "Livre III — Mutuelles de soins et d'action sociale",
+        "cible_cpram": false,
+        "description": "Mutuelles gérant des établissements de soins (cliniques mutualistes, centres dentaires, EHPAD, pharmacies mutualistes). Pas d'activité d'assurance. Pas de portefeuille financier à proprement parler.",
+        "exemples": ["Mutuelles gérant des centres de santé, des EHPAD, des cliniques mutualistes"],
+        "note_cpram": "Hors cible pour CPRAM. Pas de politique d'investissement financier. Ne pas confondre avec les mutuelles Livre II."
+      }
+    ],
+    "mutuelles_45": {
+      "label": "Les 'mutuelles 45' — la famille des mutuelles de fonctionnaires",
+      "origine": "Terme de jargon désignant les mutuelles issues de l'ordonnance du 19 octobre 1945 qui a fondé la mutualité française. Par extension, désigne les mutuelles à base socioprofessionnelle, notamment celles de la fonction publique.",
+      "caracteristiques": [
+        "Adhésion captive historique — leurs membres sont fidèles, turn-over faible, cotisations stables et prévisibles → horizon d'investissement plus long",
+        "Taille significative — encours de placements de plusieurs centaines de millions à plusieurs milliards d'euros",
+        "Gouvernance mutualiste pure — pas d'actionnaires, pas de pression sur le ROE, les excédents sont réinvestis au profit des adhérents",
+        "Sensibilité ESG forte — politiques ISR avancées, souvent pionnières sur les obligations vertes et la biodiversité",
+        "Gestion plus sophistiquée — CIO identifiable, équipe de gestion d'actifs dédiée pour les plus grandes"
+      ],
+      "note_cpram": "Les mutuelles 45 sont les cibles les plus intéressantes du monde mutualiste. Elles combinent encours significatifs, horizon long et gouvernance favorable à des solutions de qualité."
+    }
+  },
+
+  "marche": {
+    "chiffres_cles": {
+      "cotisations_sante_prevoyance_2024": "86,3 Mds€ total marché santé+prévoyance en 2024 (+5,8% vs 2023). Source : France Assureurs.",
+      "part_mutuelles": "26% du marché total santé+prévoyance 2024. Derrière les entreprises d'assurance (56%) et devant les IP (18%). Source : France Assureurs.",
+      "cotisations_sante_2024": "46,5 Mds€ de cotisations santé collectées par les organismes complémentaires en 2024 (+8,2% vs 2023). Source : DREES 2025.",
+      "nombre_mutuelles": "249 mutuelles actives en santé en 2024, divisé par plus de 6 depuis 2001. Source : DREES 2025.",
+      "concentration": "51 groupes présents sur le marché en 2024, qui ont collecté 85% des cotisations santé. Source : DREES 2025.",
+      "marche_individuel": "Sur les contrats individuels, les mutuelles représentent 40% des cotisations vs 57% pour les entreprises d'assurance. Source : France Assureurs.",
+      "marche_collectif": "Sur les contrats collectifs, les mutuelles ne pèsent que 16% vs 54% pour les assureurs et 30% pour les IP. Source : France Assureurs."
+    },
+    "tendances_2024_2025": [
+      "Réforme PSC (Protection Sociale Complémentaire) : obligation pour les employeurs publics de participer à 50% à la complémentaire santé de leurs agents — transforme radicalement le modèle des mutuelles de fonctionnaires",
+      "Concentration accélérée : fusions et absorptions se poursuivent, les grands groupes (VYV, Aéma) captent une part croissante du marché",
+      "Amélioration de la rentabilité technique en 2024 : pour la première fois depuis 2020, les cotisations ont augmenté davantage que les prestations versées. Source : DREES 2025.",
+      "Résultat technique redevenu positif en 2024 après une année difficile en 2023. Source : DREES 2025.",
+      "Pression sur les frais de gestion : les mutuelles ont les frais d'administration les plus élevés des trois familles. Source : DREES 2025."
+    ]
+  },
+
+  "acteurs": {
+    "grands_groupes": [
+      {
+        "nom": "Groupe VYV",
+        "type": "Union mutualiste de groupe (UMG)",
+        "ca_consolide": ">8,4 Mds€ (dont 8,4 Mds€ de cotisations acquises hors Arcade-VYV). Source : Tribune Assurance 2025.",
+        "membres_principaux": "Harmonie Mutuelle (3,195 Mds€), Groupe MGEN (3,085 Mds€), MNT (778 M€), Mutex (1,156 Mds€), SMACL Assurances",
+        "personnes_protegees": ">10 millions",
+        "note": "Leader incontesté du monde mutualiste. Regroupe les principales mutuelles de fonctionnaires d'État (MGEN : éducation nationale) et territoriaux (MNT). Mutex est la filiale assurantielle du groupe — interlocuteur clé pour l'investissement.",
+        "note_cpram": "Cible prioritaire absolue. Taille institutionnelle — peut accéder à des mandats dédiés. Mutex gère les placements financiers du groupe."
+      },
+      {
+        "nom": "Aéma Groupe (Aésio + Macif)",
+        "type": "Groupe mutualiste",
+        "ca_consolide": "Top 3 mutuelles 2025",
+        "membres_principaux": "Aésio Mutuelle, Apivia Macif Mutuelle, Nuoma, MNPAF",
+        "note": "Issu du rapprochement Macif/Abeilles (ex-Aviva France) côté IARD, et de la fusion Adréa/Apréva/Eovi côté santé. Double profil vie et IARD.",
+        "note_cpram": "Profil complexe : côté mutuelle santé (Aésio) + côté IARD (Macif). Deux interlocuteurs distincts pour l'investissement."
+      },
+      {
+        "nom": "AG.Mut (AG2R La Mondiale)",
+        "type": "Groupe de protection sociale",
+        "ca_france": "10,870 Mds€ CA France 2024. Source : Tribune Assurance 2025.",
+        "membres_principaux": "Viasanté Mutuelle, Mutuelle Bleue, MGC, Mutuelle de la RATP, MPJ, Intégrance",
+        "note": "Pôle mutualiste d'AG2R La Mondiale. Les décisions d'investissement sont centralisées au niveau du groupe AG2R La Mondiale.",
+        "note_cpram": "Passer par le groupe AG2R La Mondiale pour l'investissement, pas par les mutuelles individuelles."
+      },
+      {
+        "nom": "Enio (ex-Unalis)",
+        "type": "Groupe mutualiste",
+        "ca_consolide": "Top 5-8 mutuelles 2025",
+        "membres_principaux": "Apicil Mutuelle (+67,5% en 2024), Intégrance, Tutélaire, Territoria, SMH, Amellis",
+        "note": "Croissance forte en 2024 notamment via substitution de Territoria Mutuelle. Lancement d'un pôle de réassurance en acceptation.",
+        "note_cpram": "Groupe en forte croissance. Apicil Mutuelle monte en puissance. Interlocuteur en développement."
+      },
+      {
+        "nom": "Malakoff Humanis Mutuelle",
+        "type": "Filiale mutualiste de Malakoff Humanis",
+        "ca_consolide": "7e place Top 30 mutuelles 2025 (entrée suite à fusion)",
+        "membres_principaux": "Malakoff Humanis Mutuelle, La France Mutualiste (affiliée Sgam)",
+        "note": "Issu du rapprochement Malakoff Médéric + Humanis (2019). La France Mutualiste affiliée en 2024.",
+        "note_cpram": "Les décisions d'investissement sont au niveau du groupe Malakoff Humanis."
+      }
+    ],
+    "mutuelles_45_cibles": [
+      {
+        "nom": "MGEN (Mutuelle Générale de l'Éducation Nationale)",
+        "groupe": "Groupe VYV",
+        "corps": "Éducation nationale, enseignement supérieur, culture",
+        "adherents": "4 millions de personnes protégées",
+        "cotisations": "3,085 Mds€ (2024). Source : Tribune Assurance 2025.",
+        "solvabilite": "Ratio de solvabilité 250,5% fin 2024. Source : MGEN communiqué avril 2025.",
+        "resultat_2024": "96 millions d'euros de résultat net 2024. Source : MGEN communiqué avril 2025.",
+        "investissement": "Politique ISR avancée depuis 2022 : réduction de 28% des émissions carbone du portefeuille. Plus de 500 M€ investis dans des obligations durables. 4 axes : Santé, Climat, Biodiversité, Développement des Territoires. Source : MGEN communiqué avril 2025.",
+        "actualite": "Réforme PSC : MGEN devient obligatoire pour 1,2 million d'agents de l'Éducation nationale au 1er mai 2026 (contrat MGEN/CNP Assurances, 77€/mois dont 50% employeur). Source : france-epargne.fr.",
+        "note_cpram": "Cible prioritaire. Politique ISR très développée — angle d'entrée : obligations durables, biodiversité, fonds Article 8/9. Réforme PSC = afflux de cotisations à investir. Chercher le CIO / directeur financier sur LinkedIn : 'MGEN investissements'."
+      },
+      {
+        "nom": "MACSF (Mutuelle d'Assurance du Corps de Santé Français)",
+        "groupe": "Indépendant",
+        "corps": "Professionnels de santé (médecins, infirmiers, pharmaciens, paramédicaux)",
+        "adherents": "1,2 million de sociétaires (2024)",
+        "ca_2024": "3,04 Mds€ de chiffre d'affaires (dont 2,183 Mds€ assurance vie). Source : MACSF communiqué mai 2025.",
+        "encours_av": "30,9 Mds€ d'encours assurance vie fin 2024 (+6,2%). dont 7,12 Mds€ d'UC (+18%). Source : MACSF communiqué mai 2025.",
+        "actif_total": "41,6 Mds€ d'actif total fin 2024. Source : MACSF communiqué mai 2025.",
+        "fonds_propres": "5,7 Mds€ de fonds propres Solvabilité 2 fin septembre 2024. Source : MACSF communiqué janvier 2025.",
+        "solvabilite": "Ratio de solvabilité 319% fin 2024 (vs 294% fin 2023). Source : MACSF communiqué mai 2025.",
+        "resultat_2024": "300,2 M€ de résultat net (record, +27% vs 2023). Source : MACSF communiqué mai 2025.",
+        "fonds_euros": "Taux fonds euros 2024 : 3,10% net de frais — un des meilleurs du marché. Source : MACSF.",
+        "dette_privee": "Lancement en octobre 2024 du fonds Andera Dette Privée, créé exclusivement pour les sociétaires MACSF. Source : MACSF communiqué janvier 2025.",
+        "note_cpram": "Cible de premier plan. Actif de 41,6 Mds€ — taille institutionnelle majeure. Déjà très actifs en gestion d'actifs (fonds exclusifs avec Andera). Directeur financier : Roger Caniard (Dauphine, Sciences-Po, ESCP) — en poste depuis 2014. Angle d'entrée : UC innovantes, dette privée, fonds thématiques exclusifs."
+      },
+      {
+        "nom": "MNH (Mutuelle Nationale des Hospitaliers)",
+        "groupe": "Partenariat MGEN + Groupama (en cours)",
+        "corps": "Personnels hospitaliers, professionnels du social, agents de santé de l'État",
+        "adherents": "700 000 adhérents",
+        "cotisations": "~500-600 M€ estimés (non communiqué publiquement)",
+        "actualite": "Réforme PSC hospitalière au 1er janvier 2026 — MNH en recherche d'alliances stratégiques (MGEN + Groupama retenus). Source : Miroir Social.",
+        "note_cpram": "Taille plus modeste mais profil intéressant. La réforme PSC hospitalière (2026) va transformer son modèle et générer des flux de cotisations supplémentaires à investir. À surveiller."
+      },
+      {
+        "nom": "MNT (Mutuelle Nationale Territoriale)",
+        "groupe": "Groupe VYV",
+        "corps": "Agents des collectivités territoriales",
+        "adherents": "1,1 million d'adhérents",
+        "cotisations": "778 M€ (2024). Source : Tribune Assurance 2025.",
+        "note_cpram": "Membre du groupe VYV — les décisions d'investissement se prennent au niveau de Mutex/VYV. Approcher VYV directement."
+      },
+      {
+        "nom": "MGEFI (Mutuelle Générale de l'Économie, des Finances et de l'Industrie)",
+        "groupe": "Indépendant",
+        "corps": "Agents du ministère de l'Économie et des Finances (Bercy)",
+        "adherents": "260 000 adhérents",
+        "cotisations": "~250-300 M€ estimés",
+        "note_cpram": "Taille plus modeste. Profil de CIO probable — approche via fonds plutôt que mandats dédiés."
+      },
+      {
+        "nom": "Unéo",
+        "groupe": "Partenariat Groupe VYV",
+        "corps": "Militaires et personnels civils de la Défense",
+        "adherents": "~300 000 adhérents",
+        "actualite": "Unéo devient la mutuelle des militaires obligatoire dans le cadre de la réforme PSC Défense.",
+        "note_cpram": "Profil spécifique (Défense). Lié à la réforme PSC — afflux de cotisations à horizon 2025-2026."
+      },
+      {
+        "nom": "Intériale",
+        "groupe": "Partenariat AXA France",
+        "corps": "Personnels du ministère de l'Intérieur (police, gendarmerie, préfectures)",
+        "adherents": "~250 000 adhérents",
+        "actualite": "Partenariat stratégique officiel annoncé avec AXA France (après avoir renoncé à un rapprochement avec AG2R La Mondiale). Source : Miroir Social.",
+        "note_cpram": "Adossée à AXA — les solutions d'investissement passent probablement par AXA Investment Managers. Difficile à approcher directement."
+      }
+    ]
+  },
+
+  "structure_financiere": [
+    {
+      "key": "Deux poches distinctes",
+      "texte": "Les mutuelles Livre II ont deux grandes poches : les **réserves techniques** (court/moyen terme, pour faire face aux remboursements de soins) et les **fonds propres et réserves libres** (plus longues, moins contraintes). La logique [ALM] est moins complexe que chez les assureurs vie — pas de [Fonds euros], pas de [PPB], pas d'[UC]."
+    },
+    {
+      "key": "Pas de fonds euros ni d'UC",
+      "texte": "Contrairement aux assureurs vie, les mutuelles santé n'ont pas de [Fonds euros] ni d'[UC] à gérer. Leur logique est plus proche de celle des assureurs [IARD] : portefeuilles de réserves techniques à horizon 1-5 ans, avec une poche de fonds propres plus longue."
+    },
+    {
+      "key": "Rentabilité technique sous pression",
+      "texte": "Le résultat technique des mutuelles est devenu négatif en 2023 (première fois depuis 2011) avant de se redresser en 2024. Les frais de gestion des mutuelles sont les plus élevés des trois familles d'opérateurs. Le résultat financier devient donc un levier critique pour compenser."
+    },
+    {
+      "key": "Solvabilité robuste",
+      "texte": "Les mutuelles affichent des ratios de [SCR] très confortables : MGEN à 250,5%, MACSF à 319%. Cela leur donne une marge de manœuvre pour diversifier leurs investissements — y compris vers des actifs plus risqués ou illiquides."
+    },
+    {
+      "key": "Réforme PSC — afflux de cotisations",
+      "texte": "La réforme de la Protection Sociale Complémentaire (PSC) oblige les employeurs publics à contribuer à 50% à la complémentaire santé de leurs agents. MGEN devient obligatoire pour 1,2 million d'enseignants en mai 2026. Cela génère des afflux de cotisations significatifs à investir pour les mutuelles de fonctionnaires gagnantes des appels d'offres."
+    }
+  ],
+
+  "reglementation": [
+    {
+      "titre": "Solvabilité 2",
+      "detail": "Les mutuelles Livre II sont soumises à [Solvabilité 2] comme les assureurs. Calcul du [SCR] sur les risques de souscription (santé) et de marché. Les mutuelles affichent généralement des ratios de solvabilité très confortables (MGEN 250%, MACSF 319%) — contrainte moins tendue que chez les assureurs vie."
+    },
+    {
+      "titre": "Code de la Mutualité",
+      "detail": "Cadre juridique spécifique (Livre II pour les mutuelles d'assurance). Gouvernance démocratique obligatoire (un adhérent = une voix). Pas d'actionnaires — les excédents reviennent aux adhérents. Contraintes de gestion non lucrative."
+    },
+    {
+      "titre": "Réforme PSC (2022-2026)",
+      "detail": "Loi du 6 août 2019 transposée progressivement. Oblige l'État employeur (puis les collectivités et hôpitaux) à contribuer à 50% à la complémentaire santé et prévoyance de leurs agents. Mise en œuvre : FPE depuis 2024, FPT 2025-2026, FPH janvier 2026. Bouleverse les modèles économiques des mutuelles de fonctionnaires — certaines gagnent des marchés massifs, d'autres sont menacées."
+    },
+    {
+      "titre": "SFDR",
+      "detail": "[SFDR] s'applique aux OPC que les mutuelles détiennent en portefeuille. Pression croissante pour investir en fonds Article 8/9. MGEN est pionnière (500 M€ en obligations durables, politique biodiversité avancée)."
+    }
+  ],
+
+  "interlocuteurs": [
+    { "poste": "Directeur Financier (CFO)", "role": "Principal décideur sur la politique d'investissement pour les mutuelles de taille moyenne. Raisonne en rentabilité globale du bilan." },
+    { "poste": "Directeur des Investissements (CIO)", "role": "Présent dans les grandes mutuelles (MACSF, MGEN, Harmonie). Gestion du portefeuille financier. Interlocuteur direct CPRAM. Ex : Roger Caniard chez MACSF (Dauphine/Sciences-Po/ESCP, en poste depuis 2014)." },
+    { "poste": "Directeur Général / Secrétaire Général", "role": "Dans les petites et moyennes mutuelles, souvent impliqué dans les décisions d'investissement faute d'équipe dédiée." },
+    { "poste": "Responsable ALM / Actuaire", "role": "Gestion des provisions techniques et de l'adossement actif-passif. Interlocuteur sur la duration et la liquidité." },
+    { "poste": "Responsable ESG / Développement durable", "role": "Montée en puissance rapide. Les mutuelles de fonctionnaires sont souvent en avance sur l'ESG (MGEN, MACSF). Incontournable sur les sujets SFDR et biodiversité." },
+    { "poste": "Trésorier", "role": "Gestion de la trésorerie et du monétaire. Interlocuteur pour les solutions court terme." }
+  ],
+
+  "tensions": [
+    "Résultat technique sous pression historique : hausse des cotisations de soins, 100% Santé qui augmente les remboursements, vieillissement des adhérents",
+    "Concentration inexorable : les petites mutuelles disparaissent, les grands groupes captent l'essentiel — décisions d'investissement de plus en plus centralisées",
+    "Réforme PSC : transformation majeure du modèle économique — certaines mutuelles gagnent des marchés massifs (MGEN), d'autres perdent leur base d'adhérents",
+    "Frais de gestion élevés : les mutuelles ont les frais d'administration les plus élevés des trois familles — pression sur la rentabilité globale",
+    "Montée des exigences ESG : pression des adhérents et des régulateurs pour des politiques d'investissement responsables"
+  ],
+
+  "problematiques": [
+    {
+      "id": "p1",
+      "titre": "Résultat financier comme compensateur du résultat technique",
+      "urgence": "haute",
+      "contexte": "Le résultat technique des mutuelles santé est structurellement sous pression (hausse des soins, 100% Santé, vieillissement). En 2023, il est devenu négatif pour la première fois depuis 2011 avant de se redresser en 2024. Les mutuelles ont les frais d'administration les plus élevés des trois familles d'opérateurs. Dans ce contexte, le résultat financier doit compenser — comme pour un assureur [IARD].",
+      "enjeu": "Améliorer le rendement du portefeuille de placements sans prendre de risque excessif sur des réserves techniques dont la liquidité doit être préservée. Le [SCR] reste favorable (ratios >200%) — marge de manœuvre pour diversifier.",
+      "reponse_cpram": "Solutions obligataires avec [Pick-up de spread] vs souverain pur. Fonds à échéance (Buy & Watch) pour locker des taux 3-4% sur 3-7 ans. Trésorerie longue pour la poche courte. Multi-actifs pour les fonds propres longs.",
+      "strategies_cpram": ["oblig-echeance", "oblig-credit-ig", "tresorerie-longue", "multi-actifs"]
+    },
+    {
+      "id": "p2",
+      "titre": "Afflux de cotisations PSC à investir",
+      "urgence": "haute",
+      "contexte": "La réforme PSC génère des afflux massifs de cotisations pour les mutuelles gagnantes des appels d'offres publics. MGEN devient obligatoire pour 1,2 million d'enseignants en mai 2026. Ces nouveaux flux doivent être investis rapidement et efficacement. C'est une opportunité rare de (re)négocier les mandats de gestion.",
+      "enjeu": "Déployer des volumes importants de nouvelles cotisations dans des solutions performantes, liquides à court terme (remboursements de soins), et conformes aux exigences ESG avancées de ces mutuelles.",
+      "reponse_cpram": "Solutions monétaires et trésorerie courte pour la liquidité immédiate. Fonds obligataires court/moyen terme pour le déploiement progressif. [Mandats dédiés] pour les volumes significatifs (MGEN, MACSF). Présenter explicitement la durée de déploiement et la stratégie de mise en place.",
+      "strategies_cpram": ["monetaire-classique", "tresorerie-longue", "oblig-credit-ig", "oblig-echeance"]
+    },
+    {
+      "id": "p3",
+      "titre": "Exigences ESG avancées — biodiversité et climat",
+      "urgence": "haute",
+      "contexte": "Les mutuelles de fonctionnaires sont en avance sur les autres institutionnels en matière d'ESG. MGEN a réduit de 28% les émissions carbone de son portefeuille depuis 2022 et investi plus de 500 M€ en obligations durables. La politique ESG de MGEN s'articule autour de 4 axes : Santé, Climat, Biodiversité, Développement des Territoires. La biodiversité est un critère déjà opérationnel.",
+      "enjeu": "Trouver des solutions d'investissement Article 8/9 [SFDR] avec un reporting ESG granulaire (carbone, biodiversité, PAI). La qualité du reporting ESG est un critère différenciant dans la sélection des gérants.",
+      "reponse_cpram": "Fonds Article 9 Biodiversité — CPRAM est pionnier sur ce thème, aligné avec les 4 axes MGEN. Fonds Transition Climatique Article 9. Obligations vertes pour la poche obligataire. Reporting SFDR standardisé avec indicateurs biodiversité.",
+      "strategies_cpram": ["biodiversite", "transition-climatique", "oblig-credit-ig"]
+    },
+    {
+      "id": "p4",
+      "titre": "Diversification vers les actifs non cotés",
+      "urgence": "moyenne",
+      "contexte": "Les grandes mutuelles (MACSF, MGEN, VYV) développent des allocations en actifs non cotés. MACSF a lancé en octobre 2024 un fonds Andera Dette Privée exclusif pour ses sociétaires et a investi plus de 2 Mds€ dans la santé (Emeis/Orpéa, Vivalto Santé, Cerballiance). Les solvabilités très confortables (>200%) donnent de la marge pour des actifs moins liquides.",
+      "enjeu": "Identifier des actifs non cotés cohérents avec la mission des mutuelles (santé, social, territoires) et leurs contraintes de liquidité. Les mutuelles de fonctionnaires sont sensibles aux actifs ayant un 'sens' pour leurs adhérents.",
+      "reponse_cpram": "[Dette privée] infrastructure santé et sociale (cliniques, EHPAD, centres de santé) — cohérence avec la mission des mutuelles. Dette infrastructure territoriale pour les mutuelles de fonctionnaires territoriaux (MNT). Présenter la charge [SCR] et le profil de liquidité.",
+      "strategies_cpram": ["oblig-echeance", "multi-actifs"]
+    },
+    {
+      "id": "p5",
+      "titre": "Gestion de la liquidité des réserves techniques",
+      "urgence": "moyenne",
+      "contexte": "Les réserves techniques des mutuelles santé sont à court terme (les remboursements de soins interviennent rapidement, sous 3 mois en général). La poche réserves techniques doit rester très liquide. Cela contraint l'allocation à des solutions monétaires ou obligataires très courtes, souvent peu rémunératrices.",
+      "enjeu": "Optimiser le rendement de la poche réserves techniques sans altérer la liquidité nécessaire aux remboursements. Trouver le bon équilibre entre rendement et liquidité pour une poche souvent négligée.",
+      "reponse_cpram": "Monétaire dynamique avec meilleur rendement que le pur monétaire. Trésorerie longue 1-3 ans pour un [Pick-up de spread] sans risque de liquidité. Présenter explicitement la liquidité quotidienne et la duration très courte.",
+      "strategies_cpram": ["monetaire-classique", "tresorerie-longue"]
+    },
+    {
+      "id": "p6",
+      "titre": "Concentration et centralisation des décisions d'investissement",
+      "urgence": "moyenne",
+      "contexte": "La concentration accélérée du secteur mutualiste signifie que les décisions d'investissement remontent de plus en plus au niveau des groupes (VYV via Mutex, AG2R La Mondiale, Aéma). Les mutuelles individuelles perdent leur autonomie d'investissement. Il faut identifier le bon niveau de décision.",
+      "enjeu": "Ne pas perdre de temps à approcher des mutuelles individuelles qui n'ont plus de pouvoir de décision sur leurs placements. Identifier le bon interlocuteur au niveau du groupe.",
+      "reponse_cpram": "Pour VYV : approcher Mutex (la structure d'investissement du groupe). Pour AG2R : approcher la direction financière d'AG2R La Mondiale. Pour Aéma : approcher la direction des investissements du groupe. Pour MACSF et MGEN : approche directe possible — elles restent indépendantes.",
+      "strategies_cpram": ["oblig-credit-ig", "multi-actifs", "oblig-echeance"]
+    }
+  ],
+
+  "angles_commerciaux": [
+    "Réforme PSC : 'Vous avez des flux importants à investir en 2025-2026 — comment peut-on vous aider à les déployer de manière efficace et conforme à votre politique ESG ?'",
+    "Résultat financier : 'Comment améliorez-vous votre rendement financier pour compenser la pression technique sans prendre de risque excessif sur vos réserves ?'",
+    "Biodiversité : 'CPRAM est l'un des premiers gérants à avoir lancé un fonds dédié à la biodiversité (Article 9) — directement aligné avec vos axes ESG'",
+    "Fonds datés : 'Dans un contexte de baisse des taux, les fonds à échéance permettent de locker les taux actuels (3-4%) avec liquidité quotidienne maintenue'",
+    "Actifs réels en santé : 'Nous pouvons vous proposer des solutions en dette privée sur des actifs de santé et sociaux — cohérents avec votre mission mutualiste'",
+    "SCR efficient : 'Vos ratios de solvabilité très confortables (>200%) vous donnent de la marge pour diversifier — montrons comment optimiser le rendement ajusté du SCR'"
+  ],
+
+  "questions_ouverture": [
+    "Comment la réforme PSC transforme-t-elle vos besoins d'investissement pour 2025-2026 ?",
+    "Quelle est votre politique ESG sur le portefeuille de placements — avez-vous des axes spécifiques (biodiversité, santé, territoires) ?",
+    "Quel est l'horizon de vos réserves techniques — et comment gérez-vous la tension entre liquidité et rendement ?",
+    "Êtes-vous en appel d'offres sur des mandats de gestion ou cherchez-vous plutôt des fonds référencés ?"
+  ]
+}
