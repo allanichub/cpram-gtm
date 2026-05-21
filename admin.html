@@ -1,0 +1,1467 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPRAM GTM — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0e0e0e;
+  --surface: #161616;
+  --surface2: #1e1e1e;
+  --border: #2a2a2a;
+  --border2: #333;
+  --text: #e8e8e8;
+  --muted: #666;
+  --accent: #c8a84b;
+  --accent2: #a08030;
+  --green: #3d8c4f;
+  --red: #c0392b;
+  --blue: #4a7fb5;
+  --font-display: 'Playfair Display', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-body: 'Source Serif 4', Georgia, serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── LOGIN ── */
+#login-screen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999;
+  flex-direction: column;
+  gap: 0;
+}
+.login-box {
+  width: 380px;
+  border: 1px solid var(--border2);
+  padding: 48px;
+  background: var(--surface);
+  position: relative;
+}
+.login-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.login-brand {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.login-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.login-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 36px;
+}
+.login-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+.login-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 20px;
+}
+.login-input:focus { border-color: var(--accent); }
+.login-btn {
+  width: 100%;
+  background: var(--accent);
+  border: none;
+  color: #1a1a1a;
+  padding: 13px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.login-btn:hover { background: var(--accent2); color: #fff; }
+.login-error {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--red);
+  margin-top: 12px;
+  text-align: center;
+  display: none;
+}
+
+/* ── APP ── */
+#app { display: none; }
+
+/* ── HEADER ── */
+#header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border2);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-brand {
+  display: flex; align-items: center; gap: 16px;
+}
+.header-logo {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text);
+}
+.header-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  border: 1px solid var(--accent2);
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+.header-right {
+  display: flex; align-items: center; gap: 16px;
+}
+.header-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.header-logout {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border2);
+  padding: 4px 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+.header-logout:hover { border-color: var(--red); color: var(--red); }
+
+/* ── LAYOUT ── */
+#layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 56px);
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+.sidebar-section {
+  padding: 0 20px;
+  margin-bottom: 28px;
+}
+.sidebar-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 3px;
+  transition: all 0.15s;
+  margin-bottom: 2px;
+}
+.nav-btn:hover { background: var(--surface2); color: var(--text); }
+.nav-btn.active { background: var(--surface2); color: var(--accent); border-left: 2px solid var(--accent); }
+.nav-icon { font-size: 14px; width: 18px; text-align: center; }
+.nav-divider { height: 1px; background: var(--border); margin: 12px 20px; }
+
+/* ── MAIN ── */
+#main { padding: 32px; max-width: 960px; }
+
+/* ── PAGE TITLE ── */
+.page-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.page-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-bottom: 28px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 24px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.card-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title::before {
+  content: '';
+  display: block;
+  width: 3px; height: 12px;
+  background: var(--accent);
+}
+
+/* ── CHAT ── */
+#chat-messages {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  height: 420px;
+  overflow-y: auto;
+  padding: 16px;
+  margin-bottom: 14px;
+  scroll-behavior: smooth;
+}
+.msg {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.msg-avatar {
+  width: 28px; height: 28px;
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.msg.user .msg-avatar { background: var(--accent); color: #1a1a1a; }
+.msg.agent .msg-avatar { background: var(--surface2); color: var(--accent); border: 1px solid var(--border2); }
+.msg-content {
+  flex: 1;
+}
+.msg-role {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.msg-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+}
+.msg-text code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--surface2);
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  color: var(--accent);
+}
+.msg.user .msg-text { color: #d4d4d4; }
+.msg-actions {
+  margin-top: 10px;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.action-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 5px 12px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.action-btn:hover { border-color: var(--accent); color: var(--accent); }
+.action-btn.primary { background: var(--accent); color: #1a1a1a; border-color: var(--accent); }
+.action-btn.primary:hover { background: var(--accent2); color: #fff; }
+.action-btn.danger { border-color: var(--red); color: var(--red); }
+.typing {
+  display: flex; gap: 4px; align-items: center;
+  padding: 8px 0;
+}
+.typing-dot {
+  width: 5px; height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: typing 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
+
+/* ── CHAT INPUT ── */
+.chat-input-row {
+  display: flex; gap: 10px; align-items: flex-end;
+}
+.chat-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  resize: none;
+  outline: none;
+  min-height: 48px;
+  max-height: 140px;
+  transition: border-color 0.2s;
+  line-height: 1.5;
+}
+.chat-input:focus { border-color: var(--accent); }
+.chat-send {
+  background: var(--accent);
+  border: none;
+  color: #1a1a1a;
+  padding: 0 20px;
+  height: 48px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.chat-send:hover { background: var(--accent2); color: #fff; }
+.chat-send:disabled { background: var(--border2); color: var(--muted); cursor: not-allowed; }
+
+/* ── PDF UPLOAD ── */
+.drop-zone {
+  border: 1px dashed var(--border2);
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+}
+.drop-zone:hover, .drop-zone.drag { border-color: var(--accent); background: rgba(200,168,75,0.04); }
+.drop-icon { font-size: 28px; margin-bottom: 10px; }
+.drop-text { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.8; }
+.drop-text span { color: var(--accent); }
+#file-input { display: none; }
+.file-preview {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+  display: none;
+}
+.file-preview.show { display: flex; }
+.file-info { display: flex; align-items: center; gap: 10px; }
+.file-icon { font-size: 18px; }
+.file-name { font-family: var(--font-mono); font-size: 11px; color: var(--text); }
+.file-size { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+.file-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; }
+.file-remove:hover { color: var(--red); }
+.upload-target {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.upload-target-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-bottom: 8px; letter-spacing: 1px; }
+.target-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.target-btn {
+  font-family: var(--font-mono); font-size: 10px;
+  padding: 5px 12px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.target-btn:hover { border-color: var(--accent); color: var(--accent); }
+.target-btn.selected { background: var(--accent); color: #1a1a1a; border-color: var(--accent); font-weight: 500; }
+.analyze-btn {
+  width: 100%;
+  background: var(--green);
+  border: none;
+  color: #fff;
+  padding: 13px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.analyze-btn:hover { opacity: 0.85; }
+.analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── QUICK EDITS ── */
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.quick-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 12px;
+}
+.quick-card:hover { border-color: var(--accent); }
+.quick-card-icon { font-size: 18px; }
+.quick-card-text { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.5; }
+.quick-card-text strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+/* ── HISTORY ── */
+.history-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border2);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.history-item.success { border-left-color: var(--green); }
+.history-item.pending { border-left-color: var(--accent); }
+.history-time { font-family: var(--font-mono); font-size: 10px; color: var(--muted); flex-shrink: 0; width: 80px; }
+.history-desc { font-size: 12px; color: var(--text); flex: 1; line-height: 1.5; }
+.history-tag { font-family: var(--font-mono); font-size: 9px; color: var(--muted); border: 1px solid var(--border); padding: 1px 6px; }
+
+/* ── CONFIG ── */
+.config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.config-field { display: flex; flex-direction: column; gap: 6px; }
+.config-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+.config-input {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.config-input:focus { border-color: var(--accent); }
+.config-save {
+  margin-top: 16px;
+  background: var(--accent);
+  border: none;
+  color: #1a1a1a;
+  padding: 11px 24px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.config-save:hover { background: var(--accent2); color: #fff; }
+
+/* ── STATUS BAR ── */
+#status-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 8px 32px;
+  display: flex; align-items: center; gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  z-index: 40;
+}
+#status-msg { flex: 1; }
+.status-item { display: flex; align-items: center; gap: 6px; }
+.status-ok { color: var(--green); }
+.status-warn { color: var(--accent); }
+
+/* ── NOTIFICATION ── */
+#notif {
+  position: fixed;
+  top: 70px; right: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--green);
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  z-index: 200;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+  max-width: 320px;
+}
+#notif.show { transform: translateX(0); }
+#notif.error { border-left-color: var(--red); }
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION -->
+<div id="notif"></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-brand">CPRAM GTM</div>
+    <div class="login-title">Administration</div>
+    <div class="login-sub">ACCÈS RESTREINT — SALES INSTITUTIONNEL</div>
+    <label class="login-label">Mot de passe</label>
+    <input type="password" class="login-input" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()">Accéder →</button>
+    <div class="login-error" id="login-error">Mot de passe incorrect</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- HEADER -->
+  <div id="header">
+    <div class="header-brand">
+      <div class="header-logo">CPRAM GTM</div>
+      <div class="header-badge">Admin</div>
+    </div>
+    <div class="header-right">
+      <div class="header-status">
+        <div class="status-dot"></div>
+        <span id="gh-status">GitHub connecté</span>
+      </div>
+      <button class="header-logout" onclick="logout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div id="layout">
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Navigation</div>
+        <button class="nav-btn active" onclick="showPage('chat')" id="nav-chat">
+          <span class="nav-icon">💬</span> Agent IA
+        </button>
+        <button class="nav-btn" onclick="showPage('pdf')" id="nav-pdf">
+          <span class="nav-icon">📄</span> Analyser un PDF
+        </button>
+        <button class="nav-btn" onclick="showPage('quick')" id="nav-quick">
+          <span class="nav-icon">⚡</span> Mises à jour rapides
+        </button>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Historique</div>
+        <button class="nav-btn" onclick="showPage('history')" id="nav-history">
+          <span class="nav-icon">📋</span> Journal des modifs
+        </button>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Configuration</div>
+        <button class="nav-btn" onclick="showPage('config')" id="nav-config">
+          <span class="nav-icon">⚙️</span> Paramètres
+        </button>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="sidebar-section">
+        <a href="index.html" target="_blank" style="text-decoration:none">
+          <button class="nav-btn">
+            <span class="nav-icon">🔗</span> Voir le site
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main">
+
+      <!-- PAGE : AGENT IA -->
+      <div class="page active" id="page-chat">
+        <div class="page-title">Agent IA</div>
+        <div class="page-sub">MISE À JOUR DES DONNÉES EN LANGAGE NATUREL</div>
+
+        <div class="card">
+          <div class="card-title">Conversation avec l'agent</div>
+          <div id="chat-messages"></div>
+          <div class="chat-input-row">
+            <textarea class="chat-input" id="chat-input" placeholder="Ex: 'Les réserves Agirc-Arrco sont passées à 95 Mds€ selon leur rapport mars 2026' ou 'Ajoute une problématique sur la taxe TSA pour les IP'" rows="2"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+            <button class="chat-send" id="send-btn" onclick="sendMessage()">Envoyer</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Exemples de commandes</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="quick-card" onclick="prefill('Mets à jour les réserves Agirc-Arrco à 95 Mds€')">
+              <div class="quick-card-icon">📊</div>
+              <div class="quick-card-text"><strong>Chiffre de marché</strong>"Mets à jour les réserves Agirc-Arrco à 95 Mds€"</div>
+            </div>
+            <div class="quick-card" onclick="prefill('Ajoute une problématique urgente sur la taxe TSA pour les IP')">
+              <div class="quick-card-icon">⚠️</div>
+              <div class="quick-card-text"><strong>Nouvelle problématique</strong>"Ajoute une problématique sur la taxe TSA pour les IP"</div>
+            </div>
+            <div class="quick-card" onclick="prefill('Ajoute le fonds CPRAM Défense Européenne dans les stratégies avec SFDR Article 8, actions européennes, duration longue')">
+              <div class="quick-card-icon">📈</div>
+              <div class="quick-card-text"><strong>Nouveau fonds CPRAM</strong>"Ajoute le fonds CPRAM Défense Européenne..."</div>
+            </div>
+            <div class="quick-card" onclick="prefill('Le ratio de solvabilité moyen des mutuelles est maintenant de 275% selon DREES 2025')">
+              <div class="quick-card-icon">🔄</div>
+              <div class="quick-card-text"><strong>Mise à jour acteur</strong>"Le ratio de solvabilité moyen des mutuelles est maintenant 275%"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE : PDF -->
+      <div class="page" id="page-pdf">
+        <div class="page-title">Analyser un PDF</div>
+        <div class="page-sub">RAPPORT ANNUEL, COMMUNIQUÉ DE PRESSE, ÉTUDE DE MARCHÉ</div>
+
+        <div class="card">
+          <div class="card-title">1. Uploader le document</div>
+          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()"
+            ondragover="event.preventDefault();this.classList.add('drag')"
+            ondragleave="this.classList.remove('drag')"
+            ondrop="handleDrop(event)">
+            <div class="drop-icon">📄</div>
+            <div class="drop-text">
+              Glisser-déposer un PDF ici<br>
+              ou <span>cliquer pour sélectionner</span><br>
+              <span style="color:var(--muted);font-size:10px">PDF uniquement — max 10 Mo</span>
+            </div>
+          </div>
+          <input type="file" id="file-input" accept=".pdf" onchange="handleFile(this.files[0])">
+          <div class="file-preview" id="file-preview">
+            <div class="file-info">
+              <span class="file-icon">📄</span>
+              <div>
+                <div class="file-name" id="file-name"></div>
+                <div class="file-size" id="file-size"></div>
+              </div>
+            </div>
+            <button class="file-remove" onclick="removeFile()">✕</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">2. Choisir le segment cible</div>
+          <div class="upload-target">
+            <div class="upload-target-label">Ce document concerne :</div>
+            <div class="target-btns">
+              <button class="target-btn" onclick="selectTarget(this,'vie')">Assureurs Vie</button>
+              <button class="target-btn" onclick="selectTarget(this,'iard')">Assureurs IARD</button>
+              <button class="target-btn" onclick="selectTarget(this,'mutuelles')">Mutuelles</button>
+              <button class="target-btn" onclick="selectTarget(this,'caisses_retraite')">Caisses Retraite</button>
+              <button class="target-btn" onclick="selectTarget(this,'ip')">IP</button>
+              <button class="target-btn" onclick="selectTarget(this,'strategies')">Stratégies CPRAM</button>
+              <button class="target-btn" onclick="selectTarget(this,'general')">Général / Multi-segments</button>
+            </div>
+          </div>
+          <button class="analyze-btn" id="analyze-btn" onclick="analyzePDF()" disabled>
+            🔍 Analyser et extraire les données
+          </button>
+        </div>
+
+        <div id="pdf-results" style="display:none">
+          <div class="card">
+            <div class="card-title">3. Résultats de l'analyse</div>
+            <div id="pdf-output"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE : MISES À JOUR RAPIDES -->
+      <div class="page" id="page-quick">
+        <div class="page-title">Mises à jour rapides</div>
+        <div class="page-sub">FORMULAIRES PRÉ-REMPLIS POUR LES MISES À JOUR TRIMESTRIELLES</div>
+
+        <div class="card">
+          <div class="card-title">Chiffres de marché — Mise à jour trimestrielle</div>
+          <div class="quick-grid">
+            <div class="config-field">
+              <label class="config-label">Réserves Agirc-Arrco (Mds€)</label>
+              <input class="config-input" id="q-agirc" placeholder="ex: 91.2">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Encours RAFP (Mds€)</label>
+              <input class="config-input" id="q-rafp" placeholder="ex: 47.8">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Encours FRR (Mds€)</label>
+              <input class="config-input" id="q-frr" placeholder="ex: 20.4">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Taux fonds euros moyen (%)</label>
+              <input class="config-input" id="q-fonds-euros" placeholder="ex: 2.60">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Cotisations santé IP (Mds€)</label>
+              <input class="config-input" id="q-ip-sante" placeholder="ex: 7.8">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Ratio solvabilité moyen IP (%)</label>
+              <input class="config-input" id="q-ip-solv" placeholder="ex: 293">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Source des données</label>
+              <input class="config-input" id="q-source" placeholder="ex: Agirc-Arrco mars 2026">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Date de mise à jour</label>
+              <input class="config-input" id="q-date" placeholder="ex: 2026-03">
+            </div>
+          </div>
+          <button class="config-save" onclick="quickUpdate()">Générer et appliquer les mises à jour →</button>
+        </div>
+      </div>
+
+      <!-- PAGE : HISTORIQUE -->
+      <div class="page" id="page-history">
+        <div class="page-title">Journal des modifications</div>
+        <div class="page-sub">TOUTES LES MISES À JOUR EFFECTUÉES</div>
+        <div class="card">
+          <div class="card-title">Modifications récentes</div>
+          <div id="history-list">
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);padding:20px 0;text-align:center">
+              Aucune modification enregistrée dans cette session
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE : CONFIG -->
+      <div class="page" id="page-config">
+        <div class="page-title">Configuration</div>
+        <div class="page-sub">PARAMÈTRES DE L'AGENT ET DU REPO GITHUB</div>
+
+        <div class="card">
+          <div class="card-title">GitHub</div>
+          <div class="config-grid">
+            <div class="config-field">
+              <label class="config-label">Repository (user/repo)</label>
+              <input class="config-input" id="cfg-repo" placeholder="allanichub/cpram-gtm">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Branch</label>
+              <input class="config-input" id="cfg-branch" placeholder="main">
+            </div>
+            <div class="config-field" style="grid-column:span 2">
+              <label class="config-label">GitHub Personal Access Token</label>
+              <input class="config-input" type="password" id="cfg-token" placeholder="github_pat_...">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Agent IA</div>
+          <div class="config-grid">
+            <div class="config-field">
+              <label class="config-label">Endpoint API</label>
+              <input class="config-input" id="cfg-endpoint" placeholder="https://api.anthropic.com/v1/messages">
+            </div>
+            <div class="config-field">
+              <label class="config-label">Modèle</label>
+              <input class="config-input" id="cfg-model" placeholder="claude-sonnet-4-20250514">
+            </div>
+            <div class="config-field" style="grid-column:span 2">
+              <label class="config-label">Clé API (laissez vide si géré par l'intranet CPR)</label>
+              <input class="config-input" type="password" id="cfg-apikey" placeholder="sk-ant-... ou token CPR">
+            </div>
+          </div>
+          <button class="config-save" onclick="saveConfig()">Sauvegarder la configuration →</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Test de connexion</div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button class="action-btn" onclick="testGitHub()">Tester GitHub</button>
+            <button class="action-btn" onclick="testAI()">Tester l'agent IA</button>
+            <span id="test-result" style="font-family:var(--font-mono);font-size:11px;color:var(--muted)"></span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /layout -->
+
+  <!-- STATUS BAR -->
+  <div id="status-bar">
+    <span id="status-msg">Prêt</span>
+    <div class="status-item">
+      <span style="color:var(--muted)">Repo :</span>
+      <span id="sb-repo" class="status-ok">allanichub/cpram-gtm</span>
+    </div>
+    <div class="status-item">
+      <span style="color:var(--muted)">Version KB :</span>
+      <span class="status-warn" id="sb-version">v3.0</span>
+    </div>
+    <div class="status-item" id="sb-time" style="color:var(--muted)"></div>
+  </div>
+</div><!-- /app -->
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────────────────────
+const ADMIN_PASSWORD = 'cpram2025';
+const DEFAULT_CONFIG = {
+  repo: 'allanichub/cpram-gtm',
+  branch: 'main',
+  token: '',
+  endpoint: 'https://api.anthropic.com/v1/messages',
+  model: 'claude-sonnet-4-20250514',
+  apikey: ''
+};
+
+let config = { ...DEFAULT_CONFIG };
+let currentSegmentsData = null;
+let currentStrategiesData = null;
+let chatHistory = [];
+let updateHistory = [];
+let selectedTarget = null;
+let currentPDFBase64 = null;
+let isThinking = false;
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function login() {
+  const pwd = document.getElementById('pwd-input').value;
+  if (pwd === ADMIN_PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadConfig();
+    initApp();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+  }
+}
+
+function logout() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pwd-input').value = '';
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+function initApp() {
+  updateClock();
+  setInterval(updateClock, 1000);
+  loadDataFromGitHub();
+  addWelcomeMessage();
+}
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('sb-time').textContent =
+    now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
+
+async function loadDataFromGitHub() {
+  try {
+    const raw = `https://raw.githubusercontent.com/${config.repo}/${config.branch}`;
+    const [s, st] = await Promise.all([
+      fetch(`${raw}/segments.json?t=${Date.now()}`).then(r => r.json()),
+      fetch(`${raw}/strategies.json?t=${Date.now()}`).then(r => r.json())
+    ]);
+    currentSegmentsData = s;
+    currentStrategiesData = st;
+    setStatus('Données chargées depuis GitHub ✓');
+    document.getElementById('gh-status').textContent = 'GitHub connecté ✓';
+    document.getElementById('sb-version').textContent = 'v' + (s.meta?.version || '?');
+  } catch(e) {
+    setStatus('⚠ Impossible de charger les données GitHub — vérifiez la config', 'warn');
+    document.getElementById('gh-status').textContent = 'GitHub non connecté';
+  }
+}
+
+function addWelcomeMessage() {
+  const segments = ['Assureurs Vie', 'Assureurs IARD', 'Mutuelles', 'Caisses de Retraite', 'IP'];
+  addMessage('agent', `Bonjour. Je suis l'agent de mise à jour de votre base GTM CPRAM.
+
+Je peux faire pour vous :
+
+**Mises à jour de chiffres** — "Les réserves Agirc-Arrco sont passées à 95 Mds€"
+**Nouvelles problématiques** — "Ajoute une problématique sur la taxe TSA pour les IP"
+**Mise à jour d'acteurs** — "Le ratio de solvabilité MACSF est maintenant de 325%"
+**Nouveaux fonds CPRAM** — "Ajoute le fonds X dans les stratégies obligataires"
+
+Les segments disponibles : ${segments.join(', ')}.
+
+Que souhaitez-vous mettre à jour ?`);
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+}
+
+// ─── CHAT ─────────────────────────────────────────────────────────────────────
+function addMessage(role, text, actions) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const avatarText = role === 'user' ? 'VOUS' : 'AGENT';
+  const roleText = role === 'user' ? 'Vous' : 'Agent GTM';
+
+  let actionsHtml = '';
+  if (actions && actions.length) {
+    actionsHtml = '<div class="msg-actions">' +
+      actions.map(a => `<button class="action-btn ${a.primary ? 'primary' : ''} ${a.danger ? 'danger' : ''}" onclick="${a.fn}">${a.label}</button>`).join('') +
+      '</div>';
+  }
+
+  div.innerHTML = `
+    <div class="msg-avatar">${avatarText}</div>
+    <div class="msg-content">
+      <div class="msg-role">${roleText}</div>
+      <div class="msg-text">${formatText(text)}</div>
+      ${actionsHtml}
+    </div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg agent';
+  div.id = 'typing-indicator';
+  div.innerHTML = `
+    <div class="msg-avatar">AGENT</div>
+    <div class="msg-content">
+      <div class="msg-role">Agent GTM</div>
+      <div class="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+    </div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+function formatText(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text || isThinking) return;
+
+  addMessage('user', text);
+  input.value = '';
+  chatHistory.push({ role: 'user', content: text });
+  isThinking = true;
+  document.getElementById('send-btn').disabled = true;
+  showTyping();
+
+  try {
+    const response = await callAI(buildAgentPrompt(text));
+    removeTyping();
+
+    const parsed = parseAgentResponse(response);
+    addMessage('agent', parsed.message, parsed.actions);
+    chatHistory.push({ role: 'assistant', content: parsed.message });
+
+    if (parsed.pendingUpdate) {
+      window._pendingUpdate = parsed.pendingUpdate;
+    }
+  } catch(e) {
+    removeTyping();
+    addMessage('agent', `⚠ Erreur lors de la communication avec l'agent : ${e.message}. Vérifiez la configuration API dans les paramètres.`);
+  }
+
+  isThinking = false;
+  document.getElementById('send-btn').disabled = false;
+  document.getElementById('chat-input').focus();
+}
+
+function prefill(text) {
+  document.getElementById('chat-input').value = text;
+  showPage('chat');
+  document.getElementById('chat-input').focus();
+}
+
+function buildAgentPrompt(userMessage) {
+  const segmentsSummary = currentSegmentsData ?
+    `Segments disponibles: ${Object.keys(currentSegmentsData.segments || {}).join(', ')}. Version: ${currentSegmentsData.meta?.version}` :
+    'Données non chargées';
+
+  const systemPrompt = `Tu es l'agent de mise à jour de la base de connaissances GTM CPRAM pour les sales institutionnels.
+
+Tu gères deux fichiers JSON sur GitHub :
+- segments.json : base de connaissances par segment (Vie, IARD, Mutuelles, Caisses de Retraite, IP)
+- strategies.json : base de connaissances des stratégies/fonds CPRAM
+
+${segmentsSummary}
+
+COMPORTEMENT :
+1. Quand l'utilisateur demande une mise à jour, analyse sa demande et génère le JSON patch correspondant.
+2. Présente TOUJOURS ce que tu vas modifier AVANT de le faire, avec les champs exacts.
+3. Demande confirmation avant toute modification de GitHub.
+4. Cite les sources quand l'utilisateur en mentionne une.
+5. Si la demande est ambiguë, pose des questions de clarification.
+
+FORMAT DE RÉPONSE :
+Réponds en JSON avec ce format exact :
+{
+  "message": "Ton message en français pour l'utilisateur",
+  "pendingUpdate": {
+    "file": "segments.json ou strategies.json",
+    "description": "Description courte de la modification",
+    "patch": { "chemin.json": "nouvelle valeur" }
+  },
+  "requiresConfirmation": true/false
+}
+
+Si pas de mise à jour à faire (question, clarification) : pendingUpdate = null.`;
+
+  return { systemPrompt, userMessage };
+}
+
+async function callAI({ systemPrompt, userMessage, pdfBase64 }) {
+  const messages = [];
+
+  if (pdfBase64) {
+    messages.push({
+      role: 'user',
+      content: [
+        { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: pdfBase64 } },
+        { type: 'text', text: userMessage }
+      ]
+    });
+  } else {
+    const history = chatHistory.slice(-6);
+    history.forEach(m => messages.push(m));
+    if (messages.length === 0 || messages[messages.length-1].role !== 'user') {
+      messages.push({ role: 'user', content: userMessage });
+    }
+  }
+
+  const body = {
+    model: config.model || 'claude-sonnet-4-20250514',
+    max_tokens: 2000,
+    system: systemPrompt,
+    messages
+  };
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (config.apikey) headers['x-api-key'] = config.apikey;
+
+  const res = await fetch(config.endpoint || 'https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) throw new Error(`API error ${res.status}`);
+  const data = await res.json();
+  return data.content?.map(c => c.text || '').join('') || '';
+}
+
+function parseAgentResponse(raw) {
+  try {
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const json = JSON.parse(clean);
+    const actions = [];
+    if (json.pendingUpdate && json.requiresConfirmation !== false) {
+      actions.push({ label: '✓ Confirmer et appliquer', fn: 'applyUpdate()', primary: true });
+      actions.push({ label: '✗ Annuler', fn: 'cancelUpdate()', danger: true });
+    }
+    return { message: json.message || raw, actions, pendingUpdate: json.pendingUpdate };
+  } catch {
+    return { message: raw, actions: [] };
+  }
+}
+
+// ─── GITHUB ───────────────────────────────────────────────────────────────────
+async function getFileFromGitHub(filename) {
+  const url = `https://api.github.com/repos/${config.repo}/contents/${filename}`;
+  const res = await fetch(url, {
+    headers: {
+      'Authorization': `token ${config.token}`,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  });
+  if (!res.ok) throw new Error(`GitHub GET error ${res.status}`);
+  const data = await res.json();
+  return { content: JSON.parse(atob(data.content.replace(/\n/g, ''))), sha: data.sha };
+}
+
+async function pushFileToGitHub(filename, content, sha, commitMessage) {
+  const url = `https://api.github.com/repos/${config.repo}/contents/${filename}`;
+  const body = {
+    message: commitMessage,
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+    sha,
+    branch: config.branch
+  };
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `token ${config.token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/vnd.github.v3+json'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || `GitHub PUT error ${res.status}`);
+  }
+  return await res.json();
+}
+
+async function applyUpdate() {
+  const update = window._pendingUpdate;
+  if (!update) return;
+
+  if (!config.token) {
+    showNotif('⚠ Token GitHub non configuré. Allez dans Paramètres.', 'error');
+    return;
+  }
+
+  setStatus('Application de la mise à jour...');
+  addMessage('agent', 'Application de la modification sur GitHub en cours...');
+
+  try {
+    const { content, sha } = await getFileFromGitHub(update.file);
+    applyPatch(content, update.patch);
+
+    const commitMsg = `[Admin GTM] ${update.description} — ${new Date().toLocaleDateString('fr-FR')}`;
+    await pushFileToGitHub(update.file, content, sha, commitMsg);
+
+    if (update.file === 'segments.json') currentSegmentsData = content;
+    if (update.file === 'strategies.json') currentStrategiesData = content;
+
+    addToHistory(update.description, 'success');
+    showNotif('✓ Mise à jour appliquée sur GitHub');
+    addMessage('agent', `✓ **Modification appliquée avec succès !**\n\nCommit : "${commitMsg}"\n\nLe site se met à jour automatiquement pour tous les utilisateurs.`);
+    setStatus('Mise à jour appliquée ✓');
+    window._pendingUpdate = null;
+  } catch(e) {
+    addMessage('agent', `⚠ Erreur lors de l'application : ${e.message}`);
+    showNotif('⚠ Erreur GitHub : ' + e.message, 'error');
+    setStatus('Erreur : ' + e.message, 'warn');
+  }
+}
+
+function cancelUpdate() {
+  window._pendingUpdate = null;
+  addMessage('agent', 'Modification annulée. Que souhaitez-vous faire ?');
+}
+
+function applyPatch(obj, patch) {
+  for (const [path, value] of Object.entries(patch)) {
+    const keys = path.split('.');
+    let target = obj;
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (target[keys[i]] === undefined) target[keys[i]] = {};
+      target = target[keys[i]];
+    }
+    target[keys[keys.length - 1]] = value;
+  }
+}
+
+// ─── PDF ──────────────────────────────────────────────────────────────────────
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file?.type === 'application/pdf') handleFile(file);
+}
+
+function handleFile(file) {
+  if (!file) return;
+  const preview = document.getElementById('file-preview');
+  document.getElementById('file-name').textContent = file.name;
+  document.getElementById('file-size').textContent = (file.size / 1024).toFixed(0) + ' Ko';
+  preview.classList.add('show');
+
+  const reader = new FileReader();
+  reader.onload = e => { currentPDFBase64 = e.target.result.split(',')[1]; };
+  reader.readAsDataURL(file);
+
+  checkAnalyzeBtn();
+}
+
+function removeFile() {
+  document.getElementById('file-preview').classList.remove('show');
+  currentPDFBase64 = null;
+  document.getElementById('file-input').value = '';
+  checkAnalyzeBtn();
+}
+
+function selectTarget(btn, target) {
+  document.querySelectorAll('.target-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedTarget = target;
+  checkAnalyzeBtn();
+}
+
+function checkAnalyzeBtn() {
+  document.getElementById('analyze-btn').disabled = !(currentPDFBase64 && selectedTarget);
+}
+
+async function analyzePDF() {
+  if (!currentPDFBase64 || !selectedTarget) return;
+
+  const btn = document.getElementById('analyze-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Analyse en cours...';
+  document.getElementById('pdf-results').style.display = 'none';
+
+  const segmentLabel = { vie: 'Assureurs Vie', iard: 'Assureurs IARD', mutuelles: 'Mutuelles', caisses_retraite: 'Caisses de Retraite', ip: 'IP', strategies: 'Stratégies CPRAM', general: 'Général' }[selectedTarget];
+
+  const systemPrompt = `Tu es un analyste expert en investissement institutionnel pour CPRAM Asset Management.
+Tu analyses des documents (rapports annuels, communiqués de presse, études de marché) pour en extraire les données pertinentes pour la base de connaissances GTM CPRAM.
+
+Segment cible : ${segmentLabel}
+
+INSTRUCTIONS :
+1. Extrais UNIQUEMENT les données factuelles vérifiables (chiffres, dates, noms, ratios).
+2. Pour chaque donnée extraite, indique sa source exacte dans le document (titre de section, page si visible).
+3. Identifie les mises à jour possibles pour le fichier segments.json ou strategies.json.
+4. Signale les nouvelles problématiques ou tensions détectées.
+5. Formate ta réponse de manière structurée.`;
+
+  const userMessage = `Analyse ce document et extrais toutes les données pertinentes pour le segment "${segmentLabel}" de notre base GTM CPRAM. 
+
+Pour chaque donnée extraite :
+- Indique le champ JSON à mettre à jour
+- Donne la valeur exacte
+- Cite la source dans le document
+
+Identifie aussi :
+- Les nouvelles problématiques ou tensions
+- Les nouvelles informations sur les acteurs
+- Les chiffres clés à mettre à jour`;
+
+  try {
+    const response = await callAI({ systemPrompt, userMessage, pdfBase64: currentPDFBase64 });
+
+    document.getElementById('pdf-results').style.display = 'block';
+    document.getElementById('pdf-output').innerHTML = `
+      <div style="font-size:13px;line-height:1.8;color:var(--text)">${formatText(response)}</div>
+      <div style="margin-top:16px;display:flex;gap:10px">
+        <button class="action-btn primary" onclick="sendPDFToChat()">→ Envoyer à l'agent pour mise à jour</button>
+        <button class="action-btn" onclick="copyToClipboard('${encodeURIComponent(response)}')">Copier</button>
+      </div>`;
+
+    window._pdfAnalysis = response;
+    showNotif('✓ Analyse PDF terminée');
+  } catch(e) {
+    document.getElementById('pdf-results').style.display = 'block';
+    document.getElementById('pdf-output').innerHTML = `<div style="color:var(--red);font-family:var(--font-mono);font-size:11px">Erreur : ${e.message}</div>`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🔍 Analyser et extraire les données';
+}
+
+function sendPDFToChat() {
+  if (!window._pdfAnalysis) return;
+  showPage('chat');
+  document.getElementById('chat-input').value = `Voici l'analyse du PDF que j'ai uploadé. Génère les mises à jour JSON correspondantes et demande-moi confirmation avant d'appliquer :\n\n${window._pdfAnalysis.slice(0, 800)}...`;
+}
+
+// ─── QUICK UPDATE ─────────────────────────────────────────────────────────────
+async function quickUpdate() {
+  const fields = {
+    'q-agirc': 'segments.caisses_retraite.overview.Agirc-Arrco réserves',
+    'q-rafp': 'segments.caisses_retraite.overview.RAFP encours',
+    'q-frr': 'segments.caisses_retraite.overview.FRR encours',
+    'q-fonds-euros': 'segments.vie.structure.0.texte',
+    'q-ip-sante': 'segments.ip.overview.Cotisations santé 2024',
+    'q-ip-solv': 'segments.ip.overview.Solvabilité'
+  };
+
+  const source = document.getElementById('q-source').value || 'Mise à jour admin';
+  const date = document.getElementById('q-date').value || new Date().toISOString().slice(0, 7);
+  const updates = [];
+
+  Object.entries(fields).forEach(([id, path]) => {
+    const val = document.getElementById(id).value.trim();
+    if (val) updates.push({ path, value: val, field: id });
+  });
+
+  if (!updates.length) { showNotif('Aucune valeur renseignée', 'error'); return; }
+
+  const summary = updates.map(u => `- ${u.field.replace('q-', '').replace('-', ' ')}: ${u.value}`).join('\n');
+  showPage('chat');
+  document.getElementById('chat-input').value = `Voici les mises à jour trimestrielles (source: ${source}, ${date}) :\n${summary}\n\nGénère les patches JSON et applique-les après ma confirmation.`;
+}
+
+// ─── HISTORIQUE ───────────────────────────────────────────────────────────────
+function addToHistory(description, status) {
+  const now = new Date();
+  const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  updateHistory.unshift({ time, description, status });
+
+  const list = document.getElementById('history-list');
+  list.innerHTML = updateHistory.map(h => `
+    <div class="history-item ${h.status}">
+      <div class="history-time">${h.time}</div>
+      <div class="history-desc">${h.description}</div>
+      <span class="history-tag">${h.status === 'success' ? '✓ Appliqué' : '⏳ En attente'}</span>
+    </div>`).join('');
+}
+
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+function loadConfig() {
+  try {
+    const saved = localStorage.getItem('cpram-admin-config');
+    if (saved) config = { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+  } catch {}
+  document.getElementById('cfg-repo').value = config.repo || '';
+  document.getElementById('cfg-branch').value = config.branch || '';
+  document.getElementById('cfg-token').value = config.token || '';
+  document.getElementById('cfg-endpoint').value = config.endpoint || '';
+  document.getElementById('cfg-model').value = config.model || '';
+  document.getElementById('cfg-apikey').value = config.apikey || '';
+  document.getElementById('sb-repo').textContent = config.repo || '—';
+}
+
+function saveConfig() {
+  config.repo = document.getElementById('cfg-repo').value.trim();
+  config.branch = document.getElementById('cfg-branch').value.trim() || 'main';
+  config.token = document.getElementById('cfg-token').value.trim();
+  config.endpoint = document.getElementById('cfg-endpoint').value.trim();
+  config.model = document.getElementById('cfg-model').value.trim();
+  config.apikey = document.getElementById('cfg-apikey').value.trim();
+  localStorage.setItem('cpram-admin-config', JSON.stringify(config));
+  document.getElementById('sb-repo').textContent = config.repo || '—';
+  showNotif('✓ Configuration sauvegardée');
+}
+
+async function testGitHub() {
+  const result = document.getElementById('test-result');
+  result.textContent = 'Test en cours...';
+  result.style.color = 'var(--muted)';
+  try {
+    const { content } = await getFileFromGitHub('segments.json');
+    result.textContent = `✓ GitHub OK — segments.json v${content.meta?.version} chargé`;
+    result.style.color = 'var(--green)';
+  } catch(e) {
+    result.textContent = '✗ Erreur : ' + e.message;
+    result.style.color = 'var(--red)';
+  }
+}
+
+async function testAI() {
+  const result = document.getElementById('test-result');
+  result.textContent = 'Test IA en cours...';
+  try {
+    const res = await callAI({ systemPrompt: 'Réponds uniquement "OK" en JSON: {"message":"OK"}', userMessage: 'Test' });
+    result.textContent = '✓ Agent IA opérationnel';
+    result.style.color = 'var(--green)';
+  } catch(e) {
+    result.textContent = '✗ Erreur IA : ' + e.message;
+    result.style.color = 'var(--red)';
+  }
+}
+
+// ─── UI HELPERS ───────────────────────────────────────────────────────────────
+function setStatus(msg, type) {
+  const el = document.getElementById('status-msg');
+  el.textContent = msg;
+  el.style.color = type === 'warn' ? 'var(--accent)' : 'var(--muted)';
+}
+
+function showNotif(msg, type) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.className = type === 'error' ? 'error show' : 'show';
+  setTimeout(() => n.classList.remove('show'), 3500);
+}
+
+function copyToClipboard(encoded) {
+  navigator.clipboard.writeText(decodeURIComponent(encoded));
+  showNotif('✓ Copié dans le presse-papiers');
+}
+</script>
+</body>
+</html>
