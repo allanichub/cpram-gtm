@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -137,8 +136,10 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
     <div class="login-title">Panneau Admin GTM</div>
     <label class="login-label">Mot de passe</label>
     <input type="password" class="login-input" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="login-label">Token GitHub</label>
+    <input type="password" class="login-input" id="token-input" placeholder="github_pat_..." onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">ACCÉDER</button>
-    <div class="login-error" id="login-error">Mot de passe incorrect</div>
+    <div class="login-error" id="login-error">Mot de passe ou token incorrect</div>
   </div>
 </div>
 
@@ -329,7 +330,7 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
 
 <script>
 const PASSWORD='alexcpr25';
-const GITHUB_TOKEN='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';
+let GITHUB_TOKEN='';
 const REPO='allanichub/cpram-gtm';
 const BRANCH='main';
 const RAW=`https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
@@ -337,14 +338,15 @@ let segmentsData=null,strategiesData=null,currentSegment=null,isTyping=false;
 const agentHistory=[];
 
 function doLogin(){
-  if(document.getElementById('pwd-input').value===PASSWORD){
+  const token=document.getElementById('token-input').value.trim();
+  if(document.getElementById('pwd-input').value===PASSWORD&&token.startsWith('github_')){
+    GITHUB_TOKEN=token;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
     document.getElementById('init-time').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     initApp();
   }else{
     document.getElementById('login-error').style.display='block';
-    document.getElementById('pwd-input').value='';
     setTimeout(()=>document.getElementById('login-error').style.display='none',2500);
   }
 }
