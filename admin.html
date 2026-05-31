@@ -206,6 +206,7 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
             <button class="btn btn-primary" onclick="quickPrompt('Fais un audit complet : quelles données sont probablement obsolètes dans segments.json ?')">🔍 Audit contenu</button>
             <button class="btn btn-secondary" onclick="window.open('https://allanichub.github.io/cpram-gtm','_blank')">↗ Voir le site</button>
             <button class="btn btn-secondary" onclick="window.open('https://github.com/allanichub/cpram-gtm','_blank')">↗ Voir le repo</button>
+            <button class="btn btn-secondary" onclick="testGitHubToken()">🔑 Tester le token</button>
           </div>
         </div>
       </div>
@@ -602,6 +603,19 @@ function renderPDFResults(result,filename){
 
 function applyUpdate(item){
   quickPrompt(`Applique cette mise à jour dans segments.json : segment "${item.segment}", champ "${item.champ}", nouvelle valeur : "${item.valeur_nouvelle}". Source : ${item.source_dans_doc}`);
+}
+
+async function testGitHubToken(){
+  showLoading('Test du token...');
+  try{
+    const r=await fetch('https://api.github.com/user',{headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
+    const u=await r.json();
+    const r2=await fetch(`https://api.github.com/repos/${REPO}`,{headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
+    const repo=await r2.json();
+    hideLoading();
+    const msg=`Token reconnu comme : ${u.login||'inconnu'} (${r.status})\nRepo ${REPO} : ${repo.permissions?JSON.stringify(repo.permissions):'permissions inconnues'} (${r2.status})`;
+    alert(msg);
+  }catch(e){hideLoading();alert('Erreur : '+e.message);}
 }
 
 async function pushToGitHub(filename,content,message){
