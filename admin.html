@@ -142,8 +142,8 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
     <input type="password" class="login-input" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
     <label class="login-label">Token GitHub</label>
     <input type="password" class="login-input" id="token-input" placeholder="github_pat_..." onkeydown="if(event.key==='Enter')doLogin()">
-    <label class="login-label">Clé API Anthropic</label>
-    <input type="password" class="login-input" id="anthropic-input" placeholder="sk-ant-..." onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="login-label">Clé API Anthropic <span style="color:var(--muted);font-size:9px">(optionnel)</span></label>
+    <input type="password" class="login-input" id="anthropic-input" placeholder="sk-ant-... — laisser vide pour utiliser Claude.ai" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">ACCÉDER</button>
     <div class="login-error" id="login-error">Mot de passe ou token incorrect</div>
   </div>
@@ -308,13 +308,13 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
         <div class="msg agent">
           <div class="msg-avatar">AI</div>
           <div class="msg-content">
-            Bonjour ! Je suis votre agent GTM. Je peux :<br><br>
-            • Mettre à jour les chiffres de marché<br>
-            • Ajouter ou modifier des problématiques<br>
-            • Enrichir les fiches acteurs<br>
-            • Analyser vos PDF et extraire les données<br>
-            • Proposer de nouvelles stratégies CPRAM<br><br>
-            Décrivez ce que vous souhaitez faire en langage naturel.
+            Bonjour Allan ! Je prépare le contexte de ta base GTM et l'envoie à Claude.ai.<br><br>
+            <strong>Comment ça marche :</strong><br>
+            1. Décris ce que tu veux mettre à jour<br>
+            2. Claude.ai s'ouvre avec tout le contexte<br>
+            3. Copie la réponse et colle-la ici<br>
+            4. Les modifications apparaissent comme des patches à appliquer en 1 clic<br><br>
+            Exemples : "mets à jour les chiffres Agirc-Arrco 2025", "ajoute une problématique sur la taxe TSA pour les IP", "modifie l'angle commercial sur les mutuelles"
             <div class="msg-time" id="init-time"></div>
           </div>
         </div>
@@ -636,21 +636,23 @@ async function loadChangelog(){
 async function sendMessage(){
   const input=document.getElementById('agent-input');
   const msg=input.value.trim();
-  if(!msg||isTyping)return;
-  input.value='';addMessage('user',msg);agentHistory.push({role:'user',content:msg});await callAgent();
+  if(!msg)return;
+  input.value='';addMessage('user',msg);
+  if(ANTHROPIC_KEY){agentHistory.push({role:'user',content:msg});await callAgentAPI();}
+  else{openInClaudeAI(msg);}
 }
 
 function quickPrompt(text){document.getElementById('agent-input').value=text;sendMessage();}
 
-async function callAgent(){
-  if(!ANTHROPIC_KEY){addMessage('agent','⚠️ Clé API Anthropic non configurée. Déconnecte-toi et reconnecte-toi en renseignant la clé.');return;}
-  isTyping=true;document.getElementById('agent-send-btn').disabled=true;
-  const typingEl=addTyping();
-
+function buildAgentContext(){
   const segCtx=segmentsData?Object.entries(segmentsData.segments).map(([k,s])=>`${k}(${(s.problematiques||[]).length} prob): overview=${JSON.stringify(s.overview||{})}`).join('\n'):'-';
   const stratCtx=strategiesData?strategiesData.familles.map(f=>`${f.id}: ${f.strategies.map(s=>s.id).join(', ')}`).join('\n'):'-';
+  return{segCtx,stratCtx};
+}
 
-  const sys=`Tu es l'agent GTM de CPRAM (filiale Crédit Agricole / Amundi). Tu aides Allan, sales institutionnel, à maintenir sa base de connaissances.
+function buildSystemPrompt(){
+  const{segCtx,stratCtx}=buildAgentContext();
+  return`Tu es l'agent GTM de CPRAM (filiale Crédit Agricole / Amundi). Tu aides Allan, sales institutionnel, à maintenir sa base de connaissances.
 
 REPO : ${REPO} — segments.json (5 segments) · strategies.json (14 stratégies)
 
@@ -662,27 +664,73 @@ ${stratCtx}
 
 RÈGLE ABSOLUE : Ne jamais répondre avec le JSON complet d'un fichier. Uniquement des patches chirurgicaux.
 
-FORMAT OBLIGATOIRE pour toute modification proposée — inclure un bloc <patch> par changement :
+FORMAT OBLIGATOIRE pour toute modification — un bloc <patch> par changement :
 <patch>
 {"file":"segments.json","op":"set","path":"segments.vie.overview.Marché","value":"2 200 Mds€","label":"Mise à jour encours assureurs vie 2025"}
 </patch>
 
-Opérations :
-- "set" : modifier une valeur (scalaire, objet). Chemin ex: segments.vie.overview.Marché | segments.vie.problematiques.0.titre
-- "push" : ajouter à un tableau. Ex: path="segments.vie.tensions", value="texte de la tension"
-- "remove" : supprimer. Ex: path="segments.vie.tensions.2" (index dans le tableau)
-
-Pour ajouter une problématique complète : op="push", path="segments.vie.problematiques", value={"id":"p_xxx","titre":"...","urgence":"haute","contexte":"...","enjeu":"...","reponse_cpram":"...","strategies_cpram":["oblig-credit-ig"]}
+Opérations : "set" (modifier une valeur), "push" (ajouter à un tableau), "remove" (supprimer)
+Chemins exemples : segments.vie.overview.Marché | segments.vie.tensions.0 | segments.vie.problematiques.2.titre
+Pour ajouter une problématique : op="push", path="segments.vie.problematiques", value={"id":"p_xxx","titre":"...","urgence":"haute","contexte":"...","enjeu":"...","reponse_cpram":"...","strategies_cpram":["oblig-credit-ig"]}
 
 Réponds en français, concis, actionnable. Expert des institutionnels français (Solvabilité 2, SCR, ALM, SFDR).`;
+}
 
+function openInClaudeAI(userMsg){
+  const{segCtx,stratCtx}=buildAgentContext();
+  const fullPrompt=`Tu es l'agent GTM de CPRAM (filiale Crédit Agricole / Amundi). Tu aides Allan, sales institutionnel, à maintenir sa base de connaissances GTM.
+
+ÉTAT ACTUEL SEGMENTS :
+${segCtx}
+
+STRATÉGIES PAR FAMILLE :
+${stratCtx}
+
+RÈGLE ABSOLUE : Ne jamais répondre avec le JSON complet. Uniquement des patches chirurgicaux avec ce format exact :
+<patch>
+{"file":"segments.json","op":"set","path":"segments.vie.overview.Marché","value":"nouvelle valeur","label":"Description courte"}
+</patch>
+Opérations : "set" (modifier), "push" (ajouter à un tableau), "remove" (supprimer par index).
+
+DEMANDE :
+${userMsg}`;
+
+  const url='https://claude.ai/new?q='+encodeURIComponent(fullPrompt);
+  window.open(url,'_blank');
+
+  const c=document.getElementById('agent-messages');
+  const d=document.createElement('div');d.className='msg agent';
+  const time=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  d.innerHTML=`<div class="msg-avatar">AI</div><div class="msg-content">
+    Contexte préparé et envoyé à Claude.ai.<br><br>
+    Copie la réponse obtenue et colle-la ici :
+    <div class="field-group" style="margin-top:10px">
+      <textarea class="field-textarea" id="paste-response" placeholder="Colle ici la réponse de Claude.ai..." style="min-height:120px"></textarea>
+    </div>
+    <button class="btn btn-primary" style="margin-top:8px" onclick="processPastedResponse(this)">✓ Traiter la réponse</button>
+    <div class="msg-time">${time}</div>
+  </div>`;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+
+function processPastedResponse(btn){
+  const textarea=btn.previousElementSibling.querySelector('textarea');
+  if(!textarea)return;
+  const text=textarea.value.trim();
+  if(!text){showToast('Colle la réponse de Claude.ai d\'abord','warning');return;}
+  btn.closest('.msg').remove();
+  addMessage('agent',text);
+}
+
+async function callAgentAPI(){
+  isTyping=true;document.getElementById('agent-send-btn').disabled=true;
+  const typingEl=addTyping();
   try{
-    const data=await callAnthropicAPI(agentHistory,sys,1200);
+    const data=await callAnthropicAPI(agentHistory,buildSystemPrompt(),1200);
     const text=data.content.map(i=>i.text||'').join('');
     typingEl.remove();addMessage('agent',text);agentHistory.push({role:'assistant',content:text});
   }catch(e){
-    typingEl.remove();
-    addMessage('agent',`❌ ${e.message}`);
+    typingEl.remove();addMessage('agent',`❌ ${e.message}`);
   }
   isTyping=false;document.getElementById('agent-send-btn').disabled=false;
 }
