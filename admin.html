@@ -607,13 +607,15 @@ function applyUpdate(item){
 async function pushToGitHub(filename,content,message){
   showLoading('Sauvegarde sur GitHub...');
   try{
-    const getR=await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`,{headers:{'Authorization':`token ${GITHUB_TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
+    const getR=await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`,{headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
     const fileData=await getR.json();
-    const putR=await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`,{method:'PUT',headers:{'Authorization':`token ${GITHUB_TOKEN}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message,content:btoa(unescape(encodeURIComponent(content))),sha:fileData.sha,branch:BRANCH})});
+    if(!getR.ok){hideLoading();showToast(`GET ${getR.status} : ${fileData.message}`,'error');return false;}
+    const putR=await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`,{method:'PUT',headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message,content:btoa(unescape(encodeURIComponent(content))),sha:fileData.sha,branch:BRANCH})});
+    const putData=await putR.json();
     hideLoading();
     if(putR.ok){showToast(`${filename} sauvegardé ✓`);return true;}
-    else{const e=await putR.json();showToast(`Erreur : ${e.message}`,'error');return false;}
-  }catch(e){hideLoading();showToast(`Erreur réseau`,'error');return false;}
+    else{showToast(`PUT ${putR.status} : ${putData.message}`,'error');return false;}
+  }catch(e){hideLoading();showToast(`Erreur réseau : ${e.message}`,'error');return false;}
 }
 
 async function loadChangelog(){
