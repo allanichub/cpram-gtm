@@ -119,6 +119,10 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
 .extracted-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--info);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .msg-action-btn{background:var(--surface2);border:1px solid var(--border);color:var(--accent);padding:4px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;margin-top:8px}
 .msg-action-btn:hover{background:var(--accent);color:#0d0f0e;border-color:var(--accent)}
+.patch-card{background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--accent2);padding:10px 14px;margin-top:10px}
+.patch-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent2);margin-bottom:3px;font-weight:600}
+.patch-detail{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px}
+.patch-detail code{color:var(--text);background:var(--bg);padding:1px 4px}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border)}
 </style>
 </head>
@@ -138,6 +142,8 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
     <input type="password" class="login-input" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
     <label class="login-label">Token GitHub</label>
     <input type="password" class="login-input" id="token-input" placeholder="github_pat_..." onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="login-label">Clé API Anthropic</label>
+    <input type="password" class="login-input" id="anthropic-input" placeholder="sk-ant-..." onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">ACCÉDER</button>
     <div class="login-error" id="login-error">Mot de passe ou token incorrect</div>
   </div>
@@ -223,6 +229,7 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
                 <option value="tensions">Tensions du marché</option>
                 <option value="angles_commerciaux">Angles commerciaux</option>
                 <option value="questions_ouverture">Questions d'ouverture</option>
+                <option value="problematiques">Problématiques & réponses CPRAM</option>
               </select>
             </div>
             <div id="seg-section-content"></div>
@@ -330,17 +337,19 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
 
 <script>
 const PASSWORD='alexcpr25';
-let GITHUB_TOKEN='';
+let GITHUB_TOKEN='',ANTHROPIC_KEY='';
 const REPO='allanichub/cpram-gtm';
 const BRANCH='main';
 const RAW=`https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
 let segmentsData=null,strategiesData=null,currentSegment=null,isTyping=false;
 const agentHistory=[];
+const pendingPatches=[];
 
 function doLogin(){
   const token=document.getElementById('token-input').value.trim();
+  const aKey=document.getElementById('anthropic-input').value.trim();
   if(document.getElementById('pwd-input').value===PASSWORD&&token.startsWith('github_')){
-    GITHUB_TOKEN=token;
+    GITHUB_TOKEN=token;ANTHROPIC_KEY=aKey;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
     document.getElementById('init-time').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
@@ -426,21 +435,90 @@ function loadSegmentSection(){
     (seg.questions_ouverture||[]).forEach((q,i)=>{
       container.innerHTML+=`<div class="field-group"><label class="field-label">Question ${i+1}</label><input type="text" class="field-input" data-key="questions" data-index="${i}" value="${q.replace(/"/g,'&quot;')}"></div>`;
     });
+  }else if(section==='problematiques'){
+    renderProblematiquesEditor(seg,container);
   }
+}
+
+function renderProblematiquesEditor(seg,container){
+  (seg.problematiques||[]).forEach((prob,i)=>{container.appendChild(buildProbCard(prob,i));});
+  const btn=document.createElement('button');btn.className='btn btn-secondary';
+  btn.style.cssText='width:100%;margin-top:8px';btn.textContent='+ Ajouter une problématique';
+  btn.onclick=addProblematiqueCard;container.appendChild(btn);
+}
+
+function buildProbCard(prob,i){
+  const card=document.createElement('div');card.className='card prob-card';
+  card.style.cssText='margin-bottom:12px;border-top:2px solid var(--accent2)';
+  card.dataset.probId=prob.id||('p_'+Date.now()+'_'+i);
+  card.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="prob-label" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent2);letter-spacing:1px">PROBLÉMATIQUE ${i+1}</div>
+      <button class="btn btn-secondary" style="padding:3px 10px;font-size:9px" onclick="this.closest('.prob-card').remove();reindexProbCards()">✕ Supprimer</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field-group"><label class="field-label">Titre</label><input type="text" class="field-input" data-pfield="titre"></div>
+      <div class="field-group"><label class="field-label">Urgence</label>
+        <select class="field-select" data-pfield="urgence">
+          <option value="haute">Haute 🔴</option>
+          <option value="moyenne">Moyenne 🟡</option>
+        </select>
+      </div>
+      <div class="field-group" style="grid-column:1/-1"><label class="field-label">Contexte (utilise [Terme] pour les liens glossaire)</label><textarea class="field-textarea" data-pfield="contexte"></textarea></div>
+      <div class="field-group" style="grid-column:1/-1"><label class="field-label">Enjeu</label><textarea class="field-textarea" data-pfield="enjeu" style="min-height:60px"></textarea></div>
+      <div class="field-group" style="grid-column:1/-1"><label class="field-label">Réponse CPRAM</label><textarea class="field-textarea" data-pfield="reponse_cpram"></textarea></div>
+      <div class="field-group" style="grid-column:1/-1">
+        <label class="field-label">Stratégies CPRAM (IDs séparés par virgules)</label>
+        <input type="text" class="field-input" data-pfield="strategies_cpram" placeholder="oblig-credit-ig, oblig-echeance">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px">oblig-etat · oblig-credit-ig · oblig-inflation · oblig-echeance · monetaire-classique · tresorerie-longue · transition-climatique · biodiversite · intelligence-artificielle · defense-europeenne · vieillissement · souverainete-europeenne · actions-quant · multi-actifs</div>
+      </div>
+    </div>`;
+  card.querySelector('[data-pfield="titre"]').value=prob.titre||'';
+  card.querySelector('[data-pfield="urgence"]').value=prob.urgence||'moyenne';
+  card.querySelector('[data-pfield="contexte"]').value=prob.contexte||'';
+  card.querySelector('[data-pfield="enjeu"]').value=prob.enjeu||'';
+  card.querySelector('[data-pfield="reponse_cpram"]').value=prob.reponse_cpram||'';
+  card.querySelector('[data-pfield="strategies_cpram"]').value=(prob.strategies_cpram||[]).join(', ');
+  return card;
+}
+
+function reindexProbCards(){
+  document.querySelectorAll('#seg-section-content .prob-card').forEach((c,i)=>{
+    const lbl=c.querySelector('.prob-label');if(lbl)lbl.textContent=`PROBLÉMATIQUE ${i+1}`;
+  });
+}
+
+function addProblematiqueCard(){
+  const container=document.getElementById('seg-section-content');
+  const addBtn=container.lastElementChild;
+  const index=container.querySelectorAll('.prob-card').length;
+  const card=buildProbCard({id:'p_'+Date.now(),titre:'',urgence:'moyenne',contexte:'',enjeu:'',reponse_cpram:'',strategies_cpram:[]},index);
+  container.insertBefore(card,addBtn);
+  card.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
 async function saveSegmentSection(){
   if(!currentSegment)return;
   const seg=segmentsData.segments[currentSegment];
-  document.querySelectorAll('#seg-section-content [data-key]').forEach(el=>{
-    const key=el.dataset.key;const val=el.value||el.textContent;
-    if(key==='overview')seg.overview[el.dataset.field]=val;
-    else if(key==='tensions')seg.tensions[parseInt(el.dataset.index)]=val;
-    else if(key==='angles')seg.angles_commerciaux[parseInt(el.dataset.index)]=val;
-    else if(key==='questions')seg.questions_ouverture[parseInt(el.dataset.index)]=val;
-  });
+  const section=document.getElementById('seg-section-select').value;
+  if(section==='problematiques'){
+    seg.problematiques=Array.from(document.querySelectorAll('#seg-section-content .prob-card')).map(card=>{
+      const get=f=>{const el=card.querySelector(`[data-pfield="${f}"]`);return el?el.value:'';};
+      const strats=get('strategies_cpram').split(',').map(s=>s.trim()).filter(Boolean);
+      return{id:card.dataset.probId,titre:get('titre'),urgence:get('urgence'),contexte:get('contexte'),enjeu:get('enjeu'),reponse_cpram:get('reponse_cpram'),strategies_cpram:strats};
+    });
+  }else{
+    document.querySelectorAll('#seg-section-content [data-key]').forEach(el=>{
+      const key=el.dataset.key;const val=el.value||el.textContent;
+      if(key==='overview')seg.overview[el.dataset.field]=val;
+      else if(key==='tensions')seg.tensions[parseInt(el.dataset.index)]=val;
+      else if(key==='angles')seg.angles_commerciaux[parseInt(el.dataset.index)]=val;
+      else if(key==='questions')seg.questions_ouverture[parseInt(el.dataset.index)]=val;
+    });
+  }
   segmentsData.meta.updated=new Date().toISOString().split('T')[0];
-  await pushToGitHub('segments.json',JSON.stringify(segmentsData,null,2),`Update ${currentSegment} — ${document.getElementById('seg-section-select').value}`);
+  await pushToGitHub('segments.json',JSON.stringify(segmentsData,null,2),`Update ${currentSegment} — ${section}`);
+  updateStats();
 }
 
 function renderStratList(){
@@ -474,7 +552,26 @@ function handleDrop(e){
 }
 function handleFileSelect(e){const f=e.target.files[0];if(f)analyzePDF(f);}
 
+async function callAnthropicAPI(messages,system,maxTokens=1000){
+  if(!ANTHROPIC_KEY)throw new Error('Clé API Anthropic non configurée — renseigne-la à la connexion');
+  const body={model:'claude-sonnet-4-20250514',max_tokens:maxTokens,messages};
+  if(system)body.system=system;
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':ANTHROPIC_KEY,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||`HTTP ${r.status}`);}
+  return r.json();
+}
+
 async function analyzePDF(file){
+  if(!ANTHROPIC_KEY){showToast('Clé API Anthropic manquante','error');return;}
   showLoading(`Analyse de "${file.name}"...`);
   document.getElementById('pdf-results').innerHTML='';
   const base64=await fileToBase64(file);
@@ -484,8 +581,7 @@ Analyse ce PDF et extrait les informations en JSON strictement valide :
 {"titre_document":"...","date_document":"...","source":"...","donnees_extraites":[{"segment":"vie|iard|mutuelles|caisses_retraite|ip|general","champ":"nom du champ à mettre à jour","valeur_actuelle":"valeur actuelle","valeur_nouvelle":"nouvelle valeur extraite","source_dans_doc":"citation ou page","confiance":"haute|moyenne|faible"}],"problematiques_detectees":[{"segment":"...","titre":"...","description":"..."}],"resume":"résumé en 3 phrases pour un sales institutionnel"}
 Réponds UNIQUEMENT avec le JSON, sans markdown.`;
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:prompt}]}]})});
-    const data=await r.json();
+    const data=await callAnthropicAPI([{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:prompt}]}],null,2000);
     const text=data.content.map(i=>i.text||'').join('');
     const result=JSON.parse(text.replace(/```json|```/g,'').trim());
     hideLoading();renderPDFResults(result,file.name);
@@ -547,41 +643,99 @@ async function sendMessage(){
 function quickPrompt(text){document.getElementById('agent-input').value=text;sendMessage();}
 
 async function callAgent(){
+  if(!ANTHROPIC_KEY){addMessage('agent','⚠️ Clé API Anthropic non configurée. Déconnecte-toi et reconnecte-toi en renseignant la clé.');return;}
   isTyping=true;document.getElementById('agent-send-btn').disabled=true;
   const typingEl=addTyping();
-  const sys=`Tu es l'agent GTM de CPRAM (société de gestion d'actifs, filiale Crédit Agricole). Tu aides un sales institutionnel à maintenir sa base de connaissances GTM.
 
-CONTEXTE : Repo GitHub ${REPO}. Fichiers : segments.json (KB clients), strategies.json (KB produits CPRAM). 5 segments : Assureurs Vie, Assureurs IARD, Mutuelles, Caisses de Retraite, Institutions de Prévoyance.
+  const segCtx=segmentsData?Object.entries(segmentsData.segments).map(([k,s])=>`${k}(${(s.problematiques||[]).length} prob): overview=${JSON.stringify(s.overview||{})}`).join('\n'):'-';
+  const stratCtx=strategiesData?strategiesData.familles.map(f=>`${f.id}: ${f.strategies.map(s=>s.id).join(', ')}`).join('\n'):'-';
 
-DONNÉES ACTUELLES :
-${segmentsData?`segments.json v${segmentsData.meta.version} — segments: ${Object.keys(segmentsData.segments).join(', ')}`:'Non chargé'}
-${strategiesData?`strategies.json — ${strategiesData.familles.length} familles, ${strategiesData.familles.reduce((s,f)=>s+f.strategies.length,0)} stratégies`:'Non chargé'}
+  const sys=`Tu es l'agent GTM de CPRAM (filiale Crédit Agricole / Amundi). Tu aides Allan, sales institutionnel, à maintenir sa base de connaissances.
 
-TES CAPACITÉS :
-1. Proposer des mises à jour précises pour segments.json ou strategies.json
-2. Analyser les données actuelles et identifier ce qui est obsolète
-3. Suggérer de nouvelles problématiques ou stratégies basées sur les tendances
-4. Expliquer comment implémenter une modification
+REPO : ${REPO} — segments.json (5 segments) · strategies.json (14 stratégies)
 
-Quand tu proposes une modification JSON, donne toujours : le fichier concerné, le chemin exact dans le JSON, la valeur actuelle, la nouvelle valeur proposée, la source.
+ÉTAT ACTUEL SEGMENTS :
+${segCtx}
 
-Réponds en français, de manière concise et actionnable. Tu es un expert des institutionnels français.`;
+STRATÉGIES PAR FAMILLE :
+${stratCtx}
+
+RÈGLE ABSOLUE : Ne jamais répondre avec le JSON complet d'un fichier. Uniquement des patches chirurgicaux.
+
+FORMAT OBLIGATOIRE pour toute modification proposée — inclure un bloc <patch> par changement :
+<patch>
+{"file":"segments.json","op":"set","path":"segments.vie.overview.Marché","value":"2 200 Mds€","label":"Mise à jour encours assureurs vie 2025"}
+</patch>
+
+Opérations :
+- "set" : modifier une valeur (scalaire, objet). Chemin ex: segments.vie.overview.Marché | segments.vie.problematiques.0.titre
+- "push" : ajouter à un tableau. Ex: path="segments.vie.tensions", value="texte de la tension"
+- "remove" : supprimer. Ex: path="segments.vie.tensions.2" (index dans le tableau)
+
+Pour ajouter une problématique complète : op="push", path="segments.vie.problematiques", value={"id":"p_xxx","titre":"...","urgence":"haute","contexte":"...","enjeu":"...","reponse_cpram":"...","strategies_cpram":["oblig-credit-ig"]}
+
+Réponds en français, concis, actionnable. Expert des institutionnels français (Solvabilité 2, SCR, ALM, SFDR).`;
 
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:agentHistory})});
-    const data=await r.json();
+    const data=await callAnthropicAPI(agentHistory,sys,1200);
     const text=data.content.map(i=>i.text||'').join('');
     typingEl.remove();addMessage('agent',text);agentHistory.push({role:'assistant',content:text});
-  }catch(e){typingEl.remove();addMessage('agent',`❌ Erreur API : ${e.message}`);}
+  }catch(e){
+    typingEl.remove();
+    addMessage('agent',`❌ ${e.message}`);
+  }
   isTyping=false;document.getElementById('agent-send-btn').disabled=false;
+}
+
+function parsePatchBlocks(text){
+  const patches=[];const re=/<patch>([\s\S]*?)<\/patch>/g;let m;
+  while((m=re.exec(text))!==null){
+    try{patches.push(JSON.parse(m[1].trim()));}catch(e){}
+  }
+  return patches;
+}
+
+function applyJsonPatch(data,path,op,value){
+  const parts=path.split('.');
+  let obj=data;
+  for(let i=0;i<parts.length-1;i++){
+    const k=parts[i];
+    obj=(/^\d+$/.test(k))?obj[parseInt(k)]:obj[k];
+    if(obj==null)throw new Error(`Chemin introuvable : ${parts.slice(0,i+1).join('.')}`);
+  }
+  const lastKey=parts[parts.length-1];
+  const key=/^\d+$/.test(lastKey)?parseInt(lastKey):lastKey;
+  if(op==='set'){obj[key]=value;}
+  else if(op==='push'){if(!Array.isArray(obj[key]))throw new Error(`${lastKey} n'est pas un tableau`);obj[key].push(value);}
+  else if(op==='remove'){if(Array.isArray(obj))obj.splice(key,1);else delete obj[key];}
+  else throw new Error(`Opération inconnue : ${op}`);
+}
+
+async function applyAgentPatch(idx){
+  const patch=pendingPatches[idx];if(!patch)return;
+  try{
+    const data=patch.file==='segments.json'?segmentsData:strategiesData;
+    applyJsonPatch(data,patch.path,patch.op,patch.value);
+    if(patch.file==='segments.json')segmentsData.meta.updated=new Date().toISOString().split('T')[0];
+    const ok=await pushToGitHub(patch.file,JSON.stringify(data,null,2),patch.label||`Agent: ${patch.op} ${patch.path}`);
+    if(ok){updateStats();renderSegmentGrid();addMessage('agent',`✅ Appliqué : ${patch.label||patch.path}`);}
+  }catch(e){showToast('Erreur patch : '+e.message,'error');}
 }
 
 function addMessage(role,text){
   const c=document.getElementById('agent-messages');
   const d=document.createElement('div');d.className=`msg ${role}`;
   const time=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  let patchHtml='';
+  if(role==='agent'){
+    parsePatchBlocks(text).forEach(p=>{
+      const idx=pendingPatches.length;pendingPatches.push(p);
+      patchHtml+=`<div class="patch-card"><div class="patch-label">📝 ${p.label||p.path}</div><div class="patch-detail">${p.file} · <code>${p.op}</code> · <code>${p.path}</code></div><button class="msg-action-btn" onclick="applyAgentPatch(${idx})">✓ Appliquer sur GitHub</button></div>`;
+    });
+    text=text.replace(/<patch>[\s\S]*?<\/patch>/g,'').trim();
+  }
   const fmt=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
-  d.innerHTML=`<div class="msg-avatar">${role==='agent'?'AI':'MOI'}</div><div class="msg-content">${fmt}<div class="msg-time">${time}</div></div>`;
+  d.innerHTML=`<div class="msg-avatar">${role==='agent'?'AI':'MOI'}</div><div class="msg-content">${fmt}${patchHtml}<div class="msg-time">${time}</div></div>`;
   c.appendChild(d);c.scrollTop=c.scrollHeight;return d;
 }
 function addTyping(){
