@@ -346,7 +346,7 @@ function doLogin(){
   const token=document.getElementById('token-input').value.trim();
   const aKey=document.getElementById('anthropic-input')?document.getElementById('anthropic-input').value.trim():'';
   const gKey=document.getElementById('gemini-input').value.trim();
-  if(document.getElementById('pwd-input').value===PASSWORD&&token.startsWith('github_')){
+  if(document.getElementById('pwd-input').value===PASSWORD&&(token.startsWith('github_')||token.startsWith('ghp_'))){
     GITHUB_TOKEN=token;ANTHROPIC_KEY=aKey;GEMINI_KEY=gKey;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
