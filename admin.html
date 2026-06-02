@@ -140,8 +140,6 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
     <div class="login-title">Panneau Admin GTM</div>
     <label class="login-label">Mot de passe</label>
     <input type="password" class="login-input" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    <label class="login-label">Token GitHub</label>
-    <input type="password" class="login-input" id="token-input" placeholder="github_pat_..." onkeydown="if(event.key==='Enter')doLogin()">
     <label class="login-label">Clé API Gemini <span style="color:var(--muted);font-size:9px">(gratuit — aistudio.google.com)</span></label>
     <input type="password" class="login-input" id="gemini-input" placeholder="AIza..." onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">ACCÉDER</button>
@@ -206,7 +204,6 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
             <button class="btn btn-primary" onclick="quickPrompt('Fais un audit complet : quelles données sont probablement obsolètes dans segments.json ?')">🔍 Audit contenu</button>
             <button class="btn btn-secondary" onclick="window.open('https://allanichub.github.io/cpram-gtm','_blank')">↗ Voir le site</button>
             <button class="btn btn-secondary" onclick="window.open('https://github.com/allanichub/cpram-gtm','_blank')">↗ Voir le repo</button>
-            <button class="btn btn-secondary" onclick="testGitHubToken()">🔑 Tester le token</button>
           </div>
         </div>
       </div>
@@ -335,7 +332,7 @@ body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(-
 
 <script>
 const PASSWORD='alexcpr25';
-let GITHUB_TOKEN='',ANTHROPIC_KEY='',GEMINI_KEY='';
+let ANTHROPIC_KEY='',GEMINI_KEY='';
 const REPO='allanichub/cpram-gtm';
 const BRANCH='main';
 const RAW=`https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
@@ -344,11 +341,9 @@ const agentHistory=[];
 const pendingPatches=[];
 
 function doLogin(){
-  const token=document.getElementById('token-input').value.trim();
-  const aKey=document.getElementById('anthropic-input')?document.getElementById('anthropic-input').value.trim():'';
   const gKey=document.getElementById('gemini-input').value.trim();
-  if(document.getElementById('pwd-input').value===PASSWORD&&(token.startsWith('github_')||token.startsWith('ghp_'))){
-    GITHUB_TOKEN=token;ANTHROPIC_KEY=aKey;GEMINI_KEY=gKey;
+  if(document.getElementById('pwd-input').value===PASSWORD){
+    GEMINI_KEY=gKey;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
     document.getElementById('init-time').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
@@ -365,15 +360,15 @@ function doLogout(){
 }
 
 async function initApp(){
-  showLoading('Connexion à GitHub...');
+  showLoading('Chargement des données...');
   try{
     const[a,b]=await Promise.all([fetch(`${RAW}/segments.json?t=${Date.now()}`),fetch(`${RAW}/strategies.json?t=${Date.now()}`)]);
     segmentsData=await a.json();strategiesData=await b.json();
-    updateStats();renderSegmentGrid();renderStratList();await loadChangelog();
-    document.getElementById('github-status').textContent='GitHub connecté ✓';
+    updateStats();renderSegmentGrid();renderStratList();
+    document.getElementById('github-status').textContent='Données chargées ✓';
     hideLoading();showToast('Données chargées ✓');
-    document.getElementById('ask-agent-seg-btn').onclick=()=>quickPrompt('Propose-moi des mises à jour pour le segment '+(currentSegment||'selectionné')+' basées sur les dernières tendances');
-  }catch(e){hideLoading();document.getElementById('github-status').textContent='Erreur GitHub';showToast('Erreur connexion GitHub','error');}
+    document.getElementById('ask-agent-seg-btn').onclick=()=>quickPrompt('Propose-moi des mises à jour pour le segment '+(currentSegment||'sélectionné')+' basées sur les dernières tendances');
+  }catch(e){hideLoading();document.getElementById('github-status').textContent='Erreur chargement';showToast('Erreur chargement données','error');}
 }
 
 function updateStats(){
@@ -516,7 +511,7 @@ async function saveSegmentSection(){
     });
   }
   segmentsData.meta.updated=new Date().toISOString().split('T')[0];
-  await pushToGitHub('segments.json',JSON.stringify(segmentsData,null,2),`Update ${currentSegment} — ${section}`);
+  await pushToGitHub('segments.json',JSON.stringify(segmentsData,null,2));
   updateStats();
 }
 
@@ -538,7 +533,7 @@ async function addStrategy(){
   const newS={id,nom,classe_actif:document.getElementById('new-strat-classe').value,description:desc,sfdr:document.getElementById('new-strat-sfdr').value,liquidite:'Quotidienne',profil_client:[],problematiques_cibles:[],atouts_cpram:document.getElementById('new-strat-atout').value};
   const fam=strategiesData.familles.find(f=>f.id===document.getElementById('new-strat-famille').value);
   if(fam)fam.strategies.push(newS);
-  await pushToGitHub('strategies.json',JSON.stringify(strategiesData,null,2),`Add strategy: ${nom}`);
+  await pushToGitHub('strategies.json',JSON.stringify(strategiesData,null,2));
   renderStratList();
   ['new-strat-nom','new-strat-classe','new-strat-desc','new-strat-atout'].forEach(id=>document.getElementById(id).value='');
   showToast(`Stratégie "${nom}" ajoutée ✓`);
@@ -605,36 +600,19 @@ function applyUpdate(item){
   quickPrompt(`Applique cette mise à jour dans segments.json : segment "${item.segment}", champ "${item.champ}", nouvelle valeur : "${item.valeur_nouvelle}". Source : ${item.source_dans_doc}`);
 }
 
-async function testGitHubToken(){
-  showLoading('Test du token...');
-  try{
-    const r=await fetch('https://api.github.com/user',{headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
-    const u=await r.json();
-    const r2=await fetch(`https://api.github.com/repos/${REPO}`,{headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
-    const repo=await r2.json();
-    hideLoading();
-    const msg=`Token reconnu comme : ${u.login||'inconnu'} (${r.status})\nRepo ${REPO} : ${repo.permissions?JSON.stringify(repo.permissions):'permissions inconnues'} (${r2.status})`;
-    alert(msg);
-  }catch(e){hideLoading();alert('Erreur : '+e.message);}
-}
-
-async function pushToGitHub(filename,content,message){
-  showLoading('Sauvegarde sur GitHub...');
-  try{
-    const getR=await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`,{headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
-    const fileData=await getR.json();
-    if(!getR.ok){hideLoading();showToast(`GET ${getR.status} : ${fileData.message}`,'error');return false;}
-    const putR=await fetch(`https://api.github.com/repos/${REPO}/contents/${filename}`,{method:'PUT',headers:{'Authorization':`Bearer ${GITHUB_TOKEN}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message,content:btoa(unescape(encodeURIComponent(content))),sha:fileData.sha,branch:BRANCH})});
-    const putData=await putR.json();
-    hideLoading();
-    if(putR.ok){showToast(`${filename} sauvegardé ✓`);return true;}
-    else{showToast(`PUT ${putR.status} : ${putData.message}`,'error');return false;}
-  }catch(e){hideLoading();showToast(`Erreur réseau : ${e.message}`,'error');return false;}
+function pushToGitHub(filename,content){
+  const blob=new Blob([content],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=filename;a.click();
+  URL.revokeObjectURL(url);
+  setTimeout(()=>window.open(`https://github.com/${REPO}/upload/${BRANCH}/`,'_blank'),300);
+  showToast(`${filename} téléchargé — glisse-le sur GitHub qui vient de s'ouvrir ✓`,'success');
+  return true;
 }
 
 async function loadChangelog(){
   try{
-    const r=await fetch(`https://api.github.com/repos/${REPO}/commits?per_page=15`,{headers:{'Authorization':`token ${GITHUB_TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
+    const r=await fetch(`https://api.github.com/repos/${REPO}/commits?per_page=15`);
     const commits=await r.json();
     const list=document.getElementById('changelog-list');
     if(!Array.isArray(commits)){list.innerHTML='<div style="color:var(--muted);font-family:monospace;font-size:11px">Impossible de charger.</div>';return;}
@@ -809,7 +787,7 @@ async function applyAgentPatch(idx){
     const data=patch.file==='segments.json'?segmentsData:strategiesData;
     applyJsonPatch(data,patch.path,patch.op,patch.value);
     if(patch.file==='segments.json')segmentsData.meta.updated=new Date().toISOString().split('T')[0];
-    const ok=await pushToGitHub(patch.file,JSON.stringify(data,null,2),patch.label||`Agent: ${patch.op} ${patch.path}`);
+    const ok=await pushToGitHub(patch.file,JSON.stringify(data,null,2));
     if(ok){updateStats();renderSegmentGrid();addMessage('agent',`✅ Appliqué : ${patch.label||patch.path}`);}
   }catch(e){showToast('Erreur patch : '+e.message,'error');}
 }
